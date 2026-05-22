@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Design System — Fiscal Copilot</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="../style.css"/>
+<style>
+  .ds-layout { display: flex; min-height: 100vh; }
+  .ds-sidebar { width: 220px; flex-shrink: 0; background: var(--surface); border-right: 1px solid var(--border); padding: 24px 0; position: fixed; top: 0; left: 0; height: 100vh; overflow-y: auto; }
+  .ds-sidebar-title { font-size: .7rem; font-weight: 700; text-transform: uppercase; letter-spacing: .1em; color: var(--t3); padding: 0 20px; margin-bottom: 8px; }
+  .ds-sidebar a { display: block; padding: 7px 20px; font-size: .84rem; color: var(--t2); text-decoration: none; border-radius: 0; transition: background .1s, color .1s; }
+  .ds-sidebar a:hover { background: var(--bg); color: var(--t1); }
+  .ds-sidebar a.active { color: var(--blue); font-weight: 600; background: var(--blue-lt); }
+  .ds-main { margin-left: 220px; flex: 1; padding: 48px 56px; max-width: 900px; }
+  .ds-hero { margin-bottom: 48px; padding-bottom: 32px; border-bottom: 1px solid var(--border); }
+  .ds-hero h1 { font-size: 2rem; font-weight: 700; letter-spacing: -.5px; margin-bottom: 8px; }
+  .ds-hero p { font-size: .95rem; color: var(--t2); line-height: 1.7; }
+  .ds-empty { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 80px 0; text-align: center; color: var(--t3); }
+  .ds-empty-icon { width: 48px; height: 48px; background: var(--bg); border-radius: var(--r); display: flex; align-items: center; justify-content: center; margin: 0 auto 16px; }
+  .ds-empty h2 { font-size: 1rem; font-weight: 600; color: var(--t2); margin-bottom: 6px; }
+  .ds-empty p { font-size: .84rem; line-height: 1.6; max-width: 320px; }
+</style>
+</head>
+<body>
+<div class="ds-layout">
+
+  <nav class="ds-sidebar">
+    <div style="padding: 20px 20px 24px; border-bottom: 1px solid var(--border); margin-bottom: 16px;">
+      <div style="font-size: .95rem; font-weight: 700; color: var(--blue);">Fiscal Copilot</div>
+      <div style="font-size: .75rem; color: var(--t3); margin-top: 2px;">Design System</div>
+    </div>
+    <!-- Navigation links will be added here as components are documented -->
+  </nav>
+
+  <main class="ds-main">
+    <div class="ds-hero">
+      <h1>Design System</h1>
+      <p>All components, tokens, and patterns used across Fiscal Copilot — documented in one place.</p>
+    </div>
+
+    <div class="ds-empty">
+      <div class="ds-empty-icon">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--t3)" stroke-width="1.5"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+      </div>
+      <h2>No components yet</h2>
+      <p>Components will appear here as they are added to the documentation.</p>
+    </div>
+  </main>
+
+</div>
+</body>
+</html>
