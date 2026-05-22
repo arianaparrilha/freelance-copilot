@@ -59,11 +59,6 @@
     </div>
   </div>
 
-  <div class="sb-user">
-    <div class="u-av">JS</div>
-    <div style="flex:1;min-width:0"><div class="u-name">João Silva</div><div class="u-role">Conta Pro</div></div>
-    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="color:var(--t3);flex-shrink:0"><polyline points="6 9 12 15 18 9"/></svg>
-  </div>
 </aside>
 
 <!-- ════════════════════════════════════
@@ -74,10 +69,6 @@
 <!-- ══ PAGE: DASHBOARD ══ -->
 <div class="page active" id="page-dashboard">
   <div class="topbar">
-    <div>
-      <div class="tb-title">Olá, João! 👋</div>
-      <div class="tb-sub">Aqui tens o resumo do teu negócio.</div>
-    </div>
     <div class="tb-right">
       <button class="btn btn-s btn-sm" style="gap:5px">
         <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-3.5"/></svg>
@@ -89,6 +80,12 @@
   </div>
 
   <div class="page-content">
+    <div class="page-header">
+      <div>
+        <div class="tb-title" id="dashboard-greeting">Olá! 👋</div>
+        <div class="tb-sub">Aqui tens o resumo do teu negócio.</div>
+      </div>
+    </div>
     <!-- KPIs -->
     <div class="kpi-row">
       <div class="card kpi-card">
@@ -197,25 +194,31 @@
 <!-- ══ PAGE: CLIENTES ══ -->
 <div class="page" id="page-clientes">
   <div class="topbar">
-    <div><div class="tb-title">Clientes e Projetos</div><div class="tb-sub">Gere os seus clientes, projetos e toda a documentação num só lugar.</div></div>
     <div class="tb-right">
-      <!-- Ambos os CTAs levam ao mesmo modal -->
-      <button class="btn btn-s btn-sm" onclick="triggerImportContacts()">
-        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
-        Importar contactos
-      </button>
-      <!-- Hidden file input for contact import (Excel, Word, CSV, vCard) -->
-      <input type="file" id="importContactsInput" accept=".xlsx,.xls,.csv,.docx,.doc,.txt,.vcf" style="display:none" onchange="processImportContacts(event)"/>
-      <button class="btn btn-p btn-sm" onclick="abrirModalCl()">
-        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-        Novo cliente
-      </button>
       <button class="ico-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></button>
       <button class="ico-btn" style="position:relative"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg><span class="notif-n">3</span></button>
     </div>
   </div>
 
   <div class="page-content" style="padding-bottom:0">
+    <div class="page-header">
+      <div>
+        <div class="tb-title">Clientes e Projetos</div>
+        <div class="tb-sub">Gere os seus clientes, projetos e toda a documentação num só lugar.</div>
+      </div>
+      <div class="page-actions">
+        <!-- Hidden file input for contact import -->
+        <input type="file" id="importContactsInput" accept=".xlsx,.xls,.csv,.docx,.doc,.txt,.vcf" style="display:none" onchange="processImportContacts(event)"/>
+        <button class="btn btn-s btn-sm" onclick="triggerImportContacts()">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+          Importar contactos
+        </button>
+        <button class="btn btn-p btn-sm" onclick="abrirModalCl()">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          Novo cliente
+        </button>
+      </div>
+    </div>
     <!-- RESUMO EM DESTAQUE — sempre visível no topo -->
     <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:13px;margin-bottom:20px">
 
@@ -350,17 +353,23 @@
 <!-- ══ PAGE: ESTIMADOR ══ -->
 <div class="page" id="page-estimador">
   <div class="topbar">
-    <div><div class="tb-title">Estimador</div><div class="tb-sub">Calcula a tua situação fiscal estimada com base nos recibos registados.</div></div>
-    <div class="tb-right">
-      <div style="display:flex;align-items:center;gap:7px;border:1px solid var(--border2);border-radius:var(--rsm);padding:5px 11px;font-size:.82rem;font-weight:600;background:var(--surface);cursor:pointer">
-        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-        2025
-        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
-      </div>
-    </div>
+    <div class="tb-right"></div>
   </div>
 
   <div class="page-content">
+    <div class="page-header">
+      <div>
+        <div class="tb-title">Estimador</div>
+        <div class="tb-sub">Calcula a tua situação fiscal estimada com base nos recibos registados.</div>
+      </div>
+      <div class="page-actions">
+        <div style="display:flex;align-items:center;gap:7px;border:1px solid var(--border2);border-radius:var(--rsm);padding:5px 11px;font-size:.82rem;font-weight:600;background:var(--surface);cursor:pointer">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+          2025
+          <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+        </div>
+      </div>
+    </div>
     <!-- SS info banner -->
     <div class="al-info">
       <svg class="al-ico" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
@@ -788,6 +797,9 @@
 </div>
 
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase-client.js"></script>
+<script src="auth.js"></script>
 <script src="script.js"></script>
 </body>
 </html>

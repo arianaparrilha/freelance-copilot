@@ -1,3 +1,49 @@
+// Auth check — redirect to /login if not logged in
+;(async () => {
+  const user = await requireAuth()
+  if (!user) return
+
+  const name = user.email.split('@')[0].replace(/[._]/g, ' ').replace(/\b\w/g, c => c.toUpperCase())
+  const initial = name[0].toUpperCase()
+
+  const greetingEl = document.getElementById('dashboard-greeting')
+  if (greetingEl) greetingEl.textContent = `Olá, ${name.split(' ')[0]}! 👋`
+
+  const dropdownHTML = `
+    <div class="user-menu">
+      <button class="user-menu-trigger">
+        <div class="user-av-sm">${initial}</div>
+        <div class="user-menu-info">
+          <span class="user-menu-name">${name}</span>
+          <span class="user-menu-role">Freelancer</span>
+        </div>
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+      </button>
+      <div class="user-menu-dropdown">
+        <a href="#" class="umd-item"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>O meu perfil</a>
+        <a href="#" class="umd-item"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93l-1.41 1.41M4.93 4.93l1.41 1.41M12 2v2M12 20v2M20 12h2M2 12h2M19.07 19.07l-1.41-1.41M4.93 19.07l1.41-1.41"/></svg>Definições</a>
+        <a href="#" class="umd-item"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>Plano e faturação</a>
+        <div class="umd-sep"></div>
+        <button class="umd-item umd-signout" onclick="signOut()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>Terminar sessão</button>
+      </div>
+    </div>`
+
+  document.querySelectorAll('.tb-right').forEach(el => {
+    el.insertAdjacentHTML('beforeend', dropdownHTML)
+  })
+
+  document.addEventListener('click', e => {
+    const trigger = e.target.closest('.user-menu-trigger')
+    if (trigger) {
+      const dropdown = trigger.closest('.user-menu').querySelector('.user-menu-dropdown')
+      document.querySelectorAll('.user-menu-dropdown').forEach(d => { if (d !== dropdown) d.classList.remove('open') })
+      dropdown.classList.toggle('open')
+    } else if (!e.target.closest('.user-menu-dropdown')) {
+      document.querySelectorAll('.user-menu-dropdown').forEach(d => d.classList.remove('open'))
+    }
+  })
+})()
+
 // IAS 2025
 const IAS = 522.50
 const LIMIAR_SS = 4 * IAS           // €2.090 rendimento relevante mensal médio

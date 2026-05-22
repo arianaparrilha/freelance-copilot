@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Fiscal Copilot — Entrar</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Merriweather+Sans:ital,wght@0,300..800;1,300..800&family=Space+Grotesk:wght@300..700&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="../style.css"/>
+<style>
+  html,body{height:100%;margin:0}
+  body{display:flex;align-items:center;justify-content:center;background:var(--bg);font-family:var(--font)}
+
+  .auth-card{
+    background:var(--surface);
+    border:1px solid var(--border);
+    border-radius:var(--rlg);
+    box-shadow:var(--sh-lg);
+    padding:40px;
+    width:100%;
+    max-width:400px;
+  }
+
+  .auth-logo{display:flex;align-items:center;gap:10px;margin-bottom:32px}
+  .auth-logo .logo-mark{width:36px;height:36px;border-radius:9px;background:var(--blue);color:#fff;font-family:var(--font-heading);font-weight:var(--fw-bold);font-size:var(--text-lg);display:flex;align-items:center;justify-content:center}
+  .auth-logo .logo-name{font-family:var(--font-heading);font-weight:var(--fw-semibold);font-size:var(--text-md);color:var(--t1)}
+
+  .auth-title{font-family:var(--font-heading);font-size:var(--text-xl);font-weight:var(--fw-semibold);color:var(--t1);margin:0 0 6px}
+  .auth-sub{font-size:var(--text-sm);color:var(--t3);margin:0 0 28px}
+
+  .field{margin-bottom:16px}
+  .field label{display:block;font-size:var(--text-sm);font-weight:var(--fw-medium);color:var(--t2);margin-bottom:6px}
+  .field input{
+    width:100%;
+    box-sizing:border-box;
+    padding:10px 12px;
+    border:1px solid var(--border);
+    border-radius:var(--rsm);
+    font-family:var(--font);
+    font-size:var(--text-base);
+    color:var(--t1);
+    background:var(--surface);
+    outline:none;
+    transition:border-color .15s;
+  }
+  .field input:focus{border-color:var(--blue)}
+
+  .auth-btn{
+    width:100%;
+    padding:11px;
+    background:var(--blue);
+    color:#fff;
+    border:none;
+    border-radius:var(--rsm);
+    font-family:var(--font-heading);
+    font-size:var(--text-base);
+    font-weight:var(--fw-semibold);
+    cursor:pointer;
+    margin-top:8px;
+    transition:background .15s;
+  }
+  .auth-btn:hover{background:var(--blue-dk)}
+  .auth-btn:disabled{opacity:.6;cursor:not-allowed}
+
+  .auth-error{
+    background:var(--red-lt);
+    color:var(--red);
+    border-radius:var(--rsm);
+    padding:10px 12px;
+    font-size:var(--text-sm);
+    margin-top:16px;
+    display:none;
+  }
+  .auth-error.visible{display:block}
+
+  .auth-success{
+    background:var(--green-lt);
+    color:var(--green);
+    border-radius:var(--rsm);
+    padding:10px 12px;
+    font-size:var(--text-sm);
+    margin-top:16px;
+    display:none;
+  }
+  .auth-success.visible{display:block}
+
+  .auth-toggle{text-align:center;margin-top:24px;font-size:var(--text-sm);color:var(--t3)}
+  .auth-toggle a{color:var(--blue);text-decoration:none;font-weight:var(--fw-medium);cursor:pointer}
+  .auth-toggle a:hover{text-decoration:underline}
+</style>
+</head>
+<body>
+
+<div class="auth-card">
+  <div class="auth-logo">
+    <div class="logo-mark">F</div>
+    <span class="logo-name">Fiscal Copilot</span>
+  </div>
+
+  <h1 class="auth-title" id="auth-title">Bem-vindo de volta</h1>
+  <p class="auth-sub" id="auth-sub">Entra na tua conta para continuar.</p>
+
+  <form id="auth-form">
+    <div class="field">
+      <label for="email">Email</label>
+      <input type="email" id="email" placeholder="o.teu@email.com" required/>
+    </div>
+    <div class="field">
+      <label for="password">Palavra-passe</label>
+      <input type="password" id="password" placeholder="••••••••" required/>
+    </div>
+    <button type="submit" class="auth-btn" id="auth-btn">Entrar</button>
+  </form>
+
+  <div class="auth-error" id="auth-error"></div>
+  <div class="auth-success" id="auth-success"></div>
+
+  <div class="auth-toggle">
+    <span id="toggle-text">Não tens conta?</span>
+    <a id="toggle-link"> Criar conta</a>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="../supabase-client.js"></script>
+<script>
+  let mode = 'login'
+
+  const form = document.getElementById('auth-form')
+  const btn = document.getElementById('auth-btn')
+  const errorEl = document.getElementById('auth-error')
+  const successEl = document.getElementById('auth-success')
+  const toggleLink = document.getElementById('toggle-link')
+  const toggleText = document.getElementById('toggle-text')
+  const title = document.getElementById('auth-title')
+  const sub = document.getElementById('auth-sub')
+
+  toggleLink.addEventListener('click', () => {
+    mode = mode === 'login' ? 'signup' : 'login'
+    errorEl.classList.remove('visible')
+    successEl.classList.remove('visible')
+    if (mode === 'signup') {
+      title.textContent = 'Criar conta'
+      sub.textContent = 'Começa a gerir as tuas finanças como freelancer.'
+      btn.textContent = 'Criar conta'
+      toggleText.textContent = 'Já tens conta?'
+      toggleLink.textContent = ' Entrar'
+    } else {
+      title.textContent = 'Bem-vindo de volta'
+      sub.textContent = 'Entra na tua conta para continuar.'
+      btn.textContent = 'Entrar'
+      toggleText.textContent = 'Não tens conta?'
+      toggleLink.textContent = ' Criar conta'
+    }
+  })
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault()
+    const email = document.getElementById('email').value
+    const password = document.getElementById('password').value
+
+    btn.disabled = true
+    btn.textContent = mode === 'login' ? 'A entrar...' : 'A criar conta...'
+    errorEl.classList.remove('visible')
+    successEl.classList.remove('visible')
+
+    const { error } = mode === 'login'
+      ? await db.auth.signInWithPassword({ email, password })
+      : await db.auth.signUp({ email, password })
+
+    if (error) {
+      errorEl.textContent = translateError(error.message)
+      errorEl.classList.add('visible')
+      btn.disabled = false
+      btn.textContent = mode === 'login' ? 'Entrar' : 'Criar conta'
+    } else if (mode === 'signup') {
+      successEl.textContent = 'Conta criada! Verifica o teu email para confirmar.'
+      successEl.classList.add('visible')
+      btn.disabled = false
+      btn.textContent = 'Criar conta'
+    } else {
+      window.location.href = '/'
+    }
+  })
+
+  function translateError(msg) {
+    if (msg.includes('Invalid login credentials')) return 'Email ou palavra-passe incorretos.'
+    if (msg.includes('Email not confirmed')) return 'Confirma o teu email antes de entrar.'
+    if (msg.includes('User already registered')) return 'Este email já tem uma conta.'
+    if (msg.includes('Password should be')) return 'A palavra-passe deve ter pelo menos 6 caracteres.'
+    return 'Ocorreu um erro. Tenta novamente.'
+  }
+
+  db.auth.getSession().then(({ data: { session } }) => {
+    if (session) window.location.href = '/'
+  })
+</script>
+</body>
+</html>
