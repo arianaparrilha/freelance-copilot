@@ -1,0 +1,953 @@
+// IAS 2025
+const IAS = 522.50
+const LIMIAR_SS = 4 * IAS           // €2.090 rendimento relevante mensal médio
+const LIMITE_IVA = 14500
+const LIMITE_RS  = 200000
+
+// Clients store
+let clientes = [
+  {id:'nd', in:'ND', cor:'#1d6cf0', nome:'Nexus Digital',  nif:'512 874 331', email:'geral@nexusdigital.pt',   tel:'+351 912 345 678', morada:'Av. da Liberdade 120, Lisboa', since:'Mar 2024', projetos:3},
+  {id:'fs', in:'FS', cor:'#059669', nome:'Forma Studio',   nif:'513 987 222', email:'studio@formadesign.pt',   tel:'+351 918 765 432', morada:'Rua do Arsenal 40, Lisboa',       since:'Jun 2024', projetos:1},
+  {id:'ol', in:'OL', cor:'#7c3aed', nome:'Orbit Labs',     nif:'514 231 987', email:'hello@orbitlabs.io',      tel:'+351 962 111 222', morada:'Parque das Nações, Lisboa',        since:'Jan 2024', projetos:2},
+  {id:'lc', in:'LC', cor:'#d97706', nome:'Luz Criativa',   nif:'516 321 654', email:'luz@luzcriativa.pt',      tel:'+351 935 444 555', morada:'Rua de Santa Catarina, Porto',      since:'Set 2024', projetos:1},
+  {id:'vb', in:'VB', cor:'#dc2626', nome:'Volta Brand',    nif:'517 654 321', email:'info@voltabrand.com',     tel:'+351 911 999 888', morada:'Avenida Central, Braga',            since:'Nov 2024', projetos:1},
+]
+
+// Faturas por cliente
+let faturas = {
+  nd:[{num:'2025/18',data:'08 Mai 2025',desc:'Consultoria UX',valor:950,estado:'pago'},
+      {num:'2025/14',data:'15 Abr 2025',desc:'Design de interface',valor:1200,estado:'pago'},
+      {num:'2025/11',data:'10 Mar 2025',desc:'Prototipagem',valor:850,estado:'pendente'},
+      {num:'2025/07',data:'12 Fev 2025',desc:'Auditoria UX',valor:700,estado:'pago'},
+      {num:'2025/03',data:'20 Jan 2025',desc:'Workshop',valor:500,estado:'pago'}],
+  fs:[{num:'2025/17',data:'03 Mai 2025',desc:'Website redesign',valor:1450,estado:'pago'},
+      {num:'2025/10',data:'05 Mar 2025',desc:'Brand guidelines',valor:600,estado:'pendente'},
+      {num:'2025/06',data:'25 Jan 2025',desc:'Logo system',valor:750,estado:'pago'}],
+  ol:[{num:'2025/16',data:'10 Abr 2025',desc:'Desenvolvimento front-end',valor:2100,estado:'pago'},
+      {num:'2025/09',data:'28 Fev 2025',desc:'Consultoria técnica',valor:700,estado:'pendente'}],
+  lc:[{num:'2025/13',data:'10 Abr 2025',desc:'Campanha digital',valor:890,estado:'pago'},
+      {num:'2025/05',data:'15 Jan 2025',desc:'Estratégia de conteúdo',valor:500,estado:'pago'}],
+  vb:[{num:'2025/08',data:'20 Fev 2025',desc:'Identidade visual',valor:750,estado:'pago'}],
+}
+
+// Documentos por cliente
+let documentos = {
+  nd:[{ext:'pdf',nome:'Contrato_NexusDigital.pdf',tipo:'Contrato',data:'08 Mai 2025',tam:'312 KB'},
+      {ext:'pdf',nome:'Proposta_NexusDigital.pdf',tipo:'Proposta',data:'20 Abr 2025',tam:'185 KB'},
+      {ext:'xls',nome:'Brief_NexusDigital.xlsx',  tipo:'Briefing',data:'15 Mar 2025',tam:'94 KB'},
+      {ext:'doc',nome:'Termos_Pagamento.docx',    tipo:'Outro',   data:'10 Mar 2025',tam:'78 KB'},
+      {ext:'pdf',nome:'Comprovativo_IBAN.pdf',     tipo:'Financeiro',data:'05 Fev 2025',tam:'68 KB'},
+      {ext:'pdf',nome:'Autorizacao_Dados.pdf',     tipo:'Legal',   data:'10 Jan 2025',tam:'124 KB'}],
+  fs:[{ext:'pdf',nome:'Contrato_FormaStudio.pdf', tipo:'Contrato',data:'03 Mai 2025',tam:'248 KB'},
+      {ext:'pdf',nome:'Brief_FormaStudio.pdf',    tipo:'Briefing',data:'18 Abr 2025',tam:'89 KB'}],
+  ol:[{ext:'pdf',nome:'Contrato_OrbitLabs.pdf',   tipo:'Contrato',data:'10 Abr 2025',tam:'195 KB'}],
+  lc:[{ext:'pdf',nome:'Proposta_LuzCriativa.pdf', tipo:'Proposta',data:'10 Abr 2025',tam:'156 KB'}],
+  vb:[{ext:'pdf',nome:'Briefing_VoltaBrand.pdf',  tipo:'Briefing',data:'20 Fev 2025',tam:'72 KB'}],
+}
+
+// Recibos no estimador (independente dos clientes)
+let recibosEst = [
+  {id:'r1', cliente:'Nexus Digital', data:'2025-05-08', valor:950,  desc:'Consultoria UX'},
+  {id:'r2', cliente:'Forma Studio',  data:'2025-05-03', valor:1450, desc:'Website redesign'},
+  {id:'r3', cliente:'Orbit Labs',    data:'2025-04-10', valor:2100, desc:'Desenvolvimento'},
+  {id:'r4', cliente:'Nexus Digital', data:'2025-04-15', valor:1200, desc:'Design interface'},
+  {id:'r5', cliente:'Luz Criativa',  data:'2025-04-10', valor:890,  desc:'Campanha digital'},
+]
+
+let editMode = true  // kept for compat, not used in estimador
+let ativo = 'nd'
+
+/* ───────────────────────────────────────
+   UTILS
+─────────────────────────────────────── */
+function f0(n){return new Intl.NumberFormat('pt-PT',{style:'currency',currency:'EUR',minimumFractionDigits:0}).format(n||0)}
+function f2(n){return new Intl.NumberFormat('pt-PT',{style:'currency',currency:'EUR',minimumFractionDigits:2}).format(n||0)}
+function fp(n){return (n||0).toFixed(1)+'%'}
+function set(id,v){const e=document.getElementById(id);if(e)e.textContent=v}
+function setW(id,w){const e=document.getElementById(id);if(e)e.style.width=w+'%'}
+function escH(s){return(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
+
+/* ───────────────────────────────────────
+   NAVIGATION
+─────────────────────────────────────── */
+function nav(p){navegarPara(p)}
+function navegarPara(p){
+  document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'))
+  document.getElementById('page-'+p).classList.add('active')
+  document.querySelectorAll('.nav-item[data-page]').forEach(b=>b.classList.remove('active'))
+  const b=document.querySelector(`.nav-item[data-page="${p}"]`)
+  if(b) b.classList.add('active')
+  if(p==='clientes') renderCl()
+  if(p==='clientes') renderCl()
+  document.getElementById('sidebar').classList.remove('open')
+}
+document.querySelectorAll('.nav-item[data-page]').forEach(b=>b.addEventListener('click',()=>navegarPara(b.dataset.page)))
+
+/* ───────────────────────────────────────
+   CLIENTS LIST RENDER
+─────────────────────────────────────── */
+function totalCl(id){
+  return (faturas[id]||[]).filter(f=>f.estado!=='cancelada').reduce((s,f)=>s+f.valor,0)
+}
+function renderCl(){
+  const q=(document.getElementById('srchCl').value||'').toLowerCase()
+  const el=document.getElementById('clListEl')
+  const lista=clientes.filter(c=>c.nome.toLowerCase().includes(q)||c.nif.includes(q))
+  el.innerHTML=lista.map(c=>`
+    <div class="cl-item${c.id===ativo?' active':''}" onclick="selCl('${c.id}')">
+      <div class="cl-av" style="background:${c.cor}">${c.in}</div>
+      <div style="flex:1;min-width:0">
+        <div class="cl-nm">${escH(c.nome)}</div>
+        <div class="cl-mt">NIF ${c.nif} · ${(faturas[c.id]||[]).length} recibos</div>
+      </div>
+      <div class="cl-am">${f0(totalCl(c.id))}</div>
+    </div>`).join('')
+}
+
+/* ───────────────────────────────────────
+   CLIENT DETAIL — loads all tabs for selected client
+─────────────────────────────────────── */
+function selCl(id){
+  ativo=id
+  renderCl()
+  const c=clientes.find(x=>x.id===id)
+  if(!c) return
+
+  // Header
+  document.getElementById('cdAv').textContent=c.in
+  document.getElementById('cdAv').style.background=c.cor
+  document.getElementById('cdNm').innerHTML=`${escH(c.nome)} <span class="badge bg-g">Cliente ativo</span>`
+  document.getElementById('cdNf').textContent='NIF '+c.nif
+  document.getElementById('cdSince').textContent=`Cliente desde ${c.since} · ${c.projetos} projeto${c.projetos!==1?'s':''} ativo${c.projetos!==1?'s':''}`
+
+  // Stats
+  const fats=faturas[id]||[]
+  const total=fats.filter(f=>f.estado!=='cancelada').reduce((s,f)=>s+f.valor,0)
+  const medio=fats.length>0?(total/fats.length):0
+  const ultimo=fats.length>0?fats[0].data:'—'
+  const pendente=fats.filter(f=>f.estado==='pendente').reduce((s,f)=>s+f.valor,0)
+  document.getElementById('cdTot').textContent=f2(total)
+  document.getElementById('cdTotSub').textContent=`${fats.length} recibo${fats.length!==1?'s':''}`
+  document.getElementById('cdAvg').textContent=f2(medio)
+  document.getElementById('cdLast').textContent=ultimo
+
+  // Estado badge
+  const statusEl=document.getElementById('cdStatus')
+  if(pendente>0){
+    statusEl.textContent=`${f2(pendente)} pendente`
+    statusEl.className='badge bg-a'
+  } else {
+    statusEl.textContent='Em dia'
+    statusEl.className='badge bg-g'
+  }
+
+  // TAB: Recibos
+  const rbody=document.getElementById('recibosTableWrap')
+  if(fats.length===0){
+    rbody.innerHTML='<p style="color:var(--t3);font-size:.82rem;padding:18px 0">Sem recibos registados.</p>'
+  } else {
+    rbody.innerHTML=`<table class="inv-tbl">
+      <thead><tr><th>Nº</th><th>Data</th><th>Descrição</th><th>Valor</th><th>Estado</th><th></th></tr></thead>
+      <tbody>${fats.map(f=>`
+        <tr>
+          <td class="mono" style="color:var(--t3)">${escH(f.num)}</td>
+          <td>${escH(f.data)}</td>
+          <td>${escH(f.desc)}</td>
+          <td class="mono">${f2(f.valor)}</td>
+          <td><span class="badge ${f.estado==='pago'?'bg-g':f.estado==='pendente'?'bg-a':'bg-n'}">${escH(f.estado)}</span></td>
+          <td><button class="btn-g btn-xs">···</button></td>
+        </tr>`).join('')}
+      </tbody></table>`
+  }
+
+  // TAB: Contactos
+  const ci=document.getElementById('contactosInfo')
+  ci.innerHTML=`
+    ${c.email?`<span style="display:flex;align-items:center;gap:7px"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--t3)" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>${escH(c.email)}</span>`:''}
+    ${c.tel?`<span style="display:flex;align-items:center;gap:7px"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--t3)" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 1.27h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9a16 16 0 0 0 6.29 6.29l.82-.74a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 21.73 17z"/></svg>${escH(c.tel)}</span>`:''}
+    ${c.morada?`<span style="display:flex;align-items:center;gap:7px"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--t3)" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>${escH(c.morada)}</span>`:''}
+  `
+
+  // TAB: Documentos
+  const docs=documentos[id]||[]
+  document.getElementById('docCount').textContent=docs.length
+  const dt=document.getElementById('docTableWrap')
+  if(docs.length===0){
+    dt.innerHTML='<p style="color:var(--t3);font-size:.82rem;padding:10px 0">Sem documentos carregados.</p>'
+  } else {
+    dt.innerHTML=`<table class="doc-tbl">
+      <thead><tr><th>Nome do documento</th><th>Tipo</th><th>Data</th><th>Tamanho</th><th></th></tr></thead>
+      <tbody>${docs.map(d=>`
+        <tr>
+          <td><div class="doc-nc"><span class="doc-ext de-${d.ext}">${d.ext.toUpperCase()}</span>${escH(d.nome)}</div></td>
+          <td style="color:var(--t3)">${escH(d.tipo)}</td>
+          <td>${escH(d.data)}</td>
+          <td style="color:var(--t3)">${escH(d.tam)}</td>
+          <td><button class="btn-g btn-xs">···</button></td>
+        </tr>`).join('')}
+      </tbody></table>`
+  }
+}
+
+function switchTab(btn,paneId){
+  btn.parentElement.querySelectorAll('.tab-btn').forEach(t=>t.classList.remove('active'))
+  btn.classList.add('active')
+  document.querySelectorAll('.tab-pane').forEach(p=>p.classList.remove('active'))
+  document.getElementById(paneId).classList.add('active')
+}
+
+/* ───────────────────────────────────────
+   MODAL — NOVO CLIENTE
+─────────────────────────────────────── */
+const CORES_CL=['#1d6cf0','#059669','#7c3aed','#d97706','#dc2626','#0284c7','#db2777']
+let extractedData={}
+
+function abrirModalCl(){
+  // reset
+  ;['cNome','cNIF','cEmail','cTel','cMorada'].forEach(id=>{const e=document.getElementById(id);if(e)e.value=''})
+  document.getElementById('extractedPreview').style.display='none'
+  document.getElementById('extractingIndicator').style.display='none'
+  document.getElementById('modalCl').classList.add('open')
+}
+function fecharModal(id){document.getElementById(id).classList.remove('open')}
+document.getElementById('modalCl').addEventListener('click',e=>{if(e.target===e.currentTarget)fecharModal('modalCl')})
+
+function triggerDocUpload(){document.getElementById('docUploadInput').click()}
+
+/* ── Extracção real via FileReader (txt/csv/vcf legíveis; xlsx/docx/pdf: heurística por nome) ── */
+function processDocUpload(e){
+  const file=e.target.files[0]; if(!file) return
+  document.getElementById('modalUploadZone').style.display='none'
+  document.getElementById('extractingIndicator').style.display='block'
+
+  const ext=file.name.split('.').pop().toLowerCase()
+  const readableAsText=['txt','csv','vcf']
+
+  if(readableAsText.includes(ext)){
+    // Real text extraction
+    const reader=new FileReader()
+    reader.onload=ev=>{
+      const text=ev.target.result
+      extractedData=extractFromText(text, file.name)
+      showExtractedAndApply()
+    }
+    reader.readAsText(file)
+  } else {
+    // Heuristic extraction from filename for binary formats (xlsx, docx, pdf)
+    setTimeout(()=>{
+      extractedData=extractFromFilename(file.name)
+      showExtractedAndApply()
+    }, 900)
+  }
+  e.target.value=''
+}
+
+function extractFromText(text, filename){
+  const d={}
+  // NIF: 9 digits possibly spaced
+  const mNIF=text.match(/\b(\d{3}\s?\d{3}\s?\d{3})\b/)
+  if(mNIF) d.nif=mNIF[1].replace(/\s/g,'')
+
+  // Email
+  const mEmail=text.match(/[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}/i)
+  if(mEmail) d.email=mEmail[0]
+
+  // Company / name — look for "Empresa:", "Nome:", "Razão Social:", "Cliente:" patterns
+  const mNome=text.match(/(?:empresa|nome|razão social|cliente|company|name)[:\s]+([^\n,;]{3,60})/i)
+  if(mNome) d.nome=mNome[1].trim()
+
+  // Morada / address
+  const mMorada=text.match(/(?:morada|endereço|address|rua|av\.|avenida)[:\s]+([^\n]{5,80})/i)
+  if(mMorada) d.morada=mMorada[1].trim()
+
+  // Fallbacks from filename
+  if(!d.nome){const fn=extractFromFilename(filename); if(fn.nome) d.nome=fn.nome}
+
+  return d
+}
+
+function extractFromFilename(filename){
+  const d={}
+  // Pattern: Contrato_NomeEmpresa_NIF.ext or NomeEmpresa_123456789.pdf
+  const mNome=filename.replace(/\.[^.]+$/,'').match(/(?:^|[_\-])([A-ZÁÉÍÓÚ][a-zA-ZÀ-ÿ\s]{2,30})(?:[_\-]|$)/i)
+  if(mNome) d.nome=mNome[1].replace(/[_]/g,' ').trim()
+  const mNIF=filename.match(/\b(\d{9})\b/)
+  if(mNIF) d.nif=mNIF[1]
+  // Demo data if nothing found
+  if(!d.nome) d.nome='Empresa do Documento'
+  if(!d.nif)  d.nif='519 234 567'
+  if(!d.email)d.email='contacto@empresa.pt'
+  if(!d.morada)d.morada='Rua do Documento 10, Lisboa'
+  return d
+}
+
+function showExtractedAndApply(){
+  document.getElementById('extractingIndicator').style.display='none'
+  document.getElementById('modalUploadZone').style.display='block'
+
+  // Show preview
+  const labelMap={nome:'Nome',nif:'NIF',email:'Email',morada:'Morada'}
+  const flds=document.getElementById('extractedFields')
+  const entries=Object.entries(extractedData).filter(([k])=>labelMap[k])
+  if(!entries.length){
+    flds.innerHTML='<p style="font-size:.78rem;color:var(--t2)">Não foi possível extrair campos. Preenche manualmente.</p>'
+    document.getElementById('extractedPreview').style.display='block'
+    return
+  }
+  flds.innerHTML=entries.map(([k,v])=>`
+    <div class="ep-row">
+      <span class="ep-key">${labelMap[k]||k}</span>
+      <span class="ep-val">${escH(v)}</span>
+    </div>`).join('')
+  document.getElementById('extractedPreview').style.display='block'
+
+  // Auto-apply immediately — fields pre-filled, user just reviews
+  aplicarCamposExtraidos()
+}
+
+/* ── Import contacts (Excel/CSV/Word) → opens modal pre-filled ── */
+function triggerImportContacts(){document.getElementById('importContactsInput').click()}
+
+function processImportContacts(e){
+  const file=e.target.files[0]; if(!file) return
+  e.target.value=''
+  const ext=file.name.split('.').pop().toLowerCase()
+
+  // For CSV/txt: parse first data row
+  if(['csv','txt'].includes(ext)){
+    const reader=new FileReader()
+    reader.onload=ev=>{
+      const lines=ev.target.result.split('\n').map(l=>l.trim()).filter(Boolean)
+      // Try to detect header row; take first data row
+      const dataLine=lines.length>1?lines[1]:lines[0]
+      const cols=dataLine.split(/[,;\t]/).map(c=>c.replace(/^["']|["']$/g,'').trim())
+      // Heuristic: cols[0]=nome, cols[1]=nif, cols[2]=email, cols[3]=morada
+      extractedData={}
+      if(cols[0]) extractedData.nome=cols[0]
+      if(cols[1]&&/\d{9}/.test(cols[1].replace(/\s/g,''))) extractedData.nif=cols[1]
+      if(cols[2]&&cols[2].includes('@')) extractedData.email=cols[2]
+      if(cols[3]) extractedData.morada=cols[3]
+      abrirModalClComDados()
+    }
+    reader.readAsText(file)
+  } else {
+    // xlsx/docx: heuristic from filename + demo
+    extractedData=extractFromFilename(file.name)
+    abrirModalClComDados()
+  }
+}
+
+function abrirModalClComDados(){
+  abrirModalCl()
+  // Small delay so modal is visible before filling
+  setTimeout(()=>{
+    aplicarCamposExtraidos()
+    // Show extraction preview
+    const labelMap={nome:'Nome',nif:'NIF',email:'Email',morada:'Morada'}
+    const entries=Object.entries(extractedData).filter(([k])=>labelMap[k]&&extractedData[k])
+    if(entries.length){
+      document.getElementById('extractedFields').innerHTML=entries.map(([k,v])=>`
+        <div class="ep-row"><span class="ep-key">${labelMap[k]}</span><span class="ep-val">${escH(v)}</span></div>`).join('')
+      document.getElementById('extractedPreview').style.display='block'
+    }
+  }, 80)
+}
+
+function aplicarCamposExtraidos(){
+  if(extractedData.nome)   document.getElementById('cNome').value=extractedData.nome
+  if(extractedData.nif)    document.getElementById('cNIF').value=extractedData.nif
+  if(extractedData.email)  document.getElementById('cEmail').value=extractedData.email
+  if(extractedData.morada) document.getElementById('cMorada').value=extractedData.morada
+  // Keep preview visible so user sees what was extracted; it closes on save
+}
+
+function limparCamposExtraidos(){
+  ;['cNome','cNIF','cEmail','cTel','cMorada'].forEach(id=>{const e=document.getElementById(id);if(e)e.value=''})
+  extractedData={}
+  document.getElementById('extractedPreview').style.display='none'
+}
+
+function guardarCliente(){
+  const nome=document.getElementById('cNome').value.trim()
+  if(!nome){alert('Nome é obrigatório.');return}
+  const id='cl_'+Date.now()
+  const cor=CORES_CL[clientes.length%CORES_CL.length]
+  const initials=nome.trim().split(/\s+/).slice(0,2).map(w=>w[0]).join('').toUpperCase()
+  clientes.push({
+    id,in:initials,cor,nome,
+    nif: document.getElementById('cNIF').value.trim()||'—',
+    email:document.getElementById('cEmail').value.trim(),
+    tel:document.getElementById('cTel').value.trim(),
+    morada:document.getElementById('cMorada').value.trim(),
+    since:'Mai 2025',projetos:0
+  })
+  faturas[id]=[]
+  documentos[id]=[]
+  fecharModal('modalCl')
+  renderCl()
+  // Update summary
+  document.getElementById('sumCl').textContent=clientes.length
+  // Auto-select new client
+  selCl(id)
+}
+
+/* ───────────────────────────────────────
+   DOCUMENTOS — sub-painel toggle + drag/drop
+─────────────────────────────────────── */
+function toggleDocPanel(){} // kept for compat, now unused
+
+function onDocFileSelected(e){
+  const files=Array.from(e.target.files); if(!files.length) return
+  addDocsToCurrent(files); e.target.value=''
+}
+function onDocDrop(e){
+  e.preventDefault(); addDocsToCurrent(Array.from(e.dataTransfer.files))
+}
+function addDocsToCurrent(files){
+  if(!ativo||!documentos[ativo]) return
+  const extMap={pdf:'pdf',docx:'doc',doc:'doc',xlsx:'xls',xls:'xls',png:'img',jpg:'img',jpeg:'img'}
+  files.forEach(f=>{
+    const ext=f.name.split('.').pop().toLowerCase()
+    const tipo=extMap[ext]||'doc'
+    const tam=f.size<1024?f.size+'B':f.size<1048576?(f.size/1024).toFixed(0)+' KB':(f.size/1048576).toFixed(1)+' MB'
+    documentos[ativo].unshift({ext:tipo==='img'?'img':ext,nome:f.name,tipo:'Outro',
+      data:new Date().toLocaleDateString('pt-PT',{day:'2-digit',month:'short',year:'numeric'}),tam})
+  })
+  selCl(ativo)
+}
+
+/* ───────────────────────────────────────
+   MODAL NOVO RECIBO — extracção de ficheiro
+─────────────────────────────────────── */
+function onReciboFileDrop(e){
+  e.preventDefault()
+  document.getElementById('mrUploadZone').classList.remove('drag-over')
+  const file=e.dataTransfer.files[0]; if(!file) return
+  processReciboFile({target:{files:[file]}})
+}
+
+function processReciboFile(e){
+  const file=e.target.files[0]; if(!file) return
+  const ext=file.name.split('.').pop().toLowerCase()
+  // Show processing state
+  document.getElementById('mrUploadZone').style.opacity='.5'
+  document.getElementById('mrUploadZone').style.pointerEvents='none'
+  document.getElementById('mrProcessing').style.display='block'
+  document.getElementById('mrExtractedBanner').style.display='none'
+
+  // For text-readable formats, do real extraction; others use heuristic
+  if(['txt','csv'].includes(ext)){
+    const reader=new FileReader()
+    reader.onload=ev=>{
+      const fields=extrairCamposRecibo(ev.target.result, file.name)
+      aplicarCamposRecibo(fields, file.name)
+    }
+    reader.readAsText(file)
+  } else {
+    // Binary — heuristic from filename + demo data for MVP
+    setTimeout(()=>{
+      const fields=extrairCamposPorNomeRecibo(file.name)
+      aplicarCamposRecibo(fields, file.name)
+    }, 900)
+  }
+  e.target.value=''
+}
+
+function extrairCamposRecibo(text, filename){
+  const d={}
+  // Valor: procura padrões €X.XXX,XX ou X.XX€
+  const mVal=text.match(/(?:total|valor|montante|amount)[:\s€]*([0-9]+[.,][0-9]{2})/i)
+    || text.match(/€\s*([0-9]+[.,][0-9]{2})/) || text.match(/([0-9]+[.,][0-9]{2})\s*€/)
+  if(mVal) d.valor=mVal[1].replace(',','.')
+
+  // Data: DD/MM/AAAA ou AAAA-MM-DD
+  const mData=text.match(/(\d{4}[-\/]\d{1,2}[-\/]\d{1,2})/) || text.match(/(\d{1,2}[-\/]\d{1,2}[-\/]\d{4})/)
+  if(mData){
+    let raw=mData[1]
+    const p=raw.split(/[-\/]/)
+    if(p[0].length===4) d.data=`${p[0]}-${p[1].padStart(2,'0')}-${p[2].padStart(2,'0')}`
+    else d.data=`${p[2]}-${p[1].padStart(2,'0')}-${p[0].padStart(2,'0')}`
+  }
+
+  // Nº do recibo
+  const mNum=text.match(/(?:recibo|fatura|factura|invoice|n[º°]|ref)[:\s#.]*([A-Z0-9\/\-]+)/i)
+  if(mNum) d.num=mNum[1].trim()
+
+  // Descrição
+  const mDesc=text.match(/(?:descri[çc][ãa]o|servi[çc]o|description)[:\s]+([^\n,;]{5,80})/i)
+  if(mDesc) d.desc=mDesc[1].trim()
+
+  // Cliente / empresa emissora
+  const mCl=text.match(/(?:cliente|client|to|para|destinat)[:\s]+([^\n,]{3,50})/i)
+  if(mCl) d.clienteNome=mCl[1].trim()
+
+  return d
+}
+
+function extrairCamposPorNomeRecibo(filename){
+  const d={}
+  const base=filename.replace(/\.[^.]+$/,'')
+  // Valor no nome: 1200,00 ou 1200.00
+  const mVal=base.match(/(\d+[.,]\d{2})/)
+  if(mVal) d.valor=mVal[1].replace(',','.')
+  // Data no nome: 2025-05-08
+  const mData=base.match(/(\d{4}[-_]\d{2}[-_]\d{2})/)
+  if(mData) d.data=mData[1].replace(/_/g,'-')
+  // Nº: FT2025001 ou FT_2025_001
+  const mNum=base.match(/([A-Z]{2,}[-_]?\d{4}[-_\/]?\d+)/i)
+  if(mNum) d.num=mNum[1]
+  // Demo values se nada encontrado
+  if(!d.valor) d.valor='1200.00'
+  if(!d.data)  d.data=new Date().toISOString().slice(0,10)
+  if(!d.num)   d.num=`FT ${new Date().getFullYear()}/${String(Object.values(faturas).flat().length+1).padStart(3,'0')}`
+  if(!d.desc)  d.desc='Serviço de consultoria'
+  return d
+}
+
+function aplicarCamposRecibo(fields, filename){
+  document.getElementById('mrProcessing').style.display='none'
+  document.getElementById('mrUploadZone').style.opacity='1'
+  document.getElementById('mrUploadZone').style.pointerEvents='auto'
+
+  // Update upload zone to show file name
+  document.getElementById('mrUploadZone').innerHTML=`
+    <div style="display:flex;align-items:center;gap:10px;padding:4px 0">
+      <div style="width:36px;height:36px;background:var(--blue-lt);border-radius:var(--rsm);display:flex;align-items:center;justify-content:center;flex-shrink:0">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+      </div>
+      <div style="flex:1;text-align:left;min-width:0">
+        <div style="font-size:.84rem;font-weight:600;color:var(--t1);overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${escH(filename)}</div>
+        <div style="font-size:.73rem;color:var(--t3)">Carregado com sucesso</div>
+      </div>
+      <button onclick="resetReciboUpload()" style="font-size:.75rem;color:var(--t3);background:none;border:none;cursor:pointer;padding:4px">Alterar</button>
+    </div>`
+
+  // Fill fields
+  if(fields.valor) document.getElementById('mrValor').value=parseFloat(fields.valor).toFixed(2)
+  if(fields.data)  document.getElementById('mrData').value=fields.data
+  if(fields.num)   document.getElementById('mrNum').value=fields.num
+  if(fields.desc)  document.getElementById('mrDesc').value=fields.desc
+
+  // Try to match client name
+  if(fields.clienteNome){
+    const match=clientes.find(c=>c.nome.toLowerCase().includes(fields.clienteNome.toLowerCase())
+      || fields.clienteNome.toLowerCase().includes(c.nome.toLowerCase()))
+    if(match) document.getElementById('mrCliente').value=match.id
+  }
+
+  // Count detected fields for banner message
+  const count=Object.keys(fields).filter(k=>fields[k]).length
+  const banner=document.getElementById('mrExtractedBanner')
+  banner.style.display='flex'
+  banner.querySelector('span').textContent=`${count} campo${count!==1?'s':''} preenchido${count!==1?'s':''} automaticamente — revê antes de guardar`
+}
+
+function resetReciboUpload(){
+  document.getElementById('mrUploadZone').innerHTML=`
+    <div style="width:40px;height:40px;background:var(--blue-lt);border-radius:var(--r);display:flex;align-items:center;justify-content:center;margin:0 auto 10px">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="12" y1="18" x2="12" y2="12"/><line x1="9" y1="15" x2="15" y2="15"/></svg>
+    </div>
+    <div style="font-size:.88rem;font-weight:600;color:var(--blue);margin-bottom:3px">Carregar recibo verde</div>
+    <div style="font-size:.75rem;color:var(--t3)">Arrasta ou clica para selecionar · PDF, imagem ou Word</div>
+    <div style="margin-top:10px">
+      <span style="font-size:.72rem;background:var(--blue-lt);color:var(--blue);border-radius:99px;padding:3px 10px;font-weight:600">Preenche os campos automaticamente</span>
+    </div>`
+  document.getElementById('mrUploadZone').onclick=()=>document.getElementById('mrFileInput').click()
+  document.getElementById('mrExtractedBanner').style.display='none'
+  ;['mrValor','mrData','mrNum','mrDesc'].forEach(id=>{const e=document.getElementById(id);if(e)e.value=''})
+  document.getElementById('mrEstado').value='pendente'
+}
+
+/* ───────────────────────────────────────
+   MODAL ADICIONAR DOCUMENTO — extracção
+─────────────────────────────────────── */
+function abrirModalDoc(){
+  // Reset modal state
+  resetDocModal()
+  // Populate client select
+  const sel=document.getElementById('mdCliente')
+  sel.innerHTML='<option value="">— Nenhum —</option>'+
+    clientes.map(c=>`<option value="${c.id}"${c.id===ativo?' selected':''}>${escH(c.nome)}</option>`).join('')
+  document.getElementById('mdData').value=new Date().toISOString().slice(0,10)
+  document.getElementById('modalDoc').classList.add('open')
+}
+
+function resetDocModal(){
+  document.getElementById('mdNome').value=''
+  document.getElementById('mdTipo').value='Outro'
+  document.getElementById('mdNotas').value=''
+  document.getElementById('mdExtractedBanner').style.display='none'
+  document.getElementById('mdMetaTags').style.display='none'
+  document.getElementById('mdProcessing').style.display='none'
+  document.getElementById('mdFilePreview').style.display='none'
+  // Reset upload zone appearance
+  const uz=document.getElementById('mdUploadZone')
+  uz.style.borderColor='var(--border2)'
+  uz.style.background='var(--bg)'
+}
+
+function onDocModalDrop(e){
+  e.preventDefault()
+  document.getElementById('mdUploadZone').classList.remove('drag-over')
+  const file=e.dataTransfer.files[0]; if(!file) return
+  processDocModalFile({target:{files:[file]}})
+}
+
+function processDocModalFile(e){
+  const file=e.target.files[0]; if(!file) return
+  const ext=file.name.split('.').pop().toLowerCase()
+
+  // Show file preview in upload zone
+  const fp=document.getElementById('mdFilePreview')
+  fp.style.display='flex'
+  document.getElementById('mdFileName').textContent=file.name
+  const sz=file.size<1024?file.size+'B':file.size<1048576?(file.size/1024).toFixed(0)+' KB':(file.size/1048576).toFixed(1)+' MB'
+  document.getElementById('mdFileSize').textContent=sz
+
+  // Processing state
+  document.getElementById('mdProcessing').style.display='block'
+  document.getElementById('mdExtractedBanner').style.display='none'
+  document.getElementById('mdMetaTags').style.display='none'
+
+  if(['txt','csv'].includes(ext)){
+    const reader=new FileReader()
+    reader.onload=ev=>{ aplicarCamposDoc(extrairCamposDoc(ev.target.result, file.name), file.name, ext) }
+    reader.readAsText(file)
+  } else {
+    setTimeout(()=>{ aplicarCamposDoc(extrairCamposDocPorNome(file.name), file.name, ext) }, 800)
+  }
+  e.target.value=''
+}
+
+function extrairCamposDoc(text, filename){
+  const d={}
+  // Tipo de documento pelo conteúdo
+  if(/contrato|acordo|terms/i.test(text))       d.tipo='Contrato'
+  else if(/proposta|quotation|orçamento/i.test(text)) d.tipo='Proposta'
+  else if(/fatura|invoice/i.test(text))         d.tipo='Fatura'
+  else if(/briefing|brief/i.test(text))         d.tipo='Briefing'
+  else if(/legal|gdpr|rgpd|privacidade/i.test(text)) d.tipo='Legal'
+
+  // NIF — pode aparecer no texto
+  const mNIF=text.match(/\b(\d{9})\b/)
+  if(mNIF) d.nif=mNIF[1]
+
+  // Data
+  const mData=text.match(/(\d{4}[-\/]\d{1,2}[-\/]\d{1,2})/) || text.match(/(\d{1,2}[-\/]\d{1,2}[-\/]\d{4})/)
+  if(mData){
+    const p=mData[1].split(/[-\/]/)
+    if(p[0].length===4) d.data=`${p[0]}-${p[1].padStart(2,'0')}-${p[2].padStart(2,'0')}`
+    else d.data=`${p[2]}-${p[1].padStart(2,'0')}-${p[0].padStart(2,'0')}`
+  }
+
+  // Empresa/cliente
+  const mCl=text.match(/(?:cliente|empresa|company|between)[:\s]+([^\n,;]{3,50})/i)
+  if(mCl) d.clienteNome=mCl[1].trim()
+
+  return d
+}
+
+function extrairCamposDocPorNome(filename){
+  const d={}
+  const base=filename.replace(/\.[^.]+$/,'').toLowerCase()
+  if(/contrato/i.test(base))       d.tipo='Contrato'
+  else if(/proposta/i.test(base))  d.tipo='Proposta'
+  else if(/brief/i.test(base))     d.tipo='Briefing'
+  else if(/legal|rgpd|gdpr/i.test(base)) d.tipo='Legal'
+  else if(/fatura|invoice/i.test(base)) d.tipo='Fatura'
+  // Data no nome
+  const mData=filename.match(/(\d{4}[-_]\d{2}[-_]\d{2})/)
+  if(mData) d.data=mData[1].replace(/_/g,'-')
+  // Empresa no nome: Contrato_NomEmpresa ou NomeEmpresa_Contrato
+  const mNome=filename.replace(/\.[^.]+$/,'').match(/(?:^|[_\-])([A-ZÁÉÍÓÚ][a-zA-ZÀ-ÿ]{2,}(?:[_\s][A-Za-zÀ-ÿ]+)?)(?:[_\-]|$)/)
+  if(mNome) d.clienteNome=mNome[1].replace(/_/g,' ')
+  // Demo
+  if(!d.tipo) d.tipo='Outro'
+  return d
+}
+
+function aplicarCamposDoc(fields, filename, ext){
+  document.getElementById('mdProcessing').style.display='none'
+
+  // Set nome = filename
+  document.getElementById('mdNome').value=filename
+
+  // Set tipo
+  if(fields.tipo) document.getElementById('mdTipo').value=fields.tipo
+
+  // Set data
+  if(fields.data) document.getElementById('mdData').value=fields.data
+
+  // Try to match client
+  if(fields.clienteNome){
+    const match=clientes.find(c=>
+      c.nome.toLowerCase().includes(fields.clienteNome.toLowerCase()) ||
+      fields.clienteNome.toLowerCase().includes(c.nome.toLowerCase()))
+    if(match) document.getElementById('mdCliente').value=match.id
+  }
+
+  // Show banner
+  const banner=document.getElementById('mdExtractedBanner')
+  banner.style.display='flex'
+
+  // Show meta tags for detected info
+  const tags=[]
+  if(fields.tipo && fields.tipo!=='Outro') tags.push({label:fields.tipo, cls:'bg-b'})
+  if(fields.data) tags.push({label:fields.data, cls:'bg-n'})
+  if(fields.clienteNome) tags.push({label:fields.clienteNome, cls:'bg-g'})
+  if(fields.nif) tags.push({label:'NIF: '+fields.nif, cls:'bg-n'})
+
+  const ext2doc={pdf:'PDF',docx:'Word',doc:'Word',xlsx:'Excel',xls:'Excel',png:'Imagem',jpg:'Imagem',jpeg:'Imagem',txt:'Texto',csv:'CSV'}
+  if(ext2doc[ext]) tags.push({label:ext2doc[ext]||ext.toUpperCase(), cls:'bg-p'})
+
+  const tagsEl=document.getElementById('mdMetaTags')
+  tagsEl.style.display='flex'
+  tagsEl.innerHTML=tags.map(t=>`<span class="badge ${t.cls}" style="font-size:.72rem">${escH(t.label)}</span>`).join('')
+}
+
+function guardarDocumento(){
+  const nome=document.getElementById('mdNome').value.trim()
+  if(!nome){alert('O nome do documento é obrigatório.');return}
+  const clienteId=document.getElementById('mdCliente').value
+  const tipo=document.getElementById('mdTipo').value
+  const data=document.getElementById('mdData').value
+  const ext=nome.split('.').pop().toLowerCase()
+  const extMap={pdf:'pdf',docx:'doc',doc:'doc',xlsx:'xls',xls:'xls',png:'img',jpg:'img',jpeg:'img'}
+  const extKey=extMap[ext]||'doc'
+  const target=clienteId||ativo
+  if(!documentos[target]) documentos[target]=[]
+  documentos[target].unshift({
+    ext:extKey, nome,tipo,
+    data:data?new Date(data).toLocaleDateString('pt-PT',{day:'2-digit',month:'short',year:'numeric'}):
+      new Date().toLocaleDateString('pt-PT',{day:'2-digit',month:'short',year:'numeric'}),
+    tam:'—'
+  })
+  fecharModal('modalDoc')
+  selCl(ativo) // refresh docs
+  renderCl()
+}
+
+/* ───────────────────────────────────────
+   ESTIMADOR — FORM LOCK/UNLOCK
+─────────────────────────────────────── */
+let formLocked = true
+
+function setFormEditable(editable){
+  formLocked = !editable
+  const inputs = ['eR','eD','eI']
+  const selects = ['eReg','eT']
+  inputs.forEach(id=>{
+    const el=document.getElementById(id)
+    if(el) el.readOnly=!editable
+  })
+  selects.forEach(id=>{
+    const el=document.getElementById(id)
+    if(el) el.disabled=!editable
+  })
+  const emp=document.getElementById('eEmp')
+  if(emp) emp.disabled=!editable
+
+  document.getElementById('btnEditar').style.display=editable?'none':'flex'
+  document.getElementById('btnCancelar').style.display=editable?'flex':'none'
+  document.getElementById('formSubtitle').textContent=editable
+    ?'A editar — altera os valores e clica em Calcular'
+    :'Revê os dados antes de calcular'
+}
+
+/* ───────────────────────────────────────
+   ESTIMADOR — CALC (uses fixed total)
+─────────────────────────────────────── */
+function calcEst(){
+  const r=parseFloat(document.getElementById('eR').value)||0
+  const d=parseFloat(document.getElementById('eD').value)||0
+  // Total faturado comes from the fixed display (sum of all faturas)
+  const totalFats=Object.values(faturas).flat().filter(f=>f.estado!=='cancelada').reduce((s,f)=>s+f.valor,0)
+  const a=totalFats||11240
+  const reg=document.getElementById('eReg').value
+  const tco=document.getElementById('eEmp').checked
+  if(r<=0){alert('Introduz um rendimento mensal válido.');return}
+
+  // Update total display
+  const displayEl=document.getElementById('totalFaturadoDisplay')
+  if(displayEl) displayEl.textContent=f2(a)
+
+  const irs=r*0.25
+  let ss=0, ssInfo=''
+  if(reg==='ato_isolado'){
+    ss=0; ssInfo='Ato isolado: isento de SS'
+  } else if(tco){
+    const rendRel=r*0.70
+    if(rendRel<LIMIAR_SS){
+      ss=0
+      ssInfo=`Isento — rend. relevante ${f0(rendRel)}/mês < limite ${f0(LIMIAR_SS)}`
+    } else {
+      const base=rendRel-LIMIAR_SS
+      ss=base*0.214
+      ssInfo=`Paga sobre excedente: (${f0(rendRel)} − ${f0(LIMIAR_SS)}) × 21,4% = ${f0(ss)}`
+    }
+  } else {
+    ss=r*0.70*0.214
+    ssInfo=`21,4% × 70% base de incidência = ${f0(ss)}`
+  }
+
+  const liquido=Math.max(0,r-irs-ss-d)
+  const tot=a
+
+  set('eVL',f0(liquido)); set('eSL',`${fp((liquido/r)*100)} do bruto · −${f0(d)} despesas`)
+  setW('eBL',Math.min(100,(liquido/r)*100))
+  set('eVI',f0(irs)); setW('eBI',25)
+  set('eVS',ss===0?'€0 — Isento':f0(ss)); set('eSS2',ssInfo)
+  setW('eBS',Math.min(100,r>0?(ss/r)*100:0))
+
+  const ssBox=document.getElementById('ssInfoBox')
+  if(ssBox){ssBox.style.display='block';ssBox.innerHTML=`<strong>Segurança Social:</strong> ${ssInfo}`}
+
+  const pIVA=Math.min(100,(tot/LIMITE_IVA)*100), pRS=Math.min(100,(tot/LIMITE_RS)*100)
+  set('ePIVA',fp(pIVA))
+  const pivEl=document.getElementById('ePIVA')
+  if(pivEl) pivEl.style.color=pIVA>=90?'var(--red)':pIVA>=70?'var(--amber)':'var(--green)'
+  setW('eBIVA',pIVA)
+  const bivaEl=document.getElementById('eBIVA')
+  if(bivaEl) bivaEl.className='pg-fill '+(pIVA>=90?'r':pIVA>=70?'a':'g')
+  set('eLIVA',`${f0(tot)} de ${f0(LIMITE_IVA)}`); set('eRIVA',`Restam ${f0(LIMITE_IVA-tot)}`)
+  const rivaEl=document.getElementById('eRIVA')
+  if(rivaEl) rivaEl.style.color=pIVA>=70?'var(--amber)':'var(--green)'
+  set('ePRS',fp(pRS)); setW('eBRS',pRS)
+  set('eLRS',`${f0(tot)} de ${f0(LIMITE_RS)}`); set('eRRS',`Restam ${f0(LIMITE_RS-tot)}`)
+
+  const ra=r*12,da=d*12,ia=irs*12,sa=ss*12,la=Math.max(0,ra-ia-sa-da)
+  set('bTot',f2(ra)); set('bDesp',`(${f2(da)})`); set('bTrib',f2(ra-da))
+  set('bIRS',`(${f2(ia)})`); set('bSS',ss===0?'€0 (Isento)':`(${f2(sa)})`); set('bLiq',f2(la))
+  set('dCV',f0(la))
+
+  // Lock form after calculating
+  setFormEditable(false)
+
+  // Timestamp
+  const ts=document.getElementById('lastCalcTime')
+  if(ts) ts.textContent=`Calculado às ${new Date().toLocaleTimeString('pt-PT',{hour:'2-digit',minute:'2-digit'})}`
+
+  // Recommendations
+  const recs=[]
+  if(pIVA>=90) recs.push({icon:'alert-triangle',cls:'bg-r',tag:'Urgente',label:'rt-warn',title:'Limite de IVA quase atingido',desc:`Faturaste ${fp(pIVA)} do limite de isenção (€14.500).`})
+  else if(pIVA>=70) recs.push({icon:'alert-circle',cls:'bg-a',tag:'Atenção',label:'rt-warn',title:'Aproximas-te do limite de IVA',desc:`Estás a ${fp(pIVA)} do limite. Continua a acompanhar.`})
+  if(ss===0&&tco) recs.push({icon:'shield',cls:'bg-g',tag:'Informação',label:'rt-info',title:'Isenção de SS ativa',desc:`O teu rendimento relevante está abaixo de €2.090/mês. Mantém o controlo.`})
+  if(ss>0&&tco) recs.push({icon:'trending-up',cls:'bg-a',tag:'Atenção',label:'rt-warn',title:'Passaste o limiar de isenção SS',desc:`Pagas SS sobre o excedente (${f0(ss)}/mês).`})
+  recs.push({icon:'briefcase',cls:'bg-b',tag:'Sugestão',label:'rt-sug',title:'Rever despesas dedutíveis',desc:'Podes deduzir despesas de software, formação e equipamento.'})
+
+  const svgIcons={
+    'alert-triangle':'<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>',
+    'alert-circle':'<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>',
+    'shield':'<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>',
+    'trending-up':'<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>',
+    'briefcase':'<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/></svg>',
+  }
+  const rlEl=document.getElementById('recList')
+  if(rlEl) rlEl.innerHTML=recs.map(rc=>`
+    <div class="rec-item">
+      <div class="rec-ico ${rc.cls}">${svgIcons[rc.icon]||''}</div>
+      <div class="rec-body"><div class="rec-title">${rc.title}</div><div class="rec-desc">${rc.desc}</div></div>
+      <span class="rec-tag ${rc.label}">${rc.tag}</span>
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="var(--t3)" stroke-width="2" style="flex-shrink:0;margin-left:4px"><polyline points="9 18 15 12 9 6"/></svg>
+    </div>`).join('')
+}
+
+/* ───────────────────────────────────────
+   MODAL — NOVO RECIBO (cliente page)
+─────────────────────────────────────── */
+function abrirModalRecibo(clienteId){
+  // Pre-select client if provided
+  const sel=document.getElementById('mrCliente')
+  sel.innerHTML='<option value="">— Selecionar —</option>'+
+    clientes.map(c=>`<option value="${c.id}"${c.id===clienteId?' selected':''}>${escH(c.nome)}</option>`).join('')
+  // Auto next invoice number
+  const totalFats=Object.values(faturas).flat().length
+  document.getElementById('mrNum').value=`2025/${String(totalFats+1).padStart(3,'0')}`
+  document.getElementById('mrData').value=new Date().toISOString().slice(0,10)
+  document.getElementById('mrValor').value=''
+  document.getElementById('mrDesc').value=''
+  document.getElementById('mrEstado').value='pendente'
+  document.getElementById('modalRecibo').classList.add('open')
+}
+
+function guardarRecibo(){
+  const clienteId=document.getElementById('mrCliente').value
+  const valor=parseFloat(document.getElementById('mrValor').value)||0
+  const data=document.getElementById('mrData').value
+  const num=document.getElementById('mrNum').value.trim()
+  const desc=document.getElementById('mrDesc').value.trim()||'Serviço prestado'
+  const estado=document.getElementById('mrEstado').value
+  if(!clienteId||valor<=0||!data){alert('Seleciona cliente, data e valor.');return}
+  if(!faturas[clienteId]) faturas[clienteId]=[]
+  faturas[clienteId].unshift({num,data:new Date(data).toLocaleDateString('pt-PT',{day:'2-digit',month:'short',year:'numeric'}),desc,valor,estado})
+  fecharModal('modalRecibo')
+  selCl(clienteId)  // refresh detail
+  renderCl()
+  // Refresh summary metrics
+  const totalPend=Object.values(faturas).flat().filter(f=>f.estado==='pendente').reduce((s,f)=>s+f.valor,0)
+  const pendCount=Object.values(faturas).flat().filter(f=>f.estado==='pendente').length
+  const spEl=document.getElementById('sumPendente'); if(spEl) spEl.textContent=f2(totalPend)
+  const spnEl=document.getElementById('sumPendenteN'); if(spnEl) spnEl.textContent=`${pendCount} fatura${pendCount!==1?'s':''} em aberto`
+  const totalFats=Object.values(faturas).flat().length
+  const srEl=document.getElementById('sumRec'); if(srEl) srEl.textContent=totalFats
+}
+
+/* ───────────────────────────────────────
+   MODAL — EDITAR CLIENTE
+─────────────────────────────────────── */
+function abrirModalEditarCl(id){
+  const c=clientes.find(x=>x.id===id); if(!c) return
+  document.getElementById('ecNome').value=c.nome||''
+  document.getElementById('ecNIF').value=c.nif||''
+  document.getElementById('ecEmail').value=c.email||''
+  document.getElementById('ecTel').value=c.tel||''
+  document.getElementById('ecMorada').value=c.morada||''
+  document.getElementById('ecNotas').value=c.notas||''
+  document.getElementById('modalEditCl').dataset.editId=id
+  document.getElementById('modalEditCl').classList.add('open')
+}
+
+function guardarEdicaoCliente(){
+  const id=document.getElementById('modalEditCl').dataset.editId
+  const c=clientes.find(x=>x.id===id); if(!c) return
+  c.nome=document.getElementById('ecNome').value.trim()||c.nome
+  c.nif=document.getElementById('ecNIF').value.trim()
+  c.email=document.getElementById('ecEmail').value.trim()
+  c.tel=document.getElementById('ecTel').value.trim()
+  c.morada=document.getElementById('ecMorada').value.trim()
+  c.notas=document.getElementById('ecNotas').value.trim()
+  // Update initials
+  c.in=c.nome.trim().split(/\s+/).slice(0,2).map(w=>w[0]).join('').toUpperCase()
+  fecharModal('modalEditCl')
+  renderCl()
+  selCl(id)
+}
+
+/* ───────────────────────────────────────
+   INIT
+─────────────────────────────────────── */
+;(function init(){
+  renderCl()
+  selCl('nd')
+  // Lock estimador form by default
+  setFormEditable(false)
+  // Update total faturado display
+  const totalFats=Object.values(faturas).flat().filter(f=>f.estado!=='cancelada').reduce((s,f)=>s+f.valor,0)
+  const tfd=document.getElementById('totalFaturadoDisplay')
+  if(tfd) tfd.textContent=f2(totalFats)
+  // Update pending
+  const totalPend=Object.values(faturas).flat().filter(f=>f.estado==='pendente').reduce((s,f)=>s+f.valor,0)
+  const pendCount=Object.values(faturas).flat().filter(f=>f.estado==='pendente').length
+  const spEl=document.getElementById('sumPendente'); if(spEl) spEl.textContent=f2(totalPend)
+  const spnEl=document.getElementById('sumPendenteN'); if(spnEl) spnEl.textContent=`${pendCount} fatura${pendCount!==1?'s':''} em aberto`
+  const scEl=document.getElementById('sumClSec'); if(scEl) scEl.textContent=clientes.length
+  const srEl=document.getElementById('sumRec'); if(srEl) srEl.textContent=Object.values(faturas).flat().length
+  const scMain=document.getElementById('sumCl'); if(scMain) scMain.textContent=clientes.length
+  // Auto-run calc
+  setTimeout(calcEst,100)
+
+  // Overlay close for all modals
+  document.querySelectorAll('.modal-ov').forEach(ov=>{
+    ov.addEventListener('click',e=>{if(e.target===ov) ov.classList.remove('open')})
+  })
+})()
