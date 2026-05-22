@@ -6,51 +6,391 @@
 <title>Design System — Fiscal Copilot</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Fjalla+One&family=Merriweather+Sans:ital,wght@0,300..800;1,300..800&display=swap" rel="stylesheet"/>
 <link rel="stylesheet" href="../style.css"/>
 <style>
-  .ds-layout { display: flex; min-height: 100vh; }
-  .ds-sidebar { width: 220px; flex-shrink: 0; background: var(--surface); border-right: 1px solid var(--border); padding: 24px 0; position: fixed; top: 0; left: 0; height: 100vh; overflow-y: auto; }
-  .ds-sidebar-title { font-size: .7rem; font-weight: 700; text-transform: uppercase; letter-spacing: .1em; color: var(--t3); padding: 0 20px; margin-bottom: 8px; }
-  .ds-sidebar a { display: block; padding: 7px 20px; font-size: .84rem; color: var(--t2); text-decoration: none; border-radius: 0; transition: background .1s, color .1s; }
-  .ds-sidebar a:hover { background: var(--bg); color: var(--t1); }
-  .ds-sidebar a.active { color: var(--blue); font-weight: 600; background: var(--blue-lt); }
-  .ds-main { margin-left: 220px; flex: 1; padding: 48px 56px; max-width: 900px; }
-  .ds-hero { margin-bottom: 48px; padding-bottom: 32px; border-bottom: 1px solid var(--border); }
-  .ds-hero h1 { font-size: 2rem; font-weight: 700; letter-spacing: -.5px; margin-bottom: 8px; }
-  .ds-hero p { font-size: .95rem; color: var(--t2); line-height: 1.7; }
-  .ds-empty { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 80px 0; text-align: center; color: var(--t3); }
-  .ds-empty-icon { width: 48px; height: 48px; background: var(--bg); border-radius: var(--r); display: flex; align-items: center; justify-content: center; margin: 0 auto 16px; }
-  .ds-empty h2 { font-size: 1rem; font-weight: 600; color: var(--t2); margin-bottom: 6px; }
-  .ds-empty p { font-size: .84rem; line-height: 1.6; max-width: 320px; }
+  /* ── Layout ── */
+  .ds-layout{display:flex;min-height:100vh;background:var(--bg)}
+  .ds-sidebar{width:220px;flex-shrink:0;background:var(--surface);border-right:1px solid var(--border);position:fixed;top:0;left:0;height:100vh;overflow-y:auto;display:flex;flex-direction:column}
+  .ds-sidebar-brand{padding:20px 20px 18px;border-bottom:1px solid var(--border)}
+  .ds-sidebar-brand-name{font-size:.95rem;font-weight:700;color:var(--blue)}
+  .ds-sidebar-brand-sub{font-size:.72rem;color:var(--t3);margin-top:2px}
+  .ds-nav{padding:16px 0;flex:1}
+  .ds-nav-group{margin-bottom:20px}
+  .ds-nav-label{font-size:.62rem;font-weight:700;text-transform:uppercase;letter-spacing:.12em;color:var(--t3);padding:0 20px;margin-bottom:4px}
+  .ds-nav a{display:block;padding:7px 20px;font-size:.84rem;color:var(--t2);transition:background .1s,color .1s}
+  .ds-nav a:hover{background:var(--bg);color:var(--t1)}
+  .ds-nav a.active{color:var(--blue);font-weight:600;background:var(--blue-lt)}
+  .ds-main{margin-left:220px;flex:1;padding:52px 64px 80px;max-width:960px}
+
+  /* ── Page header ── */
+  .ds-page-header{margin-bottom:40px;padding-bottom:28px;border-bottom:1px solid var(--border)}
+  .ds-page-header h1{font-size:1.8rem;font-weight:400;font-family:var(--font-heading);letter-spacing:-.5px;margin-bottom:6px}
+  .ds-page-header p{font-size:.9rem;color:var(--t2);line-height:1.7;max-width:560px}
+
+  /* ── Section ── */
+  .ds-section{margin-bottom:56px}
+  .ds-section-title{font-size:1rem;font-weight:400;font-family:var(--font-heading);letter-spacing:-.2px;margin-bottom:4px;display:flex;align-items:center;gap:8px}
+  .ds-section-desc{font-size:.84rem;color:var(--t3);margin-bottom:20px;line-height:1.6}
+  .ds-section-title::before{content:'';display:block;width:3px;height:16px;background:var(--blue);border-radius:99px}
+
+  /* ── Token chip ── */
+  .ds-token{display:inline-block;font-family:var(--mono);font-size:.7rem;background:var(--bg);border:1px solid var(--border);border-radius:4px;padding:2px 7px;color:var(--blue);white-space:nowrap}
+  .ds-value{font-family:var(--mono);font-size:.72rem;color:var(--t3)}
+
+  /* ── Specimen card ── */
+  .ds-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--rlg);overflow:hidden;margin-bottom:12px}
+  .ds-card-preview{padding:28px 28px 20px}
+  .ds-card-meta{display:flex;align-items:center;gap:10px;padding:10px 28px;background:var(--bg);border-top:1px solid var(--border)}
+  .ds-card-meta-label{font-size:.75rem;font-weight:600;color:var(--t2)}
+
+  /* ── Typefaces ── */
+  .ds-font-specimen{margin-bottom:20px}
+  .ds-font-name{font-size:.75rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--t3);margin-bottom:10px;display:flex;align-items:center;gap:8px}
+  .ds-font-display{font-size:2.4rem;font-weight:600;letter-spacing:-.5px;line-height:1.15;color:var(--t1)}
+  .ds-font-chars{font-size:.88rem;color:var(--t2);margin-top:6px;line-height:1.8}
+  .ds-font-weights{display:flex;flex-wrap:wrap;gap:16px;margin-top:12px}
+  .ds-fw-item{font-size:.95rem}
+
+  /* ── Type scale ── */
+  .ds-scale-row{display:grid;grid-template-columns:120px 1fr 90px 80px;align-items:baseline;gap:16px;padding:14px 0;border-bottom:1px solid var(--border)}
+  .ds-scale-row:last-child{border-bottom:none}
+  .ds-scale-row:first-child{font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.09em;color:var(--t3);padding-bottom:10px;align-items:center}
+  .ds-scale-preview{color:var(--t1);line-height:1.3}
+
+  /* ── Weights ── */
+  .ds-weights-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+  .ds-weight-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:20px}
+  .ds-weight-preview{font-size:1.35rem;line-height:1.3;margin-bottom:10px;color:var(--t1)}
+  .ds-weight-meta{display:flex;flex-direction:column;gap:3px}
+
+  /* ── Line heights ── */
+  .ds-lh-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+  .ds-lh-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:20px}
+  .ds-lh-preview{font-size:.88rem;color:var(--t1);margin-bottom:10px}
+  .ds-lh-meta{display:flex;flex-direction:column;gap:3px}
+
+  /* ── Letter spacing ── */
+  .ds-ls-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+  .ds-ls-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:20px}
+  .ds-ls-preview{font-size:1rem;font-weight:600;color:var(--t1);margin-bottom:10px}
+  .ds-ls-meta{display:flex;flex-direction:column;gap:3px}
 </style>
 </head>
 <body>
 <div class="ds-layout">
 
+  <!-- SIDEBAR -->
   <nav class="ds-sidebar">
-    <div style="padding: 20px 20px 24px; border-bottom: 1px solid var(--border); margin-bottom: 16px;">
-      <div style="font-size: .95rem; font-weight: 700; color: var(--blue);">Fiscal Copilot</div>
-      <div style="font-size: .75rem; color: var(--t3); margin-top: 2px;">Design System</div>
+    <div class="ds-sidebar-brand">
+      <div class="ds-sidebar-brand-name">Fiscal Copilot</div>
+      <div class="ds-sidebar-brand-sub">Design System</div>
     </div>
-    <!-- Navigation links will be added here as components are documented -->
+    <div class="ds-nav">
+      <div class="ds-nav-group">
+        <div class="ds-nav-label">Foundations</div>
+        <a href="#typefaces" class="active">Typefaces</a>
+        <a href="#type-scale">Type Scale</a>
+        <a href="#font-weight">Font Weight</a>
+        <a href="#line-height">Line Height</a>
+        <a href="#letter-spacing">Letter Spacing</a>
+      </div>
+    </div>
   </nav>
 
+  <!-- MAIN -->
   <main class="ds-main">
-    <div class="ds-hero">
-      <h1>Design System</h1>
-      <p>All components, tokens, and patterns used across Fiscal Copilot — documented in one place.</p>
+
+    <div class="ds-page-header">
+      <h1>Typography</h1>
+      <p>The type system used across Fiscal Copilot — including typefaces, scale, weights, and spacing tokens. All values are available as CSS custom properties.</p>
     </div>
 
-    <div class="ds-empty">
-      <div class="ds-empty-icon">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--t3)" stroke-width="1.5"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+    <!-- TYPEFACES -->
+    <div class="ds-section" id="typefaces">
+      <div class="ds-section-title">Typefaces</div>
+      <div class="ds-section-desc">Two typefaces are used. Fjalla One for headings, numbers and highlighted data. Merriweather Sans for body text, captions and helper text.</div>
+
+      <div class="ds-card">
+        <div class="ds-card-preview">
+          <div class="ds-font-specimen">
+            <div class="ds-font-name">
+              Fjalla One
+              <span class="ds-token">--font-heading</span>
+            </div>
+            <div class="ds-font-display" style="font-family:var(--font-heading)">The quick brown fox jumps over the lazy dog</div>
+            <div class="ds-font-chars" style="font-family:var(--font-heading)">A B C D E F G H I J K L M N O P Q R S T U V W X Y Z<br>a b c d e f g h i j k l m n o p q r s t u v w x y z<br>0 1 2 3 4 5 6 7 8 9 € , . / - + ! @ # %</div>
+            <div class="ds-font-weights" style="font-family:var(--font-heading);margin-top:14px">
+              <span style="font-size:1.1rem" class="ds-fw-item">Regular 400 — only available weight</span>
+            </div>
+          </div>
+        </div>
+        <div class="ds-card-meta">
+          <span class="ds-card-meta-label">Usage</span>
+          <span class="ds-value">Headings, subheadings, card titles, modal titles, section titles</span>
+        </div>
       </div>
-      <h2>No components yet</h2>
-      <p>Components will appear here as they are added to the documentation.</p>
-    </div>
-  </main>
 
+      <div class="ds-card">
+        <div class="ds-card-preview">
+          <div class="ds-font-specimen">
+            <div class="ds-font-name">
+              Merriweather Sans
+              <span class="ds-token">--font</span>
+            </div>
+            <div class="ds-font-display" style="font-family:var(--font);font-size:1.6rem;font-weight:400">The quick brown fox jumps over the lazy dog</div>
+            <div class="ds-font-chars" style="font-family:var(--font)">A B C D E F G H I J K L M N O P Q R S T U V W X Y Z<br>a b c d e f g h i j k l m n o p q r s t u v w x y z<br>0 1 2 3 4 5 6 7 8 9 ! @ # $ % & * ( ) + = / ?</div>
+            <div class="ds-font-weights" style="font-family:var(--font)">
+              <span style="font-weight:300" class="ds-fw-item">Light 300</span>
+              <span style="font-weight:400" class="ds-fw-item">Regular 400</span>
+              <span style="font-weight:500" class="ds-fw-item">Medium 500</span>
+              <span style="font-weight:600" class="ds-fw-item">Semibold 600</span>
+              <span style="font-weight:700" class="ds-fw-item">Bold 700</span>
+              <span style="font-weight:800" class="ds-fw-item">Extrabold 800</span>
+              <span style="font-weight:400;font-style:italic" class="ds-fw-item">Italic</span>
+            </div>
+          </div>
+        </div>
+        <div class="ds-card-meta">
+          <span class="ds-card-meta-label">Usage</span>
+          <span class="ds-value">Body text, paragraphs, captions, helper text, labels, buttons</span>
+        </div>
+      </div>
+
+      <div class="ds-card">
+        <div class="ds-card-preview">
+          <div class="ds-font-specimen">
+            <div class="ds-font-name">
+              JetBrains Mono
+              <span class="ds-token">--mono</span>
+            </div>
+            <div class="ds-font-display" style="font-family:var(--mono);font-size:1.8rem;font-weight:400">€ 11.240,00</div>
+            <div class="ds-font-chars" style="font-family:var(--mono)">0 1 2 3 4 5 6 7 8 9 € , . / - +<br>NIF 512 874 331 · FT 2025/019 · 08 Mai 2025</div>
+            <div class="ds-font-weights" style="font-family:var(--mono)">
+              <span style="font-weight:400" class="ds-fw-item">Regular 400</span>
+              <span style="font-weight:500" class="ds-fw-item">Medium 500</span>
+            </div>
+          </div>
+        </div>
+        <div class="ds-card-meta">
+          <span class="ds-card-meta-label">Usage</span>
+          <span class="ds-value">Currency values, invoice numbers, NIF codes, dates, technical identifiers</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- TYPE SCALE -->
+    <div class="ds-section" id="type-scale">
+      <div class="ds-section-title">Type Scale</div>
+      <div class="ds-section-desc">All font sizes are defined as CSS variables relative to the 15px base set on <span class="ds-token">html</span>. Use these tokens instead of raw values.</div>
+
+      <div class="ds-card">
+        <div class="ds-card-preview" style="padding-bottom:4px">
+          <div class="ds-scale-row">
+            <span>Token</span><span>Preview</span><span>rem</span><span>~px</span>
+          </div>
+          <div class="ds-scale-row">
+            <span class="ds-token">--text-2xs</span>
+            <span class="ds-scale-preview" style="font-size:var(--text-2xs)">Micro label · timestamp</span>
+            <span class="ds-value">.65rem</span>
+            <span class="ds-value">~9.75px</span>
+          </div>
+          <div class="ds-scale-row">
+            <span class="ds-token">--text-xs</span>
+            <span class="ds-scale-preview" style="font-size:var(--text-xs)">Metadata · helper text</span>
+            <span class="ds-value">.72rem</span>
+            <span class="ds-value">~10.8px</span>
+          </div>
+          <div class="ds-scale-row">
+            <span class="ds-token">--text-sm</span>
+            <span class="ds-scale-preview" style="font-size:var(--text-sm)">Secondary text · captions</span>
+            <span class="ds-value">.8rem</span>
+            <span class="ds-value">~12px</span>
+          </div>
+          <div class="ds-scale-row">
+            <span class="ds-token">--text-base</span>
+            <span class="ds-scale-preview" style="font-size:var(--text-base)">Body text · default UI size</span>
+            <span class="ds-value">.88rem</span>
+            <span class="ds-value">~13.2px</span>
+          </div>
+          <div class="ds-scale-row">
+            <span class="ds-token">--text-md</span>
+            <span class="ds-scale-preview" style="font-size:var(--text-md)">Medium text · nav items</span>
+            <span class="ds-value">1rem</span>
+            <span class="ds-value">~15px</span>
+          </div>
+          <div class="ds-scale-row">
+            <span class="ds-token">--text-lg</span>
+            <span class="ds-scale-preview" style="font-size:var(--text-lg)">Card headings · stat values</span>
+            <span class="ds-value">1.1rem</span>
+            <span class="ds-value">~16.5px</span>
+          </div>
+          <div class="ds-scale-row">
+            <span class="ds-token">--text-xl</span>
+            <span class="ds-scale-preview" style="font-size:var(--text-xl)">Page sub-headings</span>
+            <span class="ds-value">1.35rem</span>
+            <span class="ds-value">~20.25px</span>
+          </div>
+          <div class="ds-scale-row">
+            <span class="ds-token">--text-2xl</span>
+            <span class="ds-scale-preview" style="font-size:var(--text-2xl)">KPI values</span>
+            <span class="ds-value">1.55rem</span>
+            <span class="ds-value">~23.25px</span>
+          </div>
+          <div class="ds-scale-row">
+            <span class="ds-token">--text-3xl</span>
+            <span class="ds-scale-preview" style="font-size:var(--text-3xl)">Hero values</span>
+            <span class="ds-value">1.9rem</span>
+            <span class="ds-value">~28.5px</span>
+          </div>
+          <div class="ds-scale-row">
+            <span class="ds-token">--text-hero</span>
+            <span class="ds-scale-preview" style="font-size:var(--text-hero)">Page hero</span>
+            <span class="ds-value">2rem</span>
+            <span class="ds-value">~30px</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- FONT WEIGHT -->
+    <div class="ds-section" id="font-weight">
+      <div class="ds-section-title">Font Weight</div>
+      <div class="ds-section-desc">Six weights are available. Semibold and Bold are the most commonly used in the UI.</div>
+
+      <div class="ds-weights-grid">
+        <div class="ds-weight-card">
+          <div class="ds-weight-preview" style="font-weight:300">Light text sample</div>
+          <div class="ds-weight-meta">
+            <span class="ds-token">--fw-light</span>
+            <span class="ds-value" style="margin-top:3px">300 · Thin descriptions</span>
+          </div>
+        </div>
+        <div class="ds-weight-card">
+          <div class="ds-weight-preview" style="font-weight:400">Regular text sample</div>
+          <div class="ds-weight-meta">
+            <span class="ds-token">--fw-normal</span>
+            <span class="ds-value" style="margin-top:3px">400 · Body text</span>
+          </div>
+        </div>
+        <div class="ds-weight-card">
+          <div class="ds-weight-preview" style="font-weight:500">Medium text sample</div>
+          <div class="ds-weight-meta">
+            <span class="ds-token">--fw-medium</span>
+            <span class="ds-value" style="margin-top:3px">500 · Nav items, subtle labels</span>
+          </div>
+        </div>
+        <div class="ds-weight-card">
+          <div class="ds-weight-preview" style="font-weight:600">Semibold text sample</div>
+          <div class="ds-weight-meta">
+            <span class="ds-token">--fw-semibold</span>
+            <span class="ds-value" style="margin-top:3px">600 · Most UI labels, buttons</span>
+          </div>
+        </div>
+        <div class="ds-weight-card">
+          <div class="ds-weight-preview" style="font-weight:700">Bold text sample</div>
+          <div class="ds-weight-meta">
+            <span class="ds-token">--fw-bold</span>
+            <span class="ds-value" style="margin-top:3px">700 · Headings, KPI values</span>
+          </div>
+        </div>
+        <div class="ds-weight-card">
+          <div class="ds-weight-preview" style="font-weight:800">Extrabold text sample</div>
+          <div class="ds-weight-meta">
+            <span class="ds-token">--fw-extrabold</span>
+            <span class="ds-value" style="margin-top:3px">800 · Logo mark only</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- LINE HEIGHT -->
+    <div class="ds-section" id="line-height">
+      <div class="ds-section-title">Line Height</div>
+      <div class="ds-section-desc">Line height controls the vertical space between lines of text. Use <span class="ds-token">--lh-base</span> for body text and <span class="ds-token">--lh-tight</span> for large display values.</div>
+
+      <div class="ds-lh-grid">
+        <div class="ds-lh-card">
+          <div class="ds-lh-preview" style="line-height:1.2">Estimador Fiscal.<br>Calcula a tua situação<br>com base nos recibos.</div>
+          <div class="ds-lh-meta">
+            <span class="ds-token">--lh-tight</span>
+            <span class="ds-value" style="margin-top:3px">1.2 · Large display text, KPIs</span>
+          </div>
+        </div>
+        <div class="ds-lh-card">
+          <div class="ds-lh-preview" style="line-height:1.4">Estimador Fiscal.<br>Calcula a tua situação<br>com base nos recibos.</div>
+          <div class="ds-lh-meta">
+            <span class="ds-token">--lh-snug</span>
+            <span class="ds-value" style="margin-top:3px">1.4 · Card titles, compact text</span>
+          </div>
+        </div>
+        <div class="ds-lh-card">
+          <div class="ds-lh-preview" style="line-height:1.6">Estimador Fiscal.<br>Calcula a tua situação<br>com base nos recibos.</div>
+          <div class="ds-lh-meta">
+            <span class="ds-token">--lh-base</span>
+            <span class="ds-value" style="margin-top:3px">1.6 · Default body text</span>
+          </div>
+        </div>
+        <div class="ds-lh-card">
+          <div class="ds-lh-preview" style="line-height:1.7">Estimador Fiscal.<br>Calcula a tua situação<br>com base nos recibos.</div>
+          <div class="ds-lh-meta">
+            <span class="ds-token">--lh-relaxed</span>
+            <span class="ds-value" style="margin-top:3px">1.7 · Descriptions, longer copy</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- LETTER SPACING -->
+    <div class="ds-section" id="letter-spacing">
+      <div class="ds-section-title">Letter Spacing</div>
+      <div class="ds-section-desc">Used to improve legibility at small sizes and to style uppercase labels. Avoid applying wide tracking to long body text.</div>
+
+      <div class="ds-ls-grid">
+        <div class="ds-ls-card">
+          <div class="ds-ls-preview" style="letter-spacing:-.5px">Total faturado em 2025</div>
+          <div class="ds-ls-meta">
+            <span class="ds-token">--ls-tight</span>
+            <span class="ds-value" style="margin-top:3px">-.5px · Large headings, KPIs</span>
+          </div>
+        </div>
+        <div class="ds-ls-card">
+          <div class="ds-ls-preview" style="letter-spacing:0">Total faturado em 2025</div>
+          <div class="ds-ls-meta">
+            <span class="ds-token">--ls-normal</span>
+            <span class="ds-value" style="margin-top:3px">0 · Default body text</span>
+          </div>
+        </div>
+        <div class="ds-ls-card">
+          <div class="ds-ls-preview" style="letter-spacing:.08em;font-size:.82rem;font-weight:600;text-transform:uppercase">Section label</div>
+          <div class="ds-ls-meta">
+            <span class="ds-token">--ls-wide</span>
+            <span class="ds-value" style="margin-top:3px">.08em · Uppercase section labels</span>
+          </div>
+        </div>
+        <div class="ds-ls-card">
+          <div class="ds-ls-preview" style="letter-spacing:.1em;font-size:.75rem;font-weight:700;text-transform:uppercase">Nav group label</div>
+          <div class="ds-ls-meta">
+            <span class="ds-token">--ls-wider</span>
+            <span class="ds-value" style="margin-top:3px">.1em · Nav group labels, badges</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </main>
 </div>
+
+<script>
+  const sections = document.querySelectorAll('.ds-section')
+  const navLinks = document.querySelectorAll('.ds-nav a')
+  window.addEventListener('scroll', () => {
+    let current = ''
+    sections.forEach(s => { if (window.scrollY >= s.offsetTop - 80) current = s.id })
+    navLinks.forEach(a => {
+      a.classList.toggle('active', a.getAttribute('href') === '#' + current)
+    })
+  })
+</script>
 </body>
 </html>

@@ -16,18 +16,59 @@
   --sh:0 1px 3px rgba(0,0,0,.07),0 1px 2px rgba(0,0,0,.04);
   --sh-md:0 4px 14px rgba(0,0,0,.09);
   --sh-lg:0 8px 32px rgba(0,0,0,.13);
-  --font:'Plus Jakarta Sans',sans-serif;
+  --font:'Merriweather Sans',sans-serif;
+  --font-heading:'Fjalla One',sans-serif;
   --mono:'JetBrains Mono',monospace;
+
+  /* TYPE SCALE (base 15px) */
+  --text-2xs:.65rem;   /* ~9.75px  — micro labels         */
+  --text-xs:.72rem;    /* ~10.8px  — timestamps, metadata  */
+  --text-sm:.8rem;     /* ~12px    — secondary text        */
+  --text-base:.88rem;  /* ~13.2px  — body / default        */
+  --text-md:1rem;      /* ~15px    — medium                */
+  --text-lg:1.1rem;    /* ~16.5px  — card headings         */
+  --text-xl:1.35rem;   /* ~20.25px — page sub-headings     */
+  --text-2xl:1.55rem;  /* ~23.25px — KPI values            */
+  --text-3xl:1.9rem;   /* ~28.5px  — hero values           */
+  --text-hero:2rem;    /* ~30px    — page hero             */
+
+  /* FONT WEIGHTS */
+  --fw-light:300;
+  --fw-normal:400;
+  --fw-medium:500;
+  --fw-semibold:600;
+  --fw-bold:700;
+  --fw-extrabold:800;
+
+  /* LINE HEIGHTS */
+  --lh-tight:1.2;
+  --lh-snug:1.4;
+  --lh-base:1.6;
+  --lh-relaxed:1.7;
+
+  /* LETTER SPACINGS */
+  --ls-tight:-.5px;
+  --ls-normal:0;
+  --ls-wide:.08em;
+  --ls-wider:.1em;
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-/* Base 15px → all rem values scale up ~7% vs 14px base */
-html{font-size:15px}
+html{font-size:16px}
 body{font-family:var(--font);background:var(--bg);color:var(--t1);line-height:1.6;min-height:100vh}
 a{color:inherit;text-decoration:none}ul{list-style:none}
 button{cursor:pointer;font-family:inherit;border:none;background:none}
 input,select,textarea{font-family:inherit}
 ::-webkit-scrollbar{width:4px;height:4px}
 ::-webkit-scrollbar-thumb{background:var(--border2);border-radius:99px}
+
+/* HEADING FONT — applied to all heading and subheading elements */
+.tb-title,.tb-sub,
+.cal-title,.act-title,
+.cd-name,.up-title,
+.sug-title,.kpi-s-title,
+.modal-title,.rec-title,
+.muz-title,.lim-lbl,
+.logo-name{font-family:var(--font-heading)}
 
 /* ═══════════════════════════════════════════
    LAYOUT
@@ -340,6 +381,7 @@ hr.dv{border:none;border-top:1px solid var(--border);margin:16px 0}
 #mdUploadZone.drag-over{border-color:var(--green);background:var(--green-lt)}
 
 @media(max-width:880px){
+  html{font-size:14px}
   .sidebar{transform:translateX(-100%);transition:transform .25s ease}
   .sidebar.open{transform:none;box-shadow:var(--sh-lg)}
   .main{margin-left:0}
