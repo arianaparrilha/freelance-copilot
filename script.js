@@ -2,6 +2,7 @@
 ;(async () => {
   const user = await requireAuth()
   if (!user) return
+  currentUser = user
 
   const name = user.email.split('@')[0].replace(/[._]/g, ' ').replace(/\b\w/g, c => c.toUpperCase())
   const initial = name[0].toUpperCase()
@@ -42,6 +43,9 @@
       document.querySelectorAll('.user-menu-dropdown').forEach(d => d.classList.remove('open'))
     }
   })
+
+  // Boot app only after auth is confirmed
+  await init()
 })()
 
 // IAS 2025
@@ -50,58 +54,95 @@ const LIMIAR_SS = 4 * IAS           // €2.090 rendimento relevante mensal méd
 const LIMITE_IVA = 14500
 const LIMITE_RS  = 200000
 
-// Clients store
-let clientes = [
-  {id:'nd', in:'ND', cor:'#1d6cf0', nome:'Nexus Digital',  nif:'512 874 331', email:'geral@nexusdigital.pt',   tel:'+351 912 345 678', morada:'Av. da Liberdade 120, Lisboa', since:'Mar 2024', projetos:3},
-  {id:'fs', in:'FS', cor:'#059669', nome:'Forma Studio',   nif:'513 987 222', email:'studio@formadesign.pt',   tel:'+351 918 765 432', morada:'Rua do Arsenal 40, Lisboa',       since:'Jun 2024', projetos:1},
-  {id:'ol', in:'OL', cor:'#7c3aed', nome:'Orbit Labs',     nif:'514 231 987', email:'hello@orbitlabs.io',      tel:'+351 962 111 222', morada:'Parque das Nações, Lisboa',        since:'Jan 2024', projetos:2},
-  {id:'lc', in:'LC', cor:'#d97706', nome:'Luz Criativa',   nif:'516 321 654', email:'luz@luzcriativa.pt',      tel:'+351 935 444 555', morada:'Rua de Santa Catarina, Porto',      since:'Set 2024', projetos:1},
-  {id:'vb', in:'VB', cor:'#dc2626', nome:'Volta Brand',    nif:'517 654 321', email:'info@voltabrand.com',     tel:'+351 911 999 888', morada:'Avenida Central, Braga',            since:'Nov 2024', projetos:1},
-]
+let currentUser = null
 
-// Faturas por cliente
-let faturas = {
-  nd:[{num:'2025/18',data:'08 Mai 2025',desc:'Consultoria UX',valor:950,estado:'pago'},
-      {num:'2025/14',data:'15 Abr 2025',desc:'Design de interface',valor:1200,estado:'pago'},
-      {num:'2025/11',data:'10 Mar 2025',desc:'Prototipagem',valor:850,estado:'pendente'},
-      {num:'2025/07',data:'12 Fev 2025',desc:'Auditoria UX',valor:700,estado:'pago'},
-      {num:'2025/03',data:'20 Jan 2025',desc:'Workshop',valor:500,estado:'pago'}],
-  fs:[{num:'2025/17',data:'03 Mai 2025',desc:'Website redesign',valor:1450,estado:'pago'},
-      {num:'2025/10',data:'05 Mar 2025',desc:'Brand guidelines',valor:600,estado:'pendente'},
-      {num:'2025/06',data:'25 Jan 2025',desc:'Logo system',valor:750,estado:'pago'}],
-  ol:[{num:'2025/16',data:'10 Abr 2025',desc:'Desenvolvimento front-end',valor:2100,estado:'pago'},
-      {num:'2025/09',data:'28 Fev 2025',desc:'Consultoria técnica',valor:700,estado:'pendente'}],
-  lc:[{num:'2025/13',data:'10 Abr 2025',desc:'Campanha digital',valor:890,estado:'pago'},
-      {num:'2025/05',data:'15 Jan 2025',desc:'Estratégia de conteúdo',valor:500,estado:'pago'}],
-  vb:[{num:'2025/08',data:'20 Fev 2025',desc:'Identidade visual',valor:750,estado:'pago'}],
+// Data stores — populated from Supabase on load
+let clientes = []
+let faturas = {}
+let documentos = {}
+let recibosEst = []
+let editMode = true
+let ativo = null
+let ativoRecibo = null
+let ativoDoc = null
+
+/* ── DB helpers ── */
+function colorFromName(name) {
+  const colors = CORES_CL || ['#1d6cf0','#059669','#7c3aed','#d97706','#dc2626','#0284c7','#db2777']
+  let hash = 0
+  for (let i = 0; i < name.length; i++) hash = name.charCodeAt(i) + ((hash << 5) - hash)
+  return colors[Math.abs(hash) % colors.length]
 }
 
-// Documentos por cliente
-let documentos = {
-  nd:[{ext:'pdf',nome:'Contrato_NexusDigital.pdf',tipo:'Contrato',data:'08 Mai 2025',tam:'312 KB'},
-      {ext:'pdf',nome:'Proposta_NexusDigital.pdf',tipo:'Proposta',data:'20 Abr 2025',tam:'185 KB'},
-      {ext:'xls',nome:'Brief_NexusDigital.xlsx',  tipo:'Briefing',data:'15 Mar 2025',tam:'94 KB'},
-      {ext:'doc',nome:'Termos_Pagamento.docx',    tipo:'Outro',   data:'10 Mar 2025',tam:'78 KB'},
-      {ext:'pdf',nome:'Comprovativo_IBAN.pdf',     tipo:'Financeiro',data:'05 Fev 2025',tam:'68 KB'},
-      {ext:'pdf',nome:'Autorizacao_Dados.pdf',     tipo:'Legal',   data:'10 Jan 2025',tam:'124 KB'}],
-  fs:[{ext:'pdf',nome:'Contrato_FormaStudio.pdf', tipo:'Contrato',data:'03 Mai 2025',tam:'248 KB'},
-      {ext:'pdf',nome:'Brief_FormaStudio.pdf',    tipo:'Briefing',data:'18 Abr 2025',tam:'89 KB'}],
-  ol:[{ext:'pdf',nome:'Contrato_OrbitLabs.pdf',   tipo:'Contrato',data:'10 Abr 2025',tam:'195 KB'}],
-  lc:[{ext:'pdf',nome:'Proposta_LuzCriativa.pdf', tipo:'Proposta',data:'10 Abr 2025',tam:'156 KB'}],
-  vb:[{ext:'pdf',nome:'Briefing_VoltaBrand.pdf',  tipo:'Briefing',data:'20 Fev 2025',tam:'72 KB'}],
+function formatSince(isoDate) {
+  if (!isoDate) return '—'
+  const d = new Date(isoDate)
+  if (isNaN(d)) return '—'
+  return d.toLocaleDateString('pt-PT', { month: 'short', year: 'numeric' })
 }
 
-// Recibos no estimador (independente dos clientes)
-let recibosEst = [
-  {id:'r1', cliente:'Nexus Digital', data:'2025-05-08', valor:950,  desc:'Consultoria UX'},
-  {id:'r2', cliente:'Forma Studio',  data:'2025-05-03', valor:1450, desc:'Website redesign'},
-  {id:'r3', cliente:'Orbit Labs',    data:'2025-04-10', valor:2100, desc:'Desenvolvimento'},
-  {id:'r4', cliente:'Nexus Digital', data:'2025-04-15', valor:1200, desc:'Design interface'},
-  {id:'r5', cliente:'Luz Criativa',  data:'2025-04-10', valor:890,  desc:'Campanha digital'},
-]
+function mapClientFromDB(row) {
+  const nome = row.name || ''
+  return {
+    id: row.id,
+    in: nome.trim().split(/\s+/).slice(0, 2).map(w => w[0]).join('').toUpperCase(),
+    cor: colorFromName(nome),
+    nome,
+    nif: row.nif || '—',
+    email: row.email || '',
+    tel: row.phone || '',
+    morada: row.address || '',
+    notas: row.notes || '',
+    client_since: row.client_since || null,
+    since: formatSince(row.client_since || row.created_at),
+    projetos: 0,
+  }
+}
 
-let editMode = true  // kept for compat, not used in estimador
-let ativo = 'nd'
+function mapInvoiceFromDB(row) {
+  return {
+    id: row.id,
+    num: row.invoice_number || '—',
+    data: row.date ? new Date(row.date+'T00:00:00').toLocaleDateString('pt-PT',{day:'2-digit',month:'short',year:'numeric'}) : '—',
+    desc: row.description || '',
+    valor: parseFloat(row.amount) || 0,
+    estado: row.status || 'pendente',
+    document_id: row.document_id || null,
+  }
+}
+
+async function loadFaturas(clientId) {
+  const { data, error } = await db.from('invoices').select('*').eq('client_id', clientId).order('date', { ascending: false })
+  if (error) { console.error('Erro ao carregar faturas:', error); return [] }
+  return (data || []).map(mapInvoiceFromDB)
+}
+
+function mapDocFromDB(row) {
+  const ext = (row.name || '').split('.').pop().toLowerCase()
+  const extMap = {pdf:'pdf',docx:'doc',doc:'doc',xlsx:'xls',xls:'xls',png:'img',jpg:'img',jpeg:'img'}
+  return {
+    id: row.id,
+    ext: extMap[ext] || 'doc',
+    nome: row.name || '—',
+    tipo: row.type || 'Outro',
+    data: row.created_at ? new Date(row.created_at).toLocaleDateString('pt-PT',{day:'2-digit',month:'short',year:'numeric'}) : '—',
+    tam: '—',
+    url: row.url || null,
+  }
+}
+
+async function loadDocumentos(clientId) {
+  const { data, error } = await db.from('documents').select('*').eq('client_id', clientId).order('created_at', { ascending: false })
+  if (error) { console.error('Erro ao carregar documentos:', error); return [] }
+  return (data || []).map(mapDocFromDB)
+}
+
+async function loadClientes() {
+  const { data, error } = await db.from('clients').select('*').order('created_at', { ascending: false })
+  if (error) { console.error('Erro ao carregar clientes:', error); return }
+  clientes = (data || []).map(mapClientFromDB)
+  data.forEach(row => { if (!faturas[row.id]) faturas[row.id] = []; if (!documentos[row.id]) documentos[row.id] = [] })
+}
 
 /* ───────────────────────────────────────
    UTILS
@@ -153,11 +194,13 @@ function renderCl(){
 /* ───────────────────────────────────────
    CLIENT DETAIL — loads all tabs for selected client
 ─────────────────────────────────────── */
-function selCl(id){
+async function selCl(id){
   ativo=id
   renderCl()
   const c=clientes.find(x=>x.id===id)
   if(!c) return
+  faturas[id] = await loadFaturas(id)
+  documentos[id] = await loadDocumentos(id)
 
   // Header
   document.getElementById('cdAv').textContent=c.in
@@ -201,7 +244,7 @@ function selCl(id){
           <td>${escH(f.desc)}</td>
           <td class="mono">${f2(f.valor)}</td>
           <td><span class="badge ${f.estado==='pago'?'bg-g':f.estado==='pendente'?'bg-a':'bg-n'}">${escH(f.estado)}</span></td>
-          <td><button class="btn-g btn-xs">···</button></td>
+          <td><button class="btn-g btn-xs" onclick="confirmarApagarRecibo('${f.id}')" title="Apagar recibo"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg></button></td>
         </tr>`).join('')}
       </tbody></table>`
   }
@@ -229,7 +272,7 @@ function selCl(id){
           <td style="color:var(--t3)">${escH(d.tipo)}</td>
           <td>${escH(d.data)}</td>
           <td style="color:var(--t3)">${escH(d.tam)}</td>
-          <td><button class="btn-g btn-xs">···</button></td>
+          <td><button class="btn-g btn-xs" onclick="confirmarApagarDoc('${d.id}')" title="Apagar documento"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg></button></td>
         </tr>`).join('')}
       </tbody></table>`
   }
@@ -249,8 +292,9 @@ const CORES_CL=['#1d6cf0','#059669','#7c3aed','#d97706','#dc2626','#0284c7','#db
 let extractedData={}
 
 function abrirModalCl(){
-  // reset
   ;['cNome','cNIF','cEmail','cTel','cMorada'].forEach(id=>{const e=document.getElementById(id);if(e)e.value=''})
+  const sinceEl=document.getElementById('cSince')
+  if(sinceEl) sinceEl.value=new Date().toISOString().split('T')[0]
   document.getElementById('extractedPreview').style.display='none'
   document.getElementById('extractingIndicator').style.display='none'
   document.getElementById('modalCl').classList.add('open')
@@ -413,28 +457,26 @@ function limparCamposExtraidos(){
   document.getElementById('extractedPreview').style.display='none'
 }
 
-function guardarCliente(){
+async function guardarCliente(){
   const nome=document.getElementById('cNome').value.trim()
   if(!nome){alert('Nome é obrigatório.');return}
-  const id='cl_'+Date.now()
-  const cor=CORES_CL[clientes.length%CORES_CL.length]
-  const initials=nome.trim().split(/\s+/).slice(0,2).map(w=>w[0]).join('').toUpperCase()
-  clientes.push({
-    id,in:initials,cor,nome,
-    nif: document.getElementById('cNIF').value.trim()||'—',
-    email:document.getElementById('cEmail').value.trim(),
-    tel:document.getElementById('cTel').value.trim(),
-    morada:document.getElementById('cMorada').value.trim(),
-    since:'Mai 2025',projetos:0
-  })
-  faturas[id]=[]
-  documentos[id]=[]
+  const { data, error } = await db.from('clients').insert({
+    name: nome,
+    nif: document.getElementById('cNIF').value.trim()||null,
+    email: document.getElementById('cEmail').value.trim()||null,
+    phone: document.getElementById('cTel').value.trim()||null,
+    address: document.getElementById('cMorada').value.trim()||null,
+    client_since: document.getElementById('cSince').value||null,
+  }).select().single()
+  if(error){alert('Erro ao guardar cliente: '+error.message);return}
+  const c = mapClientFromDB(data)
+  clientes.unshift(c)
+  faturas[c.id]=[]
+  documentos[c.id]=[]
   fecharModal('modalCl')
   renderCl()
-  // Update summary
   document.getElementById('sumCl').textContent=clientes.length
-  // Auto-select new client
-  selCl(id)
+  selCl(c.id)
 }
 
 /* ───────────────────────────────────────
@@ -449,16 +491,22 @@ function onDocFileSelected(e){
 function onDocDrop(e){
   e.preventDefault(); addDocsToCurrent(Array.from(e.dataTransfer.files))
 }
-function addDocsToCurrent(files){
-  if(!ativo||!documentos[ativo]) return
-  const extMap={pdf:'pdf',docx:'doc',doc:'doc',xlsx:'xls',xls:'xls',png:'img',jpg:'img',jpeg:'img'}
-  files.forEach(f=>{
-    const ext=f.name.split('.').pop().toLowerCase()
-    const tipo=extMap[ext]||'doc'
-    const tam=f.size<1024?f.size+'B':f.size<1048576?(f.size/1024).toFixed(0)+' KB':(f.size/1048576).toFixed(1)+' MB'
-    documentos[ativo].unshift({ext:tipo==='img'?'img':ext,nome:f.name,tipo:'Outro',
-      data:new Date().toLocaleDateString('pt-PT',{day:'2-digit',month:'short',year:'numeric'}),tam})
-  })
+async function addDocsToCurrent(files){
+  if(!ativo||!currentUser) return
+  for(const f of files){
+    const path=`${currentUser.id}/${Date.now()}_${f.name}`
+    const { error: upErr } = await db.storage.from('documents').upload(path, f)
+    if(upErr){ alert('Erro ao carregar ficheiro: '+upErr.message); continue }
+    const { data, error } = await db.from('documents').insert({
+      client_id: ativo,
+      name: f.name,
+      type: 'Outro',
+      url: path,
+    }).select().single()
+    if(error){ alert('Erro ao guardar documento: '+error.message); continue }
+    if(!documentos[ativo]) documentos[ativo]=[]
+    documentos[ativo].unshift(mapDocFromDB(data))
+  }
   selCl(ativo)
 }
 
@@ -751,25 +799,23 @@ function aplicarCamposDoc(fields, filename, ext){
   tagsEl.innerHTML=tags.map(t=>`<span class="badge ${t.cls}" style="font-size:.72rem">${escH(t.label)}</span>`).join('')
 }
 
-function guardarDocumento(){
+async function guardarDocumento(){
   const nome=document.getElementById('mdNome').value.trim()
   if(!nome){alert('O nome do documento é obrigatório.');return}
-  const clienteId=document.getElementById('mdCliente').value
+  const clienteId=document.getElementById('mdCliente').value||ativo
   const tipo=document.getElementById('mdTipo').value
-  const data=document.getElementById('mdData').value
-  const ext=nome.split('.').pop().toLowerCase()
-  const extMap={pdf:'pdf',docx:'doc',doc:'doc',xlsx:'xls',xls:'xls',png:'img',jpg:'img',jpeg:'img'}
-  const extKey=extMap[ext]||'doc'
-  const target=clienteId||ativo
-  if(!documentos[target]) documentos[target]=[]
-  documentos[target].unshift({
-    ext:extKey, nome,tipo,
-    data:data?new Date(data).toLocaleDateString('pt-PT',{day:'2-digit',month:'short',year:'numeric'}):
-      new Date().toLocaleDateString('pt-PT',{day:'2-digit',month:'short',year:'numeric'}),
-    tam:'—'
-  })
+  if(!clienteId){alert('Seleciona um cliente.');return}
+  const { data, error } = await db.from('documents').insert({
+    client_id: clienteId,
+    name: nome,
+    type: tipo,
+    url: null,
+  }).select().single()
+  if(error){alert('Erro ao guardar documento: '+error.message);return}
+  if(!documentos[clienteId]) documentos[clienteId]=[]
+  documentos[clienteId].unshift(mapDocFromDB(data))
   fecharModal('modalDoc')
-  selCl(ativo) // refresh docs
+  selCl(ativo)
   renderCl()
 }
 
@@ -916,20 +962,28 @@ function abrirModalRecibo(clienteId){
   document.getElementById('modalRecibo').classList.add('open')
 }
 
-function guardarRecibo(){
+async function guardarRecibo(){
   const clienteId=document.getElementById('mrCliente').value
   const valor=parseFloat(document.getElementById('mrValor').value)||0
-  const data=document.getElementById('mrData').value
+  const dataVal=document.getElementById('mrData').value
   const num=document.getElementById('mrNum').value.trim()
   const desc=document.getElementById('mrDesc').value.trim()||'Serviço prestado'
   const estado=document.getElementById('mrEstado').value
-  if(!clienteId||valor<=0||!data){alert('Seleciona cliente, data e valor.');return}
+  if(!clienteId||valor<=0||!dataVal){alert('Seleciona cliente, data e valor.');return}
+  const { data, error } = await db.from('invoices').insert({
+    client_id: clienteId,
+    invoice_number: num,
+    date: dataVal,
+    description: desc,
+    amount: valor,
+    status: estado,
+  }).select().single()
+  if(error){alert('Erro ao guardar recibo: '+error.message);return}
   if(!faturas[clienteId]) faturas[clienteId]=[]
-  faturas[clienteId].unshift({num,data:new Date(data).toLocaleDateString('pt-PT',{day:'2-digit',month:'short',year:'numeric'}),desc,valor,estado})
+  faturas[clienteId].unshift(mapInvoiceFromDB(data))
   fecharModal('modalRecibo')
-  selCl(clienteId)  // refresh detail
+  selCl(clienteId)
   renderCl()
-  // Refresh summary metrics
   const totalPend=Object.values(faturas).flat().filter(f=>f.estado==='pendente').reduce((s,f)=>s+f.valor,0)
   const pendCount=Object.values(faturas).flat().filter(f=>f.estado==='pendente').length
   const spEl=document.getElementById('sumPendente'); if(spEl) spEl.textContent=f2(totalPend)
@@ -949,21 +1003,114 @@ function abrirModalEditarCl(id){
   document.getElementById('ecTel').value=c.tel||''
   document.getElementById('ecMorada').value=c.morada||''
   document.getElementById('ecNotas').value=c.notas||''
+  document.getElementById('ecSince').value=c.client_since||''
   document.getElementById('modalEditCl').dataset.editId=id
   document.getElementById('modalEditCl').classList.add('open')
 }
 
-function guardarEdicaoCliente(){
+function confirmarApagarCliente(){
+  const c=clientes.find(x=>x.id===ativo); if(!c) return
+  document.getElementById('apagarClNome').textContent=c.nome
+  document.getElementById('apagarClCheck').checked=false
+  document.getElementById('btnConfirmarApagar').disabled=true
+  document.getElementById('modalApagarCl').classList.add('open')
+  document.querySelectorAll('.user-menu-dropdown').forEach(d=>d.classList.remove('open'))
+}
+
+async function apagarCliente(){
+  const id=ativo; if(!id) return
+  // Delete files from storage
+  const docs=documentos[id]||[]
+  const filePaths=docs.filter(d=>d.url).map(d=>d.url)
+  if(filePaths.length) await db.storage.from('documents').remove(filePaths)
+  // Delete DB records in order
+  await db.from('documents').delete().eq('client_id', id)
+  await db.from('invoices').delete().eq('client_id', id)
+  const { error } = await db.from('clients').delete().eq('id', id)
+  if(error){alert('Erro ao apagar cliente: '+error.message);return}
+  // Remove from local state
+  clientes=clientes.filter(x=>x.id!==id)
+  delete faturas[id]
+  delete documentos[id]
+  ativo=null
+  fecharModal('modalApagarCl')
+  renderCl()
+  // Clear detail panel
+  if(clientes.length>0) selCl(clientes[0].id)
+  else document.getElementById('cdHdr').style.display='none'
+}
+
+/* ───────────────────────────────────────
+   DELETE RECIBO
+─────────────────────────────────────── */
+function confirmarApagarRecibo(invoiceId){
+  const fat=(faturas[ativo]||[]).find(f=>f.id===invoiceId); if(!fat) return
+  ativoRecibo=invoiceId
+  document.getElementById('apagarReciboNum').textContent=fat.num
+  document.getElementById('apagarReciboVal').textContent=f2(fat.valor)
+  document.getElementById('apagarReciboCheck').checked=false
+  document.getElementById('btnConfirmarApagarRecibo').disabled=true
+  document.getElementById('modalApagarRecibo').classList.add('open')
+}
+
+async function apagarRecibo(){
+  if(!ativoRecibo||!ativo) return
+  const fat=(faturas[ativo]||[]).find(f=>f.id===ativoRecibo); if(!fat) return
+  // Delete linked document (file + record) if present
+  if(fat.document_id){
+    const doc=(documentos[ativo]||[]).find(d=>d.id===fat.document_id)
+    if(doc&&doc.url) await db.storage.from('documents').remove([doc.url])
+    await db.from('documents').delete().eq('id', fat.document_id)
+    documentos[ativo]=(documentos[ativo]||[]).filter(d=>d.id!==fat.document_id)
+  }
+  const { error }=await db.from('invoices').delete().eq('id', ativoRecibo)
+  if(error){alert('Erro ao apagar recibo: '+error.message);return}
+  faturas[ativo]=(faturas[ativo]||[]).filter(f=>f.id!==ativoRecibo)
+  ativoRecibo=null
+  fecharModal('modalApagarRecibo')
+  selCl(ativo)
+  renderCl()
+}
+
+/* ───────────────────────────────────────
+   DELETE DOCUMENTO
+─────────────────────────────────────── */
+function confirmarApagarDoc(docId){
+  const doc=(documentos[ativo]||[]).find(d=>d.id===docId); if(!doc) return
+  ativoDoc=docId
+  document.getElementById('apagarDocNome').textContent=doc.nome
+  document.getElementById('apagarDocCheck').checked=false
+  document.getElementById('btnConfirmarApagarDoc').disabled=true
+  document.getElementById('modalApagarDoc').classList.add('open')
+}
+
+async function apagarDoc(){
+  if(!ativoDoc||!ativo) return
+  const doc=(documentos[ativo]||[]).find(d=>d.id===ativoDoc); if(!doc) return
+  if(doc.url) await db.storage.from('documents').remove([doc.url])
+  const { error }=await db.from('documents').delete().eq('id', ativoDoc)
+  if(error){alert('Erro ao apagar documento: '+error.message);return}
+  documentos[ativo]=(documentos[ativo]||[]).filter(d=>d.id!==ativoDoc)
+  ativoDoc=null
+  fecharModal('modalApagarDoc')
+  selCl(ativo)
+}
+
+async function guardarEdicaoCliente(){
   const id=document.getElementById('modalEditCl').dataset.editId
   const c=clientes.find(x=>x.id===id); if(!c) return
-  c.nome=document.getElementById('ecNome').value.trim()||c.nome
-  c.nif=document.getElementById('ecNIF').value.trim()
-  c.email=document.getElementById('ecEmail').value.trim()
-  c.tel=document.getElementById('ecTel').value.trim()
-  c.morada=document.getElementById('ecMorada').value.trim()
-  c.notas=document.getElementById('ecNotas').value.trim()
-  // Update initials
-  c.in=c.nome.trim().split(/\s+/).slice(0,2).map(w=>w[0]).join('').toUpperCase()
+  const updates = {
+    name: document.getElementById('ecNome').value.trim()||c.nome,
+    nif: document.getElementById('ecNIF').value.trim()||null,
+    email: document.getElementById('ecEmail').value.trim()||null,
+    phone: document.getElementById('ecTel').value.trim()||null,
+    address: document.getElementById('ecMorada').value.trim()||null,
+    notes: document.getElementById('ecNotas').value.trim()||null,
+    client_since: document.getElementById('ecSince').value||null,
+  }
+  const { error } = await db.from('clients').update(updates).eq('id', id)
+  if(error){alert('Erro ao guardar: '+error.message);return}
+  Object.assign(c, mapClientFromDB({ ...c, name: updates.name, nif: updates.nif, phone: updates.phone, address: updates.address, notes: updates.notes, created_at: new Date().toISOString() }))
   fecharModal('modalEditCl')
   renderCl()
   selCl(id)
@@ -972,16 +1119,15 @@ function guardarEdicaoCliente(){
 /* ───────────────────────────────────────
    INIT
 ─────────────────────────────────────── */
-;(function init(){
+;async function init(){
+  await loadClientes()
   renderCl()
-  selCl('nd')
-  // Lock estimador form by default
+  if(clientes.length > 0) selCl(clientes[0].id)
   setFormEditable(false)
-  // Update total faturado display
+
   const totalFats=Object.values(faturas).flat().filter(f=>f.estado!=='cancelada').reduce((s,f)=>s+f.valor,0)
   const tfd=document.getElementById('totalFaturadoDisplay')
   if(tfd) tfd.textContent=f2(totalFats)
-  // Update pending
   const totalPend=Object.values(faturas).flat().filter(f=>f.estado==='pendente').reduce((s,f)=>s+f.valor,0)
   const pendCount=Object.values(faturas).flat().filter(f=>f.estado==='pendente').length
   const spEl=document.getElementById('sumPendente'); if(spEl) spEl.textContent=f2(totalPend)
@@ -989,11 +1135,9 @@ function guardarEdicaoCliente(){
   const scEl=document.getElementById('sumClSec'); if(scEl) scEl.textContent=clientes.length
   const srEl=document.getElementById('sumRec'); if(srEl) srEl.textContent=Object.values(faturas).flat().length
   const scMain=document.getElementById('sumCl'); if(scMain) scMain.textContent=clientes.length
-  // Auto-run calc
   setTimeout(calcEst,100)
 
-  // Overlay close for all modals
   document.querySelectorAll('.modal-ov').forEach(ov=>{
     ov.addEventListener('click',e=>{if(e.target===ov) ov.classList.remove('open')})
   })
-})()
+}

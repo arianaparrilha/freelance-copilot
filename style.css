@@ -20,17 +20,17 @@
   --font-heading:'Space Grotesk',sans-serif;
   --mono:'JetBrains Mono',monospace;
 
-  /* TYPE SCALE (base 15px) */
+  /* TYPE SCALE (base 16px) */
   --text-2xs:.65rem;   /* ~9.75px  — micro labels         */
   --text-xs:.72rem;    /* ~10.8px  — timestamps, metadata  */
   --text-sm:.8rem;     /* ~12px    — secondary text        */
   --text-base:.88rem;  /* ~13.2px  — body / default        */
-  --text-md:1rem;      /* ~15px    — medium                */
-  --text-lg:1.1rem;    /* ~16.5px  — card headings         */
-  --text-xl:1.35rem;   /* ~20.25px — page sub-headings     */
-  --text-2xl:1.55rem;  /* ~23.25px — KPI values            */
-  --text-3xl:1.9rem;   /* ~28.5px  — hero values           */
-  --text-hero:2rem;    /* ~30px    — page hero             */
+  --text-md:1rem;      /* ~16px    — medium                */
+  --text-lg:1.1rem;    /* ~17.6px  — card headings         */
+  --text-xl:1.35rem;   /* ~21.6px — page sub-headings     */
+  --text-2xl:1.55rem;  /* ~24.8px — KPI values            */
+  --text-3xl:1.9rem;   /* ~30.4px  — hero values           */
+  --text-hero:2rem;    /* ~32px    — page hero             */
 
   /* FONT WEIGHTS */
   --fw-light:300;
@@ -139,6 +139,8 @@ input,select,textarea{font-family:inherit}
 .btn-g{color:var(--t2);padding:5px 9px;border-radius:var(--rsm)}.btn-g:hover{background:var(--bg)}
 .btn-sm{padding:5px 11px;font-size:.77rem}
 .btn-xs{padding:3px 8px;font-size:.7rem}
+.btn-danger{background:var(--red);color:#fff;border-color:var(--red)}.btn-danger:hover:not(:disabled){background:#991b1b;border-color:#991b1b}
+.btn-danger:disabled{opacity:.4;cursor:not-allowed}
 .pg-wrap{height:7px;background:var(--border);border-radius:99px;overflow:hidden;margin:6px 0}
 .pg-fill{height:100%;border-radius:99px;transition:width .6s cubic-bezier(.4,0,.2,1)}
 .pg-fill.g{background:var(--green)}.pg-fill.a{background:var(--amber)}.pg-fill.r{background:var(--red)}.pg-fill.b{background:var(--blue)}

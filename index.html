@@ -292,7 +292,15 @@
             </div>
             <div class="cd-acts">
               <button class="btn btn-s btn-sm" onclick="abrirModalEditarCl(ativo)">Editar cliente</button>
-              <button class="ico-btn"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></svg></button>
+              <div class="user-menu">
+                <button class="ico-btn user-menu-trigger" id="cl-more-btn"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></svg></button>
+                <div class="user-menu-dropdown">
+                  <button class="umd-item umd-signout" onclick="confirmarApagarCliente()">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg>
+                    Apagar cliente
+                  </button>
+                </div>
+              </div>
             </div>
           </div>
           <div class="cd-stats">
@@ -557,6 +565,7 @@
         <div class="fc"><label>Telefone</label><input type="text" id="cTel" placeholder="+351 912 345 678"/></div>
       </div>
       <div class="fc"><label>Morada</label><input type="text" id="cMorada" placeholder="Rua, Cidade"/></div>
+      <div class="fc"><label>Cliente desde</label><input type="date" id="cSince"/></div>
     </div>
     <div class="modal-ft">
       <button class="btn btn-s" onclick="fecharModal('modalCl')">Cancelar</button>
@@ -588,6 +597,7 @@
         <div class="fc"><label>Telefone</label><input type="text" id="ecTel" placeholder="+351 912 345 678"/></div>
       </div>
       <div class="fc" style="margin-bottom:13px"><label>Morada</label><input type="text" id="ecMorada" placeholder="Rua, Cidade"/></div>
+      <div class="fc"><label>Cliente desde</label><input type="date" id="ecSince"/></div>
       <div class="fc"><label>Notas internas</label><textarea id="ecNotas" rows="2" placeholder="Notas sobre o cliente..."></textarea></div>
     </div>
     <div class="modal-ft">
@@ -796,6 +806,102 @@
   </div>
 </div>
 
+
+<!-- ════════════════════════════════════
+     MODAL: APAGAR CLIENTE
+════════════════════════════════════ -->
+<div class="modal-ov" id="modalApagarCl">
+  <div class="modal" style="max-width:440px">
+    <div class="modal-hdr">
+      <div class="modal-title" style="color:var(--red)">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg>
+        Apagar cliente
+      </div>
+      <button class="modal-x" onclick="fecharModal('modalApagarCl')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div style="background:var(--red-lt);border:1px solid #fca5a5;border-radius:var(--rsm);padding:14px 16px;margin-bottom:20px;font-size:var(--text-sm);color:var(--red);line-height:1.7">
+        <strong>Esta ação é permanente e irreversível.</strong><br>
+        Todos os recibos e documentos associados a <strong id="apagarClNome">este cliente</strong> serão apagados definitivamente.
+      </div>
+      <label style="display:flex;align-items:flex-start;gap:10px;cursor:pointer;font-size:var(--text-sm);color:var(--t2);line-height:1.6;padding:14px 16px;background:var(--bg);border-radius:var(--rsm)">
+        <input type="checkbox" id="apagarClCheck" onchange="document.getElementById('btnConfirmarApagar').disabled=!this.checked" style="margin-top:2px;accent-color:var(--red);flex-shrink:0;width:15px;height:15px"/>
+        Compreendo que esta ação é irreversível e que todos os dados serão apagados permanentemente.
+      </label>
+    </div>
+    <div class="modal-ft">
+      <button class="btn btn-s" onclick="fecharModal('modalApagarCl')">Cancelar</button>
+      <button class="btn btn-danger" id="btnConfirmarApagar" disabled onclick="apagarCliente()">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg>
+        Apagar cliente
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════
+     MODAL: APAGAR RECIBO
+════════════════════════════════════ -->
+<div class="modal-ov" id="modalApagarRecibo">
+  <div class="modal" style="max-width:440px">
+    <div class="modal-hdr">
+      <div class="modal-title" style="color:var(--red)">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg>
+        Apagar recibo
+      </div>
+      <button class="modal-x" onclick="fecharModal('modalApagarRecibo')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div style="background:var(--red-lt);border:1px solid #fca5a5;border-radius:var(--rsm);padding:14px 16px;margin-bottom:20px;font-size:var(--text-sm);color:var(--red);line-height:1.7">
+        <strong>Esta ação é permanente e irreversível.</strong><br>
+        O recibo <strong id="apagarReciboNum"></strong> no valor de <strong id="apagarReciboVal"></strong> será apagado definitivamente.
+      </div>
+      <label style="display:flex;align-items:flex-start;gap:10px;cursor:pointer;font-size:var(--text-sm);color:var(--t2);line-height:1.6;padding:14px 16px;background:var(--bg);border-radius:var(--rsm)">
+        <input type="checkbox" id="apagarReciboCheck" onchange="document.getElementById('btnConfirmarApagarRecibo').disabled=!this.checked" style="margin-top:2px;accent-color:var(--red);flex-shrink:0;width:15px;height:15px"/>
+        Compreendo que esta ação é irreversível.
+      </label>
+    </div>
+    <div class="modal-ft">
+      <button class="btn btn-s" onclick="fecharModal('modalApagarRecibo')">Cancelar</button>
+      <button class="btn btn-danger" id="btnConfirmarApagarRecibo" disabled onclick="apagarRecibo()">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg>
+        Apagar recibo
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════
+     MODAL: APAGAR DOCUMENTO
+════════════════════════════════════ -->
+<div class="modal-ov" id="modalApagarDoc">
+  <div class="modal" style="max-width:440px">
+    <div class="modal-hdr">
+      <div class="modal-title" style="color:var(--red)">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg>
+        Apagar documento
+      </div>
+      <button class="modal-x" onclick="fecharModal('modalApagarDoc')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div style="background:var(--red-lt);border:1px solid #fca5a5;border-radius:var(--rsm);padding:14px 16px;margin-bottom:20px;font-size:var(--text-sm);color:var(--red);line-height:1.7">
+        <strong>Esta ação é permanente e irreversível.</strong><br>
+        O documento <strong id="apagarDocNome"></strong> será apagado definitivamente.
+      </div>
+      <label style="display:flex;align-items:flex-start;gap:10px;cursor:pointer;font-size:var(--text-sm);color:var(--t2);line-height:1.6;padding:14px 16px;background:var(--bg);border-radius:var(--rsm)">
+        <input type="checkbox" id="apagarDocCheck" onchange="document.getElementById('btnConfirmarApagarDoc').disabled=!this.checked" style="margin-top:2px;accent-color:var(--red);flex-shrink:0;width:15px;height:15px"/>
+        Compreendo que esta ação é irreversível.
+      </label>
+    </div>
+    <div class="modal-ft">
+      <button class="btn btn-s" onclick="fecharModal('modalApagarDoc')">Cancelar</button>
+      <button class="btn btn-danger" id="btnConfirmarApagarDoc" disabled onclick="apagarDoc()">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg>
+        Apagar documento
+      </button>
+    </div>
+  </div>
+</div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="supabase-client.js"></script>
