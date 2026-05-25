@@ -1,7 +1,7 @@
 // Switch to the correct page immediately (before async auth) to avoid flash on refresh
 ;(()=>{
   const p=location.hash.slice(1)
-  const valid=['dashboard','clientes','estimador']
+  const valid=['dashboard','clientes','estimador','componentes']
   if(!valid.includes(p)) return
   document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'))
   const el=document.getElementById('page-'+p)
@@ -215,7 +215,7 @@ function renderSummary(){
 ─────────────────────────────────────── */
 function nav(p){navegarPara(p)}
 function navegarPara(p, addToHistory=true){
-  const valid=['dashboard','clientes','estimador']
+  const valid=['dashboard','clientes','estimador','componentes']
   if(!valid.includes(p)) p='dashboard'
   document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'))
   document.getElementById('page-'+p).classList.add('active')

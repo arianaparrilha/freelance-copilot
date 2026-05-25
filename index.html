@@ -46,6 +46,11 @@
       <svg class="ni" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93l-1.41 1.41M4.93 4.93l1.41 1.41M12 2v2M12 20v2M20 12h2M2 12h2M19.07 19.07l-1.41-1.41M4.93 19.07l1.41-1.41"/></svg>
       Configurações
     </button>
+    <div class="nav-lbl" style="margin-top:14px">Dev</div>
+    <button class="nav-item" data-page="componentes">
+      <svg class="ni" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="8" height="8" rx="1"/><rect x="13" y="3" width="8" height="8" rx="1"/><rect x="3" y="13" width="8" height="8" rx="1"/><path d="M13 17h8M17 13v8"/></svg>
+      Componentes
+    </button>
   </div>
 
   <div style="padding:10px 12px 0">
@@ -95,7 +100,7 @@
         <a href="#" class="link">Ver detalhes <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg></a>
       </div>
       <div class="card kpi-card">
-        <div class="kpi-lbl"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg> Limite IVA (art. 53.º) <svg title="Calculado com base em todos os recibos emitidos (pagos e pendentes), conforme o art. 53.º do CIVA. O limite aplica-se ao volume de negócios, não apenas ao valor recebido." style="cursor:help;flex-shrink:0" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></div>
+        <div class="kpi-lbl"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg> Limite IVA (art. 53.º) <span class="tt" tabindex="0" role="button" aria-label="Mais informação sobre o limite IVA"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg><span class="tt-body" role="tooltip">Calculado com base em todos os recibos emitidos (pagos e pendentes), conforme o art. 53.º do CIVA. O limite aplica-se ao volume de negócios, não apenas ao valor recebido.</span></span></div>
         <div class="kpi-v" id="dashIVApct" style="color:var(--amber)">—</div>
         <div class="kpi-sub">do limite de isenção (€14.500)</div>
         <div class="pg-wrap"><div class="pg-fill a" id="dashIVAbar" style="width:0%"></div></div>
@@ -233,7 +238,7 @@
 
       <!-- Secondary: Limite IVA -->
       <div class="card" style="padding:10px 14px;background:var(--bg);box-shadow:none;border-color:var(--border)">
-        <div style="font-size:.7rem;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--t2);margin-bottom:3px;display:flex;align-items:center;gap:5px">Limite IVA (art. 53.º) <svg title="Calculado com base em todos os recibos emitidos (pagos e pendentes), conforme o art. 53.º do CIVA. O limite aplica-se ao volume de negócios, não apenas ao valor recebido." style="cursor:help;flex-shrink:0" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></div>
+        <div style="font-size:.7rem;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--t2);margin-bottom:3px;display:flex;align-items:center;gap:5px">Limite IVA (art. 53.º) <span class="tt" tabindex="0" role="button" aria-label="Mais informação sobre o limite IVA"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg><span class="tt-body" role="tooltip">Calculado com base em todos os recibos emitidos (pagos e pendentes), conforme o art. 53.º do CIVA. O limite aplica-se ao volume de negócios, não apenas ao valor recebido.</span></span></div>
         <div class="mono" style="font-size:1.15rem;font-weight:700;color:var(--amber)" id="clIVApct">—</div>
         <div class="pg-wrap" style="margin:4px 0 2px;height:5px"><div class="pg-fill a" id="clIVAbar" style="width:0%"></div></div>
         <div style="font-size:.71rem;color:var(--t3)" id="clIVAsub">—</div>
@@ -486,6 +491,117 @@
     <div class="see-more">Ver todas as recomendações <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></div>
   </div>
 </div><!-- /estimador -->
+
+<!-- ══ PAGE: COMPONENTES ══ -->
+<div class="page" id="page-componentes">
+  <div class="topbar">
+    <div class="tb-right"></div>
+  </div>
+  <div class="page-content">
+    <div class="page-header">
+      <div>
+        <div class="tb-title">Componentes</div>
+        <div class="tb-sub">Biblioteca de componentes de UI do Fiscal Copilot.</div>
+      </div>
+    </div>
+
+    <!-- TOOLTIP -->
+    <p class="sec-lbl" style="margin-top:24px">Tooltip</p>
+    <div class="card" style="padding:24px;margin-bottom:24px">
+      <p style="font-size:.82rem;color:var(--t2);margin-bottom:20px;line-height:1.7">Aparece ao fazer hover ou ao focar com o teclado (Tab). Usa <code style="font-family:var(--mono);font-size:.8rem;background:var(--bg);padding:1px 5px;border-radius:4px">.tt</code> no elemento-gatilho e <code style="font-family:var(--mono);font-size:.8rem;background:var(--bg);padding:1px 5px;border-radius:4px">.tt-body</code> no conteúdo.</p>
+      <div style="display:flex;align-items:center;gap:32px;flex-wrap:wrap">
+
+        <!-- Default (above) -->
+        <div style="display:flex;flex-direction:column;align-items:center;gap:10px">
+          <span class="tt" tabindex="0" role="button" aria-label="Exemplo de tooltip">
+            <span style="display:inline-flex;align-items:center;gap:5px;font-size:.84rem;font-weight:500;color:var(--blue);padding:6px 12px;border:1px solid var(--blue-lt);background:var(--blue-lt);border-radius:var(--rsm)">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+              Hover ou Tab aqui
+            </span>
+            <span class="tt-body" role="tooltip">Este é um tooltip. Aparece ao fazer hover ou ao focar com o teclado.</span>
+          </span>
+          <span style="font-size:.72rem;color:var(--t3)">Default (acima)</span>
+        </div>
+
+        <!-- With icon only trigger -->
+        <div style="display:flex;flex-direction:column;align-items:center;gap:10px">
+          <span class="tt" tabindex="0" role="button" aria-label="Informação adicional">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--t3)" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+            <span class="tt-body" role="tooltip">Tooltip num ícone de informação. Útil para explicar campos ou métricas.</span>
+          </span>
+          <span style="font-size:.72rem;color:var(--t3)">Ícone ℹ</span>
+        </div>
+
+        <!-- Right placement -->
+        <div style="display:flex;flex-direction:column;align-items:center;gap:10px">
+          <span class="tt tt-right" tabindex="0" role="button" aria-label="Tooltip à direita">
+            <span style="display:inline-flex;align-items:center;gap:5px;font-size:.84rem;font-weight:500;padding:6px 12px;border:1px solid var(--border2);background:var(--surface);border-radius:var(--rsm);color:var(--t2)">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+              À direita
+            </span>
+            <span class="tt-body" role="tooltip">Tooltip posicionado à direita do elemento. Usa a classe <code style="font-family:monospace">.tt-right</code>.</span>
+          </span>
+          <span style="font-size:.72rem;color:var(--t3)">Variante direita</span>
+        </div>
+
+        <!-- On a badge -->
+        <div style="display:flex;flex-direction:column;align-items:center;gap:10px">
+          <span class="tt" tabindex="0" role="button" aria-label="O que significa isento">
+            <span class="badge bg-g" style="font-size:.72rem;cursor:help">Isento SS</span>
+            <span class="tt-body" role="tooltip">Estás isento de Segurança Social porque o teu rendimento relevante mensal (faturação × 70% ÷ 3) é inferior a 4 × IAS = €2.090/mês.</span>
+          </span>
+          <span style="font-size:.72rem;color:var(--t3)">Em badge</span>
+        </div>
+
+      </div>
+
+      <!-- Code snippet -->
+      <div style="margin-top:24px;background:var(--bg);border:1px solid var(--border);border-radius:var(--rsm);padding:14px 16px">
+        <p style="font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--t3);margin-bottom:8px">HTML</p>
+        <pre style="font-family:var(--mono);font-size:.78rem;color:var(--t2);line-height:1.7;white-space:pre-wrap">&lt;span class="tt" tabindex="0" role="button" aria-label="Descrição"&gt;
+  &lt;!-- gatilho: ícone, badge, texto... --&gt;
+  &lt;span class="tt-body" role="tooltip"&gt;Texto do tooltip&lt;/span&gt;
+&lt;/span&gt;</pre>
+      </div>
+    </div>
+
+    <!-- BADGES -->
+    <p class="sec-lbl">Badges</p>
+    <div class="card" style="padding:24px;margin-bottom:24px">
+      <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+        <span class="badge bg-g">Pago</span>
+        <span class="badge bg-a">Pendente</span>
+        <span class="badge bg-r">Urgente</span>
+        <span class="badge bg-b">Info</span>
+        <span class="badge bg-p">Sugestão</span>
+        <span class="badge bg-n">Neutro</span>
+      </div>
+    </div>
+
+    <!-- BUTTONS -->
+    <p class="sec-lbl">Botões</p>
+    <div class="card" style="padding:24px;margin-bottom:24px">
+      <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+        <button class="btn btn-p">Primário</button>
+        <button class="btn btn-s">Secundário</button>
+        <button class="btn btn-danger">Apagar</button>
+        <button class="btn btn-p btn-sm">Pequeno</button>
+        <button class="btn btn-s btn-sm">Pequeno sec.</button>
+      </div>
+    </div>
+
+    <!-- PROGRESS BARS -->
+    <p class="sec-lbl">Barras de progresso</p>
+    <div class="card" style="padding:24px;margin-bottom:24px">
+      <div style="display:flex;flex-direction:column;gap:14px;max-width:400px">
+        <div><div class="pg-wrap"><div class="pg-fill g" style="width:35%"></div></div><div style="display:flex;justify-content:space-between;font-size:.72rem;color:var(--t3)"><span>Verde · 35%</span><span style="color:var(--green)">OK</span></div></div>
+        <div><div class="pg-wrap"><div class="pg-fill a" style="width:72%"></div></div><div style="display:flex;justify-content:space-between;font-size:.72rem;color:var(--t3)"><span>Âmbar · 72%</span><span style="color:var(--amber)">Atenção</span></div></div>
+        <div><div class="pg-wrap"><div class="pg-fill r" style="width:93%"></div></div><div style="display:flex;justify-content:space-between;font-size:.72rem;color:var(--t3)"><span>Vermelho · 93%</span><span style="color:var(--red)">Urgente</span></div></div>
+      </div>
+    </div>
+
+  </div>
+</div><!-- /componentes -->
 
 </div><!-- /main -->
 </div><!-- /shell -->
