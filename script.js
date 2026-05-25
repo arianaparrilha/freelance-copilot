@@ -1,3 +1,16 @@
+// Switch to the correct page immediately (before async auth) to avoid flash on refresh
+;(()=>{
+  const p=location.hash.slice(1)
+  const valid=['dashboard','clientes','estimador']
+  if(!valid.includes(p)) return
+  document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'))
+  const el=document.getElementById('page-'+p)
+  if(el) el.classList.add('active')
+  document.querySelectorAll('.nav-item[data-page]').forEach(b=>b.classList.remove('active'))
+  const b=document.querySelector(`.nav-item[data-page="${p}"]`)
+  if(b) b.classList.add('active')
+})()
+
 // Auth check — redirect to /login if not logged in
 ;(async () => {
   const user = await requireAuth()
@@ -158,16 +171,23 @@ function escH(s){return(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replac
    NAVIGATION
 ─────────────────────────────────────── */
 function nav(p){navegarPara(p)}
-function navegarPara(p){
+function navegarPara(p, addToHistory=true){
+  const valid=['dashboard','clientes','estimador']
+  if(!valid.includes(p)) p='dashboard'
   document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'))
   document.getElementById('page-'+p).classList.add('active')
   document.querySelectorAll('.nav-item[data-page]').forEach(b=>b.classList.remove('active'))
   const b=document.querySelector(`.nav-item[data-page="${p}"]`)
   if(b) b.classList.add('active')
   if(p==='clientes') renderCl()
-  if(p==='clientes') renderCl()
   document.getElementById('sidebar').classList.remove('open')
+  if(addToHistory) history.pushState({page:p},'','#'+p)
+  else history.replaceState({page:p},'','#'+p)
 }
+window.addEventListener('popstate', e=>{
+  const p=(e.state&&e.state.page)||location.hash.slice(1)||'dashboard'
+  navegarPara(p, false)
+})
 document.querySelectorAll('.nav-item[data-page]').forEach(b=>b.addEventListener('click',()=>navegarPara(b.dataset.page)))
 
 /* ───────────────────────────────────────
@@ -1140,4 +1160,8 @@ async function guardarEdicaoCliente(){
   document.querySelectorAll('.modal-ov').forEach(ov=>{
     ov.addEventListener('click',e=>{if(e.target===ov) ov.classList.remove('open')})
   })
+
+  // Apply hash routing on load — navigate to the page in the URL if present
+  const startPage=location.hash.slice(1)||'dashboard'
+  navegarPara(startPage, false)
 }
