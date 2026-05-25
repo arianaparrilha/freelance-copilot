@@ -31,7 +31,7 @@ Return ONLY a valid JSON object with these fields (use null for any field you ca
 }`
 
   const geminiRes = await fetch(
-    `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`,
+    `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`,
     {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -48,7 +48,9 @@ Return ONLY a valid JSON object with these fields (use null for any field you ca
 
   if (!geminiRes.ok) {
     const err = await geminiRes.text()
-    return { statusCode: 502, body: JSON.stringify({ error: 'Gemini API error', detail: err }) }
+    console.error('Gemini error status:', geminiRes.status)
+    console.error('Gemini error body:', err)
+    return { statusCode: 502, body: JSON.stringify({ error: 'Gemini API error', status: geminiRes.status, detail: err }) }
   }
 
   const geminiData = await geminiRes.json()
