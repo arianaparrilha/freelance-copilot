@@ -255,8 +255,8 @@ async function selCl(id){
   if(fats.length===0){
     rbody.innerHTML='<p style="color:var(--t3);font-size:.82rem;padding:18px 0">Sem recibos registados.</p>'
   } else {
-    rbody.innerHTML=`<table class="inv-tbl">
-      <thead><tr><th>Nº</th><th>Data</th><th>Descrição</th><th>Valor</th><th>Estado</th><th></th></tr></thead>
+    rbody.innerHTML=`<table class="inv-tbl" style="table-layout:fixed;width:100%">
+      <thead><tr><th style="width:130px">Nº</th><th style="width:110px">Data</th><th>Descrição</th><th style="width:100px">Valor</th><th style="width:100px">Estado</th><th style="width:44px"></th></tr></thead>
       <tbody>${fats.map(f=>`
         <tr>
           <td class="mono" style="color:var(--t3)">${escH(f.num)}</td>
@@ -264,7 +264,7 @@ async function selCl(id){
           <td>${escH(f.desc)}</td>
           <td class="mono">${f2(f.valor)}</td>
           <td><span class="badge ${f.estado==='pago'?'bg-g':f.estado==='pendente'?'bg-a':'bg-n'}">${escH(f.estado)}</span></td>
-          <td><button class="btn-g btn-xs" onclick="confirmarApagarRecibo('${f.id}')" title="Apagar recibo"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg></button></td>
+          <td><div class="user-menu"><button class="ico-btn user-menu-trigger"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></svg></button><div class="user-menu-dropdown"><button class="umd-item" onclick="toggleEstadoRecibo('${f.id}')">${f.estado==='pago'?'<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>Marcar como pendente':'<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2.5"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>Marcar como pago'}</button><div class="umd-sep"></div><button class="umd-item umd-signout" onclick="confirmarApagarRecibo('${f.id}')"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg>Apagar recibo</button></div></div></td>
         </tr>`).join('')}
       </tbody></table>`
   }
@@ -292,7 +292,7 @@ async function selCl(id){
           <td style="color:var(--t3)">${escH(d.tipo)}</td>
           <td>${escH(d.data)}</td>
           <td style="color:var(--t3)">${escH(d.tam)}</td>
-          <td><button class="btn-g btn-xs" onclick="confirmarApagarDoc('${d.id}')" title="Apagar documento"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg></button></td>
+          <td><div class="user-menu"><button class="ico-btn user-menu-trigger"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></svg></button><div class="user-menu-dropdown"><button class="umd-item umd-signout" onclick="confirmarApagarDoc('${d.id}')"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg>Apagar documento</button></div></div></td>
         </tr>`).join('')}
       </tbody></table>`
   }
@@ -1012,6 +1012,20 @@ async function guardarRecibo(){
   const srEl=document.getElementById('sumRec'); if(srEl) srEl.textContent=totalFats
 }
 
+async function toggleEstadoRecibo(invoiceId){
+  const fat=(faturas[ativo]||[]).find(f=>f.id===invoiceId); if(!fat) return
+  const novoEstado=fat.estado==='pago'?'pendente':'pago'
+  const { error }=await db.from('invoices').update({status:novoEstado}).eq('id',invoiceId)
+  if(error){alert('Erro ao atualizar estado: '+error.message);return}
+  fat.estado=novoEstado
+  await selCl(ativo)
+  renderCl()
+  const totalPend=Object.values(faturas).flat().filter(f=>f.estado==='pendente').reduce((s,f)=>s+f.valor,0)
+  const pendCount=Object.values(faturas).flat().filter(f=>f.estado==='pendente').length
+  const spEl=document.getElementById('sumPendente'); if(spEl) spEl.textContent=f2(totalPend)
+  const spnEl=document.getElementById('sumPendenteN'); if(spnEl) spnEl.textContent=`${pendCount} fatura${pendCount!==1?'s':''} em aberto`
+}
+
 /* ───────────────────────────────────────
    MODAL — EDITAR CLIENTE
 ─────────────────────────────────────── */
@@ -1137,6 +1151,53 @@ async function guardarEdicaoCliente(){
 }
 
 /* ───────────────────────────────────────
+   CALENDÁRIO FISCAL 2026
+─────────────────────────────────────── */
+const MESES_PT=['JAN','FEV','MAR','ABR','MAI','JUN','JUL','AGO','SET','OUT','NOV','DEZ']
+
+const OBRIGACOES_FISCAIS=[
+  { start:'2026-04-01', end:'2026-04-20', ev:'SS – Declaração Trimestral', dc:'1º Trimestre 2026' },
+  { end:'2026-05-15', ev:'IVA – Declaração Periódica', dc:'1º Trimestre 2026' },
+  { start:'2026-04-01', end:'2026-06-30', ev:'IRS – Modelo 3', dc:'Rendimentos 2025' },
+  { start:'2026-07-01', end:'2026-07-20', ev:'SS – Declaração Trimestral', dc:'2º Trimestre 2026' },
+  { end:'2026-08-15', ev:'IVA – Declaração Periódica', dc:'2º Trimestre 2026' },
+  { start:'2026-10-01', end:'2026-10-20', ev:'SS – Declaração Trimestral', dc:'3º Trimestre 2026' },
+  { end:'2026-11-15', ev:'IVA – Declaração Periódica', dc:'3º Trimestre 2026' },
+  { start:'2027-01-01', end:'2027-01-20', ev:'SS – Declaração Trimestral', dc:'4º Trimestre 2026' },
+  { end:'2027-02-15', ev:'IVA – Declaração Periódica', dc:'4º Trimestre 2026' },
+  { start:'2027-04-01', end:'2027-06-30', ev:'IRS – Modelo 3', dc:'Rendimentos 2026' },
+]
+
+function renderCalendar(){
+  const el=document.getElementById('calItems'); if(!el) return
+  const hoje=new Date(); hoje.setHours(0,0,0,0)
+  const upcoming=OBRIGACOES_FISCAIS
+    .map(o=>({...o, endD:new Date(o.end+'T00:00:00'), startD:o.start?new Date(o.start+'T00:00:00'):null}))
+    .filter(o=>o.endD>=hoje)
+    .sort((a,b)=>a.endD-b.endD)
+    .slice(0,5)
+  el.innerHTML=upcoming.map(o=>{
+    const endDias=Math.round((o.endD-hoje)/86400000)
+    const mes=MESES_PT[o.endD.getMonth()]
+    const dia=o.endD.getDate()
+    let tagText, tagCls, rangeText
+    if(o.startD&&o.startD>hoje){
+      const startDias=Math.round((o.startD-hoje)/86400000)
+      tagText=startDias===1?'Começa amanhã':`Começa em ${startDias} dias`
+      tagCls='ct-s'
+      rangeText=`${o.startD.getDate()} ${MESES_PT[o.startD.getMonth()]} – ${dia} ${mes}`
+    } else {
+      tagText=endDias===0?'Termina hoje':endDias===1?'Termina amanhã':`Termina em ${endDias} dias`
+      tagCls=endDias<=7?'ct-pend':'ct-s'
+      rangeText=o.startD
+        ?`${o.startD.getDate()} ${MESES_PT[o.startD.getMonth()]} – ${dia} ${mes}`
+        :`até ${dia} ${mes}`
+    }
+    return `<div class="cal-item"><div class="cal-dt"><div class="cal-mo">${mes}</div><div class="cal-d">${dia}</div></div><div class="cal-info"><div class="cal-ev">${o.ev}</div><div class="cal-dc">${o.dc}</div></div><div style="text-align:right;flex-shrink:0"><div class="cal-tag ${tagCls}">${tagText}</div><div style="font-size:.71rem;color:var(--t3);margin-top:4px;white-space:nowrap">${rangeText}</div></div></div>`
+  }).join('')
+}
+
+/* ───────────────────────────────────────
    INIT
 ─────────────────────────────────────── */
 ;async function init(){
@@ -1156,6 +1217,7 @@ async function guardarEdicaoCliente(){
   const srEl=document.getElementById('sumRec'); if(srEl) srEl.textContent=Object.values(faturas).flat().length
   const scMain=document.getElementById('sumCl'); if(scMain) scMain.textContent=clientes.length
   setTimeout(calcEst,100)
+  renderCalendar()
 
   document.querySelectorAll('.modal-ov').forEach(ov=>{
     ov.addEventListener('click',e=>{if(e.target===ov) ov.classList.remove('open')})
