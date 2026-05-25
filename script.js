@@ -180,6 +180,7 @@ function navegarPara(p, addToHistory=true){
   const b=document.querySelector(`.nav-item[data-page="${p}"]`)
   if(b) b.classList.add('active')
   if(p==='clientes') renderCl()
+  if(p==='dashboard') renderActivity()
   document.getElementById('sidebar').classList.remove('open')
   if(addToHistory) history.pushState({page:p},'','#'+p)
   else history.replaceState({page:p},'','#'+p)
@@ -1015,7 +1016,7 @@ async function guardarRecibo(){
 async function toggleEstadoRecibo(invoiceId){
   const fat=(faturas[ativo]||[]).find(f=>f.id===invoiceId); if(!fat) return
   const novoEstado=fat.estado==='pago'?'pendente':'pago'
-  const { error }=await db.from('invoices').update({status:novoEstado}).eq('id',invoiceId)
+  const { error }=await db.from('invoices').update({status:novoEstado, updated_at:new Date().toISOString()}).eq('id',invoiceId)
   if(error){alert('Erro ao atualizar estado: '+error.message);return}
   fat.estado=novoEstado
   await selCl(ativo)
@@ -1157,14 +1158,19 @@ async function renderActivity(){
   const el=document.getElementById('actItems'); if(!el) return
   const [{ data: rClients }, { data: rInvoices }, { data: rDocs }] = await Promise.all([
     db.from('clients').select('id,name,created_at').order('created_at',{ascending:false}).limit(8),
-    db.from('invoices').select('id,invoice_number,amount,created_at,client_id').order('created_at',{ascending:false}).limit(8),
+    db.from('invoices').select('id,invoice_number,amount,created_at,updated_at,status,client_id').order('created_at',{ascending:false}).limit(8),
     db.from('documents').select('id,name,created_at,client_id').order('created_at',{ascending:false}).limit(8),
   ])
   const events=[]
   ;(rClients||[]).forEach(c=>events.push({type:'client',date:new Date(c.created_at),label:`Novo cliente · ${c.name}`,sub:null}))
   ;(rInvoices||[]).forEach(f=>{
     const cl=clientes.find(x=>x.id===f.client_id)
-    events.push({type:'invoice',date:new Date(f.created_at),label:`Recibo ${f.invoice_number||'—'} · ${cl?cl.nome:'—'}`,sub:f2(parseFloat(f.amount)||0)})
+    const clNome=cl?cl.nome:'—'
+    events.push({type:'invoice',date:new Date(f.created_at),label:`Recibo ${f.invoice_number||'—'} · ${clNome}`,sub:f2(parseFloat(f.amount)||0)})
+    if(f.updated_at){
+      const statusLabel=f.status==='pago'?'marcado como pago':'marcado como pendente'
+      events.push({type:'paid',date:new Date(f.updated_at),label:`Recibo ${f.invoice_number||'—'} ${statusLabel}`,sub:clNome})
+    }
   })
   ;(rDocs||[]).forEach(d=>{
     const cl=clientes.find(x=>x.id===d.client_id)
@@ -1175,8 +1181,9 @@ async function renderActivity(){
   const icoCl=`<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>`
   const icoInv=`<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>`
   const icoDoc=`<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><polyline points="13 2 13 9 20 9"/></svg>`
-  const icoMap={client:icoCl,invoice:icoInv,doc:icoDoc}
-  const clsMap={client:'ai-cl',invoice:'ai-inv',doc:'ai-doc'}
+  const icoPaid=`<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>`
+  const icoMap={client:icoCl,invoice:icoInv,doc:icoDoc,paid:icoPaid}
+  const clsMap={client:'ai-cl',invoice:'ai-inv',doc:'ai-doc',paid:'ai-inv'}
   el.innerHTML=top.length===0
     ?'<p style="color:var(--t3);font-size:.82rem;padding:8px 0">Sem atividade recente.</p>'
     :top.map(e=>{
