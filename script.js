@@ -543,28 +543,38 @@ function onReciboFileDrop(e){
 
 function processReciboFile(e){
   const file=e.target.files[0]; if(!file) return
-  const ext=file.name.split('.').pop().toLowerCase()
-  // Show processing state
   document.getElementById('mrUploadZone').style.opacity='.5'
   document.getElementById('mrUploadZone').style.pointerEvents='none'
   document.getElementById('mrProcessing').style.display='block'
   document.getElementById('mrExtractedBanner').style.display='none'
 
-  // For text-readable formats, do real extraction; others use heuristic
-  if(['txt','csv'].includes(ext)){
-    const reader=new FileReader()
-    reader.onload=ev=>{
-      const fields=extrairCamposRecibo(ev.target.result, file.name)
+  const reader=new FileReader()
+  reader.onload=async ev=>{
+    const base64=ev.target.result.split(',')[1]
+    const mimeType=file.type||'application/octet-stream'
+    try {
+      const res=await fetch('/.netlify/functions/extract-recibo',{
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({fileBase64:base64,mimeType})
+      })
+      if(!res.ok) throw new Error('Function error')
+      const data=await res.json()
+      if(data.error) throw new Error(data.error)
+      const fields={
+        num: data.invoice_number||'',
+        data: data.date||'',
+        valor: data.amount!=null?String(data.amount):'',
+        desc: data.description||'',
+        clienteNome: data.client_name||'',
+      }
       aplicarCamposRecibo(fields, file.name)
+    } catch(err){
+      console.warn('Gemini extraction failed, using fallback:', err)
+      aplicarCamposRecibo(extrairCamposPorNomeRecibo(file.name), file.name)
     }
-    reader.readAsText(file)
-  } else {
-    // Binary — heuristic from filename + demo data for MVP
-    setTimeout(()=>{
-      const fields=extrairCamposPorNomeRecibo(file.name)
-      aplicarCamposRecibo(fields, file.name)
-    }, 900)
   }
+  reader.readAsDataURL(file)
   e.target.value=''
 }
 
