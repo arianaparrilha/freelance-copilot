@@ -95,6 +95,13 @@
         <a href="#line-height">Line Height</a>
         <a href="#letter-spacing">Letter Spacing</a>
       </div>
+      <div class="ds-nav-group">
+        <div class="ds-nav-label">Components</div>
+        <a href="#tooltip">Tooltip</a>
+        <a href="#badges">Badges</a>
+        <a href="#buttons">Buttons</a>
+        <a href="#progress">Progress Bars</a>
+      </div>
     </div>
   </nav>
 
@@ -378,6 +385,132 @@
             <span class="ds-token">--ls-wider</span>
             <span class="ds-value" style="margin-top:3px">.1em · Nav group labels, badges</span>
           </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TOOLTIP -->
+    <div class="ds-section" id="tooltip">
+      <div class="ds-section-title">Tooltip</div>
+      <div class="ds-section-desc">Aparece ao fazer hover ou ao focar com o teclado (Tab + Enter/Space). Acessível — usa <span class="ds-token">role="tooltip"</span>, <span class="ds-token">tabindex="0"</span> e <span class="ds-token">aria-label</span>.</div>
+
+      <!-- Default (above) -->
+      <div class="ds-card" style="margin-bottom:12px">
+        <div class="ds-card-preview" style="display:flex;align-items:center;gap:32px;flex-wrap:wrap">
+          <span class="tt" tabindex="0" role="button" aria-label="Exemplo de tooltip">
+            <span style="display:inline-flex;align-items:center;gap:6px;font-size:.84rem;font-weight:500;color:var(--blue);padding:7px 13px;border:1px solid var(--blue-lt);background:var(--blue-lt);border-radius:var(--rsm)">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+              Hover ou Tab aqui
+            </span>
+            <span class="tt-body" role="tooltip">Este é o tooltip padrão. Aparece acima do elemento de forma centralizada.</span>
+          </span>
+
+          <span class="tt" tabindex="0" role="button" aria-label="Ícone de informação">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--t3)" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+            <span class="tt-body" role="tooltip">Tooltip num ícone de informação. Útil para explicar campos ou métricas sem ocupar espaço.</span>
+          </span>
+
+          <span class="tt tt-right" tabindex="0" role="button" aria-label="Tooltip à direita">
+            <span style="display:inline-flex;align-items:center;gap:6px;font-size:.84rem;font-weight:500;padding:7px 13px;border:1px solid var(--border2);background:var(--surface);border-radius:var(--rsm);color:var(--t2)">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+              Variante direita
+            </span>
+            <span class="tt-body" role="tooltip">Tooltip posicionado à direita com a classe <code style="font-family:monospace;font-size:.8em">.tt-right</code>.</span>
+          </span>
+
+          <span class="tt" tabindex="0" role="button" aria-label="O que significa isento de SS">
+            <span class="badge bg-g" style="cursor:help">Isento SS</span>
+            <span class="tt-body" role="tooltip">Isento porque o rendimento relevante mensal é inferior a 4 × IAS (€2.090/mês).</span>
+          </span>
+        </div>
+        <div class="ds-card-meta">
+          <span class="ds-card-meta-label">Variantes</span>
+          <span class="ds-value">Default (acima) · <span class="ds-token">.tt-right</span> (direita) · em ícone · em badge</span>
+        </div>
+      </div>
+
+      <div class="ds-card">
+        <div class="ds-card-preview" style="padding-bottom:16px">
+          <p style="font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.09em;color:var(--t3);margin-bottom:10px">HTML</p>
+          <pre style="font-family:var(--mono);font-size:.78rem;color:var(--t2);line-height:1.8;white-space:pre-wrap">&lt;span class="tt" tabindex="0" role="button" aria-label="Descrição"&gt;
+  &lt;!-- Gatilho: ícone, badge, texto... --&gt;
+  &lt;span class="tt-body" role="tooltip"&gt;Texto do tooltip&lt;/span&gt;
+&lt;/span&gt;
+
+&lt;!-- Posicionado à direita --&gt;
+&lt;span class="tt tt-right" tabindex="0" ...&gt; ... &lt;/span&gt;</pre>
+        </div>
+        <div class="ds-card-meta" style="flex-wrap:wrap;gap:8px">
+          <span class="ds-card-meta-label">Acessibilidade</span>
+          <span class="ds-value"><span class="ds-token">tabindex="0"</span> torna o gatilho focável · <span class="ds-token">role="button"</span> anuncia ao leitor de ecrã · <span class="ds-token">aria-label</span> descreve a ação · <span class="ds-token">role="tooltip"</span> no conteúdo</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- BADGES -->
+    <div class="ds-section" id="badges">
+      <div class="ds-section-title">Badges</div>
+      <div class="ds-section-desc">Pequenas etiquetas de estado. Usa sempre as variantes de cor semântica — verde para positivo, âmbar para atenção, vermelho para urgente.</div>
+      <div class="ds-card">
+        <div class="ds-card-preview" style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+          <span class="badge bg-g">Pago</span>
+          <span class="badge bg-a">Pendente</span>
+          <span class="badge bg-r">Urgente</span>
+          <span class="badge bg-b">Info</span>
+          <span class="badge bg-p">Sugestão</span>
+          <span class="badge bg-n">Neutro</span>
+        </div>
+        <div class="ds-card-meta" style="flex-wrap:wrap;gap:6px">
+          <span class="ds-card-meta-label">Classes</span>
+          <span class="ds-value"><span class="ds-token">.badge</span> + <span class="ds-token">.bg-g</span> <span class="ds-token">.bg-a</span> <span class="ds-token">.bg-r</span> <span class="ds-token">.bg-b</span> <span class="ds-token">.bg-p</span> <span class="ds-token">.bg-n</span></span>
+        </div>
+      </div>
+    </div>
+
+    <!-- BUTTONS -->
+    <div class="ds-section" id="buttons">
+      <div class="ds-section-title">Botões</div>
+      <div class="ds-section-desc">Três variantes base mais o botão de ação destrutiva. Usa sempre <span class="ds-token">.btn-sm</span> em toolbars e modais.</div>
+      <div class="ds-card">
+        <div class="ds-card-preview" style="display:flex;align-items:center;gap:12px;flex-wrap:wrap">
+          <button class="btn btn-p">Primário</button>
+          <button class="btn btn-s">Secundário</button>
+          <button class="btn btn-danger">Apagar</button>
+          <button class="btn btn-p btn-sm">Primário sm</button>
+          <button class="btn btn-s btn-sm">Secundário sm</button>
+          <button class="btn btn-danger btn-sm">Apagar sm</button>
+        </div>
+        <div class="ds-card-meta">
+          <span class="ds-card-meta-label">Classes</span>
+          <span class="ds-value"><span class="ds-token">.btn</span> + <span class="ds-token">.btn-p</span> / <span class="ds-token">.btn-s</span> / <span class="ds-token">.btn-danger</span> · opcional: <span class="ds-token">.btn-sm</span></span>
+        </div>
+      </div>
+    </div>
+
+    <!-- PROGRESS BARS -->
+    <div class="ds-section" id="progress">
+      <div class="ds-section-title">Progress Bars</div>
+      <div class="ds-section-desc">Usadas para mostrar a proximidade de limites (IVA, regime simplificado). A cor muda automaticamente com as classes semânticas.</div>
+      <div class="ds-card">
+        <div class="ds-card-preview">
+          <div style="display:flex;flex-direction:column;gap:18px;max-width:440px">
+            <div>
+              <div style="display:flex;justify-content:space-between;font-size:.78rem;color:var(--t2);margin-bottom:4px"><span>Verde — zona segura</span><span style="color:var(--green);font-weight:600">35%</span></div>
+              <div class="pg-wrap"><div class="pg-fill g" style="width:35%"></div></div>
+            </div>
+            <div>
+              <div style="display:flex;justify-content:space-between;font-size:.78rem;color:var(--t2);margin-bottom:4px"><span>Âmbar — atenção</span><span style="color:var(--amber);font-weight:600">72%</span></div>
+              <div class="pg-wrap"><div class="pg-fill a" style="width:72%"></div></div>
+            </div>
+            <div>
+              <div style="display:flex;justify-content:space-between;font-size:.78rem;color:var(--t2);margin-bottom:4px"><span>Vermelho — urgente (&gt;90%)</span><span style="color:var(--red);font-weight:600">93%</span></div>
+              <div class="pg-wrap"><div class="pg-fill r" style="width:93%"></div></div>
+            </div>
+          </div>
+        </div>
+        <div class="ds-card-meta">
+          <span class="ds-card-meta-label">Classes</span>
+          <span class="ds-value"><span class="ds-token">.pg-wrap</span> + <span class="ds-token">.pg-fill</span> + <span class="ds-token">.g</span> / <span class="ds-token">.a</span> / <span class="ds-token">.r</span></span>
         </div>
       </div>
     </div>

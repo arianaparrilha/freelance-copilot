@@ -46,11 +46,6 @@
       <svg class="ni" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93l-1.41 1.41M4.93 4.93l1.41 1.41M12 2v2M12 20v2M20 12h2M2 12h2M19.07 19.07l-1.41-1.41M4.93 19.07l1.41-1.41"/></svg>
       Configurações
     </button>
-    <div class="nav-lbl" style="margin-top:14px">Dev</div>
-    <button class="nav-item" data-page="componentes">
-      <svg class="ni" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="8" height="8" rx="1"/><rect x="13" y="3" width="8" height="8" rx="1"/><rect x="3" y="13" width="8" height="8" rx="1"/><path d="M13 17h8M17 13v8"/></svg>
-      Componentes
-    </button>
   </div>
 
   <div style="padding:10px 12px 0">
@@ -100,7 +95,7 @@
         <a href="#" class="link">Ver detalhes <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg></a>
       </div>
       <div class="card kpi-card">
-        <div class="kpi-lbl"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg> Limite IVA (art. 53.º) <span class="tt" tabindex="0" role="button" aria-label="Mais informação sobre o limite IVA"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg><span class="tt-body" role="tooltip">Calculado com base em todos os recibos emitidos (pagos e pendentes), conforme o art. 53.º do CIVA. O limite aplica-se ao volume de negócios, não apenas ao valor recebido.</span></span></div>
+        <div class="kpi-lbl"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg> Limite IVA (art. 53.º) <span class="tt" tabindex="0" role="button" aria-label="Mais informação sobre o limite IVA"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg><span class="tt-body" role="tooltip">Calculado com base em todos os recibos emitidos (pagos e pendentes), conforme o art. 53.º do CIVA. O limite aplica-se ao volume de negócios, não apenas ao valor recebido.</span></span></div>
         <div class="kpi-v" id="dashIVApct" style="color:var(--amber)">—</div>
         <div class="kpi-sub">do limite de isenção (€14.500)</div>
         <div class="pg-wrap"><div class="pg-fill a" id="dashIVAbar" style="width:0%"></div></div>
@@ -169,7 +164,7 @@
       <div>
         <p class="sec-lbl">Sugestão do Copilot</p>
         <div class="card sug-card">
-          <div class="sug-title"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg> Fiscal Copilot sugere</div>
+          <div class="sug-title"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg> Fiscal Copilot sugere</div>
           <div class="sug-body">Estás a 77% do limite de isenção de IVA. Com o ritmo atual, podes ultrapassá-lo em <strong>Agosto</strong>. Começa a planear a transição agora para evitar surpresas.</div>
           <button class="btn btn-p btn-sm" onclick="nav('estimador')">Simular cenário <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg></button>
         </div>
@@ -238,7 +233,7 @@
 
       <!-- Secondary: Limite IVA -->
       <div class="card" style="padding:10px 14px;background:var(--bg);box-shadow:none;border-color:var(--border)">
-        <div style="font-size:.7rem;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--t2);margin-bottom:3px;display:flex;align-items:center;gap:5px">Limite IVA (art. 53.º) <span class="tt" tabindex="0" role="button" aria-label="Mais informação sobre o limite IVA"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg><span class="tt-body" role="tooltip">Calculado com base em todos os recibos emitidos (pagos e pendentes), conforme o art. 53.º do CIVA. O limite aplica-se ao volume de negócios, não apenas ao valor recebido.</span></span></div>
+        <div style="font-size:.7rem;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--t2);margin-bottom:3px;display:flex;align-items:center;gap:5px">Limite IVA (art. 53.º) <span class="tt" tabindex="0" role="button" aria-label="Mais informação sobre o limite IVA"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg><span class="tt-body" role="tooltip">Calculado com base em todos os recibos emitidos (pagos e pendentes), conforme o art. 53.º do CIVA. O limite aplica-se ao volume de negócios, não apenas ao valor recebido.</span></span></div>
         <div class="mono" style="font-size:1.15rem;font-weight:700;color:var(--amber)" id="clIVApct">—</div>
         <div class="pg-wrap" style="margin:4px 0 2px;height:5px"><div class="pg-fill a" id="clIVAbar" style="width:0%"></div></div>
         <div style="font-size:.71rem;color:var(--t3)" id="clIVAsub">—</div>
@@ -365,7 +360,7 @@
     </div>
     <!-- SS info banner -->
     <div class="al-info">
-      <svg class="al-ico" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+      <svg class="al-ico" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
       <div class="al-body">
         <div class="al-title">SS com emprego por conta de outrem</div>
         Estás <strong>isento de SS</strong> enquanto o rendimento relevante mensal (faturação × 70% ÷ 3) for inferior a <strong>4 × IAS = €2.090/mês</strong>. Se ultrapassares, pagas 21,4% apenas sobre o excedente.
@@ -449,7 +444,7 @@
     <div class="est-cards">
       <div class="card est-card ec-liq"><div class="ec-lbl g"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg> Recebe líquido</div><div class="ec-val g mono" id="eVL">—</div><div class="ec-sub" id="eSL">—</div><div class="ec-prog"><div class="ec-bar eb-g" id="eBL" style="width:0%"></div></div></div>
       <div class="card est-card ec-irs"><div class="ec-lbl a"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg> IRS estimado</div><div class="ec-val a mono" id="eVI">—</div><div class="ec-sub">Retenção: 25% (Cat. B)</div><div class="ec-prog"><div class="ec-bar eb-a" id="eBI" style="width:0%"></div></div></div>
-      <div class="card est-card ec-ss"><div class="ec-lbl r"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg> Segurança Social</div><div class="ec-val r mono" id="eVS">—</div><div class="ec-sub" id="eSS2">—</div><div class="ec-prog"><div class="ec-bar eb-r" id="eBS" style="width:0%"></div></div></div>
+      <div class="card est-card ec-ss"><div class="ec-lbl r"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg> Segurança Social</div><div class="ec-val r mono" id="eVS">—</div><div class="ec-sub" id="eSS2">—</div><div class="ec-prog"><div class="ec-bar eb-r" id="eBS" style="width:0%"></div></div></div>
     </div>
 
     <!-- SS detail info (shown dynamically) -->
@@ -492,8 +487,8 @@
   </div>
 </div><!-- /estimador -->
 
-<!-- ══ PAGE: COMPONENTES ══ -->
-<div class="page" id="page-componentes">
+<!-- ══ PAGE: COMPONENTES — see /docs ══ -->
+<div style="display:none">
   <div class="topbar">
     <div class="tb-right"></div>
   </div>
@@ -515,7 +510,7 @@
         <div style="display:flex;flex-direction:column;align-items:center;gap:10px">
           <span class="tt" tabindex="0" role="button" aria-label="Exemplo de tooltip">
             <span style="display:inline-flex;align-items:center;gap:5px;font-size:.84rem;font-weight:500;color:var(--blue);padding:6px 12px;border:1px solid var(--blue-lt);background:var(--blue-lt);border-radius:var(--rsm)">
-              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
               Hover ou Tab aqui
             </span>
             <span class="tt-body" role="tooltip">Este é um tooltip. Aparece ao fazer hover ou ao focar com o teclado.</span>
@@ -526,7 +521,7 @@
         <!-- With icon only trigger -->
         <div style="display:flex;flex-direction:column;align-items:center;gap:10px">
           <span class="tt" tabindex="0" role="button" aria-label="Informação adicional">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--t3)" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--t3)" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
             <span class="tt-body" role="tooltip">Tooltip num ícone de informação. Útil para explicar campos ou métricas.</span>
           </span>
           <span style="font-size:.72rem;color:var(--t3)">Ícone ℹ</span>
@@ -536,7 +531,7 @@
         <div style="display:flex;flex-direction:column;align-items:center;gap:10px">
           <span class="tt tt-right" tabindex="0" role="button" aria-label="Tooltip à direita">
             <span style="display:inline-flex;align-items:center;gap:5px;font-size:.84rem;font-weight:500;padding:6px 12px;border:1px solid var(--border2);background:var(--surface);border-radius:var(--rsm);color:var(--t2)">
-              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
               À direita
             </span>
             <span class="tt-body" role="tooltip">Tooltip posicionado à direita do elemento. Usa a classe <code style="font-family:monospace">.tt-right</code>.</span>

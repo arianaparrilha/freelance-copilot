@@ -1,7 +1,7 @@
 // Switch to the correct page immediately (before async auth) to avoid flash on refresh
 ;(()=>{
   const p=location.hash.slice(1)
-  const valid=['dashboard','clientes','estimador','componentes']
+  const valid=['dashboard','clientes','estimador']
   if(!valid.includes(p)) return
   document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'))
   const el=document.getElementById('page-'+p)
@@ -215,7 +215,7 @@ function renderSummary(){
 ─────────────────────────────────────── */
 function nav(p){navegarPara(p)}
 function navegarPara(p, addToHistory=true){
-  const valid=['dashboard','clientes','estimador','componentes']
+  const valid=['dashboard','clientes','estimador']
   if(!valid.includes(p)) p='dashboard'
   document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'))
   document.getElementById('page-'+p).classList.add('active')
@@ -1003,7 +1003,7 @@ function calcEst(){
 
   const svgIcons={
     'alert-triangle':'<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>',
-    'alert-circle':'<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>',
+    'alert-circle':'<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>',
     'shield':'<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>',
     'trending-up':'<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>',
     'briefcase':'<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/></svg>',

@@ -181,6 +181,7 @@ hr.dv{border:none;border-top:1px solid var(--border);margin:16px 0}
   transform:translateX(-50%) translateY(4px);
   background:var(--t1);color:#fff;
   font-size:.76rem;font-weight:400;line-height:1.55;font-family:var(--font);
+  text-transform:none;letter-spacing:normal;
   padding:8px 11px;border-radius:var(--rsm);
   max-width:240px;width:max-content;white-space:normal;text-align:left;
   pointer-events:none;opacity:0;
