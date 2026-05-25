@@ -179,14 +179,16 @@ function escH(s){return(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replac
 
 function renderSummary(){
   const allFats=Object.values(faturas).flat()
-  const total=allFats.filter(f=>f.estado!=='cancelada').reduce((s,f)=>s+f.valor,0)
+  const totalPago=allFats.filter(f=>f.estado==='pago').reduce((s,f)=>s+f.valor,0)
+  const totalEmitido=allFats.filter(f=>f.estado!=='cancelada').reduce((s,f)=>s+f.valor,0)
   const totalPend=allFats.filter(f=>f.estado==='pendente').reduce((s,f)=>s+f.valor,0)
   const pendCount=allFats.filter(f=>f.estado==='pendente').length
-  const pIVA=Math.min(100,(total/LIMITE_IVA)*100)
+  // IVA uses total emitido (all issued invoices) per art. 53 CIVA
+  const pIVA=Math.min(100,(totalEmitido/LIMITE_IVA)*100)
   const ivaCls='pg-fill '+(pIVA>=90?'r':pIVA>=70?'a':'g')
   const ivaColor=pIVA>=90?'var(--red)':pIVA>=70?'var(--amber)':'var(--green)'
   // clients page
-  set('sumTotal',f2(total))
+  set('sumTotal',f2(totalPago))
   set('sumPendente',f2(totalPend))
   set('sumPendenteN',`${pendCount} fatura${pendCount!==1?'s':''} em aberto`)
   set('sumClSec',clientes.length)
@@ -236,7 +238,7 @@ document.querySelectorAll('.nav-item[data-page]').forEach(b=>b.addEventListener(
    CLIENTS LIST RENDER
 ─────────────────────────────────────── */
 function totalCl(id){
-  return (faturas[id]||[]).filter(f=>f.estado!=='cancelada').reduce((s,f)=>s+f.valor,0)
+  return (faturas[id]||[]).filter(f=>f.estado==='pago').reduce((s,f)=>s+f.valor,0)
 }
 function renderCl(){
   const q=(document.getElementById('srchCl').value||'').toLowerCase()
@@ -273,7 +275,7 @@ async function selCl(id){
 
   // Stats
   const fats=faturas[id]||[]
-  const total=fats.filter(f=>f.estado!=='cancelada').reduce((s,f)=>s+f.valor,0)
+  const total=fats.filter(f=>f.estado==='pago').reduce((s,f)=>s+f.valor,0)
   const medio=fats.length>0?(total/fats.length):0
   const ultimo=fats.length>0?fats[0].data:'—'
   const pendente=fats.filter(f=>f.estado==='pendente').reduce((s,f)=>s+f.valor,0)
