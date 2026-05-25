@@ -144,6 +144,16 @@ function mapDocFromDB(row) {
   }
 }
 
+async function loadAllFaturas(){
+  const { data } = await db.from('invoices').select('*').order('date',{ascending:false})
+  const grouped={}
+  ;(data||[]).forEach(row=>{
+    if(!grouped[row.client_id]) grouped[row.client_id]=[]
+    grouped[row.client_id].push(mapInvoiceFromDB(row))
+  })
+  clientes.forEach(c=>{ faturas[c.id]=grouped[c.id]||[] })
+}
+
 async function loadDocumentos(clientId) {
   const { data, error } = await db.from('documents').select('*').eq('client_id', clientId).order('created_at', { ascending: false })
   if (error) { console.error('Erro ao carregar documentos:', error); return [] }
@@ -166,6 +176,37 @@ function fp(n){return (n||0).toFixed(1)+'%'}
 function set(id,v){const e=document.getElementById(id);if(e)e.textContent=v}
 function setW(id,w){const e=document.getElementById(id);if(e)e.style.width=w+'%'}
 function escH(s){return(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
+
+function renderSummary(){
+  const allFats=Object.values(faturas).flat()
+  const total=allFats.filter(f=>f.estado!=='cancelada').reduce((s,f)=>s+f.valor,0)
+  const totalPend=allFats.filter(f=>f.estado==='pendente').reduce((s,f)=>s+f.valor,0)
+  const pendCount=allFats.filter(f=>f.estado==='pendente').length
+  const pIVA=Math.min(100,(total/LIMITE_IVA)*100)
+  const ivaCls='pg-fill '+(pIVA>=90?'r':pIVA>=70?'a':'g')
+  const ivaColor=pIVA>=90?'var(--red)':pIVA>=70?'var(--amber)':'var(--green)'
+  // clients page
+  set('sumTotal',f2(total))
+  set('sumPendente',f2(totalPend))
+  set('sumPendenteN',`${pendCount} fatura${pendCount!==1?'s':''} em aberto`)
+  set('sumClSec',clientes.length)
+  set('sumRec',allFats.length)
+  set('sumCl',clientes.length)
+  const cIVApctEl=document.getElementById('clIVApct')
+  if(cIVApctEl){cIVApctEl.textContent=fp(pIVA);cIVApctEl.style.color=ivaColor}
+  const cIVAbarEl=document.getElementById('clIVAbar')
+  if(cIVAbarEl){cIVAbarEl.style.width=pIVA+'%';cIVAbarEl.className=ivaCls}
+  set('clIVAsub',`${f0(total)} de ${f0(LIMITE_IVA)}`)
+  // dashboard
+  set('dashTotalV',f2(total))
+  const dIVApctEl=document.getElementById('dashIVApct')
+  if(dIVApctEl){dIVApctEl.textContent=fp(pIVA);dIVApctEl.style.color=ivaColor}
+  const dIVAbarEl=document.getElementById('dashIVAbar')
+  if(dIVAbarEl){dIVAbarEl.style.width=pIVA+'%';dIVAbarEl.className=ivaCls}
+  set('dashIVAsub',`${f0(total)} / ${f0(LIMITE_IVA)}`)
+  // estimador
+  set('totalFaturadoDisplay',f2(total))
+}
 
 /* ───────────────────────────────────────
    NAVIGATION
@@ -496,7 +537,7 @@ async function guardarCliente(){
   documentos[c.id]=[]
   fecharModal('modalCl')
   renderCl()
-  document.getElementById('sumCl').textContent=clientes.length
+  renderSummary()
   selCl(c.id)
 }
 
@@ -1015,12 +1056,7 @@ async function guardarRecibo(){
   fecharModal('modalRecibo')
   selCl(clienteId)
   renderCl()
-  const totalPend=Object.values(faturas).flat().filter(f=>f.estado==='pendente').reduce((s,f)=>s+f.valor,0)
-  const pendCount=Object.values(faturas).flat().filter(f=>f.estado==='pendente').length
-  const spEl=document.getElementById('sumPendente'); if(spEl) spEl.textContent=f2(totalPend)
-  const spnEl=document.getElementById('sumPendenteN'); if(spnEl) spnEl.textContent=`${pendCount} fatura${pendCount!==1?'s':''} em aberto`
-  const totalFats=Object.values(faturas).flat().length
-  const srEl=document.getElementById('sumRec'); if(srEl) srEl.textContent=totalFats
+  renderSummary()
 }
 
 async function toggleEstadoRecibo(invoiceId){
@@ -1031,10 +1067,7 @@ async function toggleEstadoRecibo(invoiceId){
   fat.estado=novoEstado
   await selCl(ativo)
   renderCl()
-  const totalPend=Object.values(faturas).flat().filter(f=>f.estado==='pendente').reduce((s,f)=>s+f.valor,0)
-  const pendCount=Object.values(faturas).flat().filter(f=>f.estado==='pendente').length
-  const spEl=document.getElementById('sumPendente'); if(spEl) spEl.textContent=f2(totalPend)
-  const spnEl=document.getElementById('sumPendenteN'); if(spnEl) spnEl.textContent=`${pendCount} fatura${pendCount!==1?'s':''} em aberto`
+  renderSummary()
 }
 
 /* ───────────────────────────────────────
@@ -1080,7 +1113,7 @@ async function apagarCliente(){
   ativo=null
   fecharModal('modalApagarCl')
   renderCl()
-  // Clear detail panel
+  renderSummary()
   if(clientes.length>0) selCl(clientes[0].id)
   else document.getElementById('cdHdr').style.display='none'
 }
@@ -1115,6 +1148,7 @@ async function apagarRecibo(){
   fecharModal('modalApagarRecibo')
   selCl(ativo)
   renderCl()
+  renderSummary()
 }
 
 /* ───────────────────────────────────────
@@ -1254,20 +1288,11 @@ function renderCalendar(){
 ─────────────────────────────────────── */
 ;async function init(){
   await loadClientes()
+  await loadAllFaturas()
   renderCl()
   if(clientes.length > 0) selCl(clientes[0].id)
   setFormEditable(false)
-
-  const totalFats=Object.values(faturas).flat().filter(f=>f.estado!=='cancelada').reduce((s,f)=>s+f.valor,0)
-  const tfd=document.getElementById('totalFaturadoDisplay')
-  if(tfd) tfd.textContent=f2(totalFats)
-  const totalPend=Object.values(faturas).flat().filter(f=>f.estado==='pendente').reduce((s,f)=>s+f.valor,0)
-  const pendCount=Object.values(faturas).flat().filter(f=>f.estado==='pendente').length
-  const spEl=document.getElementById('sumPendente'); if(spEl) spEl.textContent=f2(totalPend)
-  const spnEl=document.getElementById('sumPendenteN'); if(spnEl) spnEl.textContent=`${pendCount} fatura${pendCount!==1?'s':''} em aberto`
-  const scEl=document.getElementById('sumClSec'); if(scEl) scEl.textContent=clientes.length
-  const srEl=document.getElementById('sumRec'); if(srEl) srEl.textContent=Object.values(faturas).flat().length
-  const scMain=document.getElementById('sumCl'); if(scMain) scMain.textContent=clientes.length
+  renderSummary()
   setTimeout(calcEst,100)
   renderCalendar()
   renderActivity()

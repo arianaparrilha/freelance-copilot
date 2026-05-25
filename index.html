@@ -90,16 +90,16 @@
     <div class="kpi-row">
       <div class="card kpi-card">
         <div class="kpi-lbl"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg> Total faturado em 2025</div>
-        <div class="kpi-v mono">€11.240,00</div>
+        <div class="kpi-v mono" id="dashTotalV">€0,00</div>
         <div class="kpi-sub">+22% vs. período homólogo</div>
         <a href="#" class="link">Ver detalhes <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg></a>
       </div>
       <div class="card kpi-card">
         <div class="kpi-lbl"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg> Limite IVA (art. 53.º)</div>
-        <div class="kpi-v" style="color:var(--amber)">77%</div>
+        <div class="kpi-v" id="dashIVApct" style="color:var(--amber)">—</div>
         <div class="kpi-sub">do limite de isenção (€14.500)</div>
-        <div class="pg-wrap"><div class="pg-fill a" style="width:77%"></div></div>
-        <div style="display:flex;justify-content:space-between;font-size:.7rem;color:var(--t3);margin-top:3px"><span>€11.240 / €14.500</span><span style="color:var(--amber);font-weight:600">Atenção</span></div>
+        <div class="pg-wrap"><div class="pg-fill a" id="dashIVAbar" style="width:0%"></div></div>
+        <div style="display:flex;justify-content:space-between;font-size:.7rem;color:var(--t3);margin-top:3px"><span id="dashIVAsub">—</span></div>
       </div>
       <div class="card kpi-card">
         <div class="kpi-lbl"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg> Segurança Social</div>
@@ -202,49 +202,47 @@
       </div>
     </div>
     <!-- RESUMO EM DESTAQUE — sempre visível no topo -->
-    <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:13px;margin-bottom:20px">
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:10px;margin-bottom:12px">
 
       <!-- HERO: Total faturado — destaque máximo -->
-      <div class="card" style="padding:20px 24px;border-left:4px solid var(--blue);grid-column:span 1">
-        <div style="font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.09em;color:var(--blue);margin-bottom:6px;display:flex;align-items:center;gap:6px">
+      <div class="card" style="padding:12px 16px;border-left:4px solid var(--blue);grid-column:span 1">
+        <div style="font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.09em;color:var(--blue);margin-bottom:4px;display:flex;align-items:center;gap:6px">
           <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
           Total faturado 2025
         </div>
-        <div class="mono" style="font-size:1.9rem;font-weight:700;letter-spacing:-.6px;color:var(--t1);line-height:1.1" id="sumTotal">€11.240,00</div>
-        <div style="font-size:.78rem;color:var(--t3);margin-top:5px">em <span id="sumRec">18</span> recibos · <span id="sumCl">5</span> clientes</div>
+        <div class="mono" style="font-size:1.5rem;font-weight:700;letter-spacing:-.6px;color:var(--t1);line-height:1.1" id="sumTotal">€0,00</div>
+        <div style="font-size:.75rem;color:var(--t3);margin-top:4px">em <span id="sumRec">0</span> recibos · <span id="sumCl">0</span> clientes</div>
       </div>
 
-      <!-- HERO: Pendente por receber — destaque máximo, accionável -->
-      <div class="card" style="padding:20px 24px;border-left:4px solid var(--amber);grid-column:span 1;position:relative;overflow:hidden">
-        <div style="font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.09em;color:var(--amber);margin-bottom:6px;display:flex;align-items:center;gap:6px">
+      <!-- HERO: Pendente por receber -->
+      <div class="card" style="padding:12px 16px;border-left:4px solid var(--amber);grid-column:span 1;position:relative;overflow:hidden">
+        <div style="font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.09em;color:var(--amber);margin-bottom:4px;display:flex;align-items:center;gap:6px">
           <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
           Pendente por receber
         </div>
-        <div class="mono" style="font-size:1.9rem;font-weight:700;letter-spacing:-.6px;color:var(--amber);line-height:1.1" id="sumPendente">€1.550,00</div>
-        <div style="font-size:.78rem;color:var(--t3);margin-top:5px" id="sumPendenteN">em faturas em aberto</div>
-        <!-- Subtle background accent -->
-        <div style="position:absolute;right:-12px;bottom:-12px;width:72px;height:72px;background:var(--amber-lt);border-radius:50%;opacity:.6;pointer-events:none"></div>
+        <div class="mono" style="font-size:1.5rem;font-weight:700;letter-spacing:-.6px;color:var(--amber);line-height:1.1" id="sumPendente">€0,00</div>
+        <div style="font-size:.75rem;color:var(--t3);margin-top:4px" id="sumPendenteN">0 faturas em aberto</div>
+        <div style="position:absolute;right:-12px;bottom:-12px;width:60px;height:60px;background:var(--amber-lt);border-radius:50%;opacity:.6;pointer-events:none"></div>
       </div>
 
       <!-- Secondary: Clientes ativos -->
-      <div class="card" style="padding:16px 18px;background:var(--bg);box-shadow:none;border-color:var(--border)">
-        <div style="font-size:.7rem;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--t2);margin-bottom:4px">Clientes ativos</div>
-        <div class="mono" style="font-size:1.35rem;font-weight:700;color:var(--t1)" id="sumClSec">5</div>
-        <div style="font-size:.73rem;color:var(--t3);margin-top:2px">8 projetos em curso</div>
+      <div class="card" style="padding:10px 14px;background:var(--bg);box-shadow:none;border-color:var(--border)">
+        <div style="font-size:.7rem;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--t2);margin-bottom:3px">Clientes ativos</div>
+        <div class="mono" style="font-size:1.15rem;font-weight:700;color:var(--t1)" id="sumClSec">0</div>
       </div>
 
       <!-- Secondary: Limite IVA -->
-      <div class="card" style="padding:16px 18px;background:var(--bg);box-shadow:none;border-color:var(--border)">
-        <div style="font-size:.7rem;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--t2);margin-bottom:4px">Limite IVA (art. 53.º)</div>
-        <div class="mono" style="font-size:1.35rem;font-weight:700;color:var(--amber)">77%</div>
-        <div class="pg-wrap" style="margin:5px 0 3px;height:5px"><div class="pg-fill a" style="width:77%"></div></div>
-        <div style="font-size:.71rem;color:var(--t3)">€11.240 de €14.500</div>
+      <div class="card" style="padding:10px 14px;background:var(--bg);box-shadow:none;border-color:var(--border)">
+        <div style="font-size:.7rem;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--t2);margin-bottom:3px">Limite IVA (art. 53.º)</div>
+        <div class="mono" style="font-size:1.15rem;font-weight:700;color:var(--amber)" id="clIVApct">—</div>
+        <div class="pg-wrap" style="margin:4px 0 2px;height:5px"><div class="pg-fill a" id="clIVAbar" style="width:0%"></div></div>
+        <div style="font-size:.71rem;color:var(--t3)" id="clIVAsub">—</div>
       </div>
 
     </div>
 
     <!-- SPLIT LAYOUT — fixed height, lista fixa à esquerda -->
-    <div class="clients-layout" style="height:calc(100vh - var(--hh) - 170px);min-height:500px">
+    <div class="clients-layout" style="height:calc(100vh - var(--hh) - 120px);min-height:500px">
       <!-- LEFT LIST — fixed, doesn't resize -->
       <div class="cl-left" style="height:100%;overflow:hidden">
         <div class="cl-search">
@@ -258,7 +256,7 @@
         <div class="cl-list" id="clListEl" style="overflow-y:auto;flex:1"></div>
         <div class="add-cl" onclick="abrirModalCl()">
           <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-          Adicionar cliente
+          Novo cliente
         </div>
       </div>
 
@@ -292,16 +290,16 @@
             <div class="cd-st"><div class="cd-st-lbl">Estado</div><div class="cd-st-v"><span class="badge" id="cdStatus" style="font-size:.82rem">Em dia</span></div></div>
           </div>
           <div class="tabs">
-            <button class="tab-btn" id="tab-rec-btn" onclick="switchTab(this,'tr')">Recibos</button>
+            <button class="tab-btn active" id="tab-rec-btn" onclick="switchTab(this,'tr')">Recibos</button>
             <button class="tab-btn" id="tab-proj-btn" onclick="switchTab(this,'tp')">Projetos</button>
             <button class="tab-btn" id="tab-cont-btn" onclick="switchTab(this,'tc')">Contactos</button>
             <button class="tab-btn" id="tab-nota-btn" onclick="switchTab(this,'tn')">Notas</button>
-            <button class="tab-btn active" id="tab-doc-btn" onclick="switchTab(this,'td')">Documentos</button>
+            <button class="tab-btn" id="tab-doc-btn" onclick="switchTab(this,'td')">Documentos</button>
           </div>
         </div>
         <div class="cd-body">
           <!-- TAB: Recibos (dynamic) -->
-          <div class="tab-pane" id="tr">
+          <div class="tab-pane active" id="tr">
             <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
               <p class="sec-lbl" style="margin:0">Recibos emitidos</p>
               <button class="btn btn-p btn-sm" onclick="abrirModalRecibo(ativo)">
@@ -318,7 +316,7 @@
           <!-- TAB: Notas -->
           <div class="tab-pane" id="tn"><p style="color:var(--t3);font-size:.82rem;padding:18px 0">Sem notas adicionadas.</p></div>
           <!-- TAB: Documentos -->
-          <div class="tab-pane active" id="td">
+          <div class="tab-pane" id="td">
             <!-- Header row -->
             <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
               <div style="font-size:.92rem;font-weight:700;color:var(--t1)">
