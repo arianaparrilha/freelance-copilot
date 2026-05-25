@@ -198,16 +198,16 @@ function renderSummary(){
   if(cIVApctEl){cIVApctEl.textContent=fp(pIVA);cIVApctEl.style.color=ivaColor}
   const cIVAbarEl=document.getElementById('clIVAbar')
   if(cIVAbarEl){cIVAbarEl.style.width=pIVA+'%';cIVAbarEl.className=ivaCls}
-  set('clIVAsub',`${f0(total)} de ${f0(LIMITE_IVA)}`)
+  set('clIVAsub',`${f0(totalEmitido)} de ${f0(LIMITE_IVA)}`)
   // dashboard
-  set('dashTotalV',f2(total))
+  set('dashTotalV',f2(totalPago))
   const dIVApctEl=document.getElementById('dashIVApct')
   if(dIVApctEl){dIVApctEl.textContent=fp(pIVA);dIVApctEl.style.color=ivaColor}
   const dIVAbarEl=document.getElementById('dashIVAbar')
   if(dIVAbarEl){dIVAbarEl.style.width=pIVA+'%';dIVAbarEl.className=ivaCls}
-  set('dashIVAsub',`${f0(total)} / ${f0(LIMITE_IVA)}`)
+  set('dashIVAsub',`${f0(totalEmitido)} / ${f0(LIMITE_IVA)}`)
   // estimador
-  set('totalFaturadoDisplay',f2(total))
+  set('totalFaturadoDisplay',f2(totalEmitido))
 }
 
 /* ───────────────────────────────────────
