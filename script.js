@@ -1151,6 +1151,41 @@ async function guardarEdicaoCliente(){
 }
 
 /* ───────────────────────────────────────
+   ATIVIDADE RECENTE
+─────────────────────────────────────── */
+async function renderActivity(){
+  const el=document.getElementById('actItems'); if(!el) return
+  const [{ data: rClients }, { data: rInvoices }, { data: rDocs }] = await Promise.all([
+    db.from('clients').select('id,name,created_at').order('created_at',{ascending:false}).limit(8),
+    db.from('invoices').select('id,invoice_number,amount,created_at,client_id').order('created_at',{ascending:false}).limit(8),
+    db.from('documents').select('id,name,created_at,client_id').order('created_at',{ascending:false}).limit(8),
+  ])
+  const events=[]
+  ;(rClients||[]).forEach(c=>events.push({type:'client',date:new Date(c.created_at),label:`Novo cliente · ${c.name}`,sub:null}))
+  ;(rInvoices||[]).forEach(f=>{
+    const cl=clientes.find(x=>x.id===f.client_id)
+    events.push({type:'invoice',date:new Date(f.created_at),label:`Recibo ${f.invoice_number||'—'} · ${cl?cl.nome:'—'}`,sub:f2(parseFloat(f.amount)||0)})
+  })
+  ;(rDocs||[]).forEach(d=>{
+    const cl=clientes.find(x=>x.id===d.client_id)
+    events.push({type:'doc',date:new Date(d.created_at),label:d.name||'—',sub:cl?cl.nome:'—'})
+  })
+  events.sort((a,b)=>b.date-a.date)
+  const top=events.slice(0,6)
+  const icoCl=`<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>`
+  const icoInv=`<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>`
+  const icoDoc=`<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><polyline points="13 2 13 9 20 9"/></svg>`
+  const icoMap={client:icoCl,invoice:icoInv,doc:icoDoc}
+  const clsMap={client:'ai-cl',invoice:'ai-inv',doc:'ai-doc'}
+  el.innerHTML=top.length===0
+    ?'<p style="color:var(--t3);font-size:.82rem;padding:8px 0">Sem atividade recente.</p>'
+    :top.map(e=>{
+        const dt=e.date.toLocaleDateString('pt-PT',{day:'2-digit',month:'short'})
+        return `<div class="act-item"><div class="act-ico ${clsMap[e.type]}">${icoMap[e.type]}</div><div class="act-body"><div class="act-ev">${escH(e.label)}</div>${e.sub?`<div class="act-mt">${escH(e.sub)}</div>`:''}</div><div class="act-dt">${dt}</div></div>`
+      }).join('')
+}
+
+/* ───────────────────────────────────────
    CALENDÁRIO FISCAL 2026
 ─────────────────────────────────────── */
 const MESES_PT=['JAN','FEV','MAR','ABR','MAI','JUN','JUL','AGO','SET','OUT','NOV','DEZ']
@@ -1218,6 +1253,7 @@ function renderCalendar(){
   const scMain=document.getElementById('sumCl'); if(scMain) scMain.textContent=clientes.length
   setTimeout(calcEst,100)
   renderCalendar()
+  renderActivity()
 
   document.querySelectorAll('.modal-ov').forEach(ov=>{
     ov.addEventListener('click',e=>{if(e.target===ov) ov.classList.remove('open')})
