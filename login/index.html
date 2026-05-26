@@ -88,6 +88,29 @@
   .auth-toggle{text-align:center;margin-top:24px;font-size:var(--text-sm);color:var(--t3)}
   .auth-toggle a{color:var(--blue);text-decoration:none;font-weight:var(--fw-medium);cursor:pointer}
   .auth-toggle a:hover{text-decoration:underline}
+
+  .auth-divider{display:flex;align-items:center;gap:12px;margin:20px 0;font-size:var(--text-sm);color:var(--t3)}
+  .auth-divider::before,.auth-divider::after{content:'';flex:1;height:1px;background:var(--border)}
+
+  .auth-btn-ghost{
+    width:100%;
+    padding:11px;
+    background:transparent;
+    color:var(--t2);
+    border:1px solid var(--border);
+    border-radius:var(--rsm);
+    font-family:var(--font-heading);
+    font-size:var(--text-base);
+    font-weight:var(--fw-semibold);
+    cursor:pointer;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:8px;
+    transition:background .15s, border-color .15s, color .15s;
+  }
+  .auth-btn-ghost:hover{background:var(--bg);border-color:var(--border2);color:var(--t1)}
+  .auth-btn-ghost:disabled{opacity:.6;cursor:not-allowed}
 </style>
 </head>
 <body>
@@ -116,44 +139,36 @@
   <div class="auth-error" id="auth-error"></div>
   <div class="auth-success" id="auth-success"></div>
 
+  <div class="auth-divider">ou</div>
+  <button type="button" class="auth-btn-ghost" id="demo-btn" onclick="loginAsGuest()">
+    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+    Explorar como visitante
+  </button>
+
+  <!-- auth-toggle disabled — registration closed for now
   <div class="auth-toggle">
     <span id="toggle-text">Não tens conta?</span>
     <a id="toggle-link"> Criar conta</a>
   </div>
+  -->
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="../supabase-client.js"></script>
 <script>
-  let mode = 'login'
-
   const form = document.getElementById('auth-form')
   const btn = document.getElementById('auth-btn')
   const errorEl = document.getElementById('auth-error')
   const successEl = document.getElementById('auth-success')
+
+  /* registration disabled for now — toggle logic kept for future use
+  let mode = 'login'
   const toggleLink = document.getElementById('toggle-link')
   const toggleText = document.getElementById('toggle-text')
   const title = document.getElementById('auth-title')
   const sub = document.getElementById('auth-sub')
-
-  toggleLink.addEventListener('click', () => {
-    mode = mode === 'login' ? 'signup' : 'login'
-    errorEl.classList.remove('visible')
-    successEl.classList.remove('visible')
-    if (mode === 'signup') {
-      title.textContent = 'Criar conta'
-      sub.textContent = 'Começa a gerir as tuas finanças como freelancer.'
-      btn.textContent = 'Criar conta'
-      toggleText.textContent = 'Já tens conta?'
-      toggleLink.textContent = ' Entrar'
-    } else {
-      title.textContent = 'Bem-vindo de volta'
-      sub.textContent = 'Entra na tua conta para continuar.'
-      btn.textContent = 'Entrar'
-      toggleText.textContent = 'Não tens conta?'
-      toggleLink.textContent = ' Criar conta'
-    }
-  })
+  toggleLink.addEventListener('click', () => { ... })
+  */
 
   form.addEventListener('submit', async (e) => {
     e.preventDefault()
@@ -161,24 +176,17 @@
     const password = document.getElementById('password').value
 
     btn.disabled = true
-    btn.textContent = mode === 'login' ? 'A entrar...' : 'A criar conta...'
+    btn.textContent = 'A entrar...'
     errorEl.classList.remove('visible')
     successEl.classList.remove('visible')
 
-    const { error } = mode === 'login'
-      ? await db.auth.signInWithPassword({ email, password })
-      : await db.auth.signUp({ email, password })
+    const { error } = await db.auth.signInWithPassword({ email, password })
 
     if (error) {
       errorEl.textContent = translateError(error.message)
       errorEl.classList.add('visible')
       btn.disabled = false
-      btn.textContent = mode === 'login' ? 'Entrar' : 'Criar conta'
-    } else if (mode === 'signup') {
-      successEl.textContent = 'Conta criada! Verifica o teu email para confirmar.'
-      successEl.classList.add('visible')
-      btn.disabled = false
-      btn.textContent = 'Criar conta'
+      btn.textContent = 'Entrar'
     } else {
       window.location.href = '/'
     }
@@ -190,6 +198,27 @@
     if (msg.includes('User already registered')) return 'Este email já tem uma conta.'
     if (msg.includes('Password should be')) return 'A palavra-passe deve ter pelo menos 6 caracteres.'
     return 'Ocorreu um erro. Tenta novamente.'
+  }
+
+  async function loginAsGuest() {
+    const demoBtn = document.getElementById('demo-btn')
+    demoBtn.disabled = true
+    demoBtn.innerHTML = 'A entrar...'
+    errorEl.classList.remove('visible')
+
+    const res = await fetch('/.netlify/functions/demo-login')
+    const json = await res.json()
+
+    if (!res.ok || json.error || !json.session) {
+      errorEl.textContent = 'Modo visitante indisponível. Tenta mais tarde.'
+      errorEl.classList.add('visible')
+      demoBtn.disabled = false
+      demoBtn.innerHTML = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg> Explorar como visitante'
+      return
+    }
+
+    await db.auth.setSession(json.session)
+    window.location.href = '/'
   }
 
   db.auth.getSession().then(({ data: { session } }) => {
