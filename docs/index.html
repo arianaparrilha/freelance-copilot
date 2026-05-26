@@ -39,7 +39,7 @@
   .ds-value{font-family:var(--mono);font-size:.72rem;color:var(--t3)}
 
   /* ── Specimen card ── */
-  .ds-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--rlg);overflow:hidden;margin-bottom:12px}
+  .ds-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--rlg);margin-bottom:12px}
   .ds-card-preview{padding:28px 28px 20px}
   .ds-card-meta{display:flex;align-items:center;gap:10px;padding:10px 28px;background:var(--bg);border-top:1px solid var(--border)}
   .ds-card-meta-label{font-size:.75rem;font-weight:600;color:var(--t2)}
@@ -101,6 +101,7 @@
         <a href="#badges">Badges</a>
         <a href="#buttons">Buttons</a>
         <a href="#progress">Progress Bars</a>
+        <a href="#stat-cards">Stat Cards</a>
       </div>
     </div>
   </nav>
@@ -396,23 +397,23 @@
 
       <!-- Default (above) -->
       <div class="ds-card" style="margin-bottom:12px">
-        <div class="ds-card-preview" style="display:flex;align-items:center;gap:32px;flex-wrap:wrap">
+        <div class="ds-card-preview" style="display:flex;align-items:center;gap:32px;flex-wrap:wrap;padding-top:56px">
           <span class="tt" tabindex="0" role="button" aria-label="Exemplo de tooltip">
             <span style="display:inline-flex;align-items:center;gap:6px;font-size:.84rem;font-weight:500;color:var(--blue);padding:7px 13px;border:1px solid var(--blue-lt);background:var(--blue-lt);border-radius:var(--rsm)">
-              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><circle cx="12" cy="8" r="1" fill="currentColor" stroke="none"/></svg>
               Hover ou Tab aqui
             </span>
             <span class="tt-body" role="tooltip">Este é o tooltip padrão. Aparece acima do elemento de forma centralizada.</span>
           </span>
 
           <span class="tt" tabindex="0" role="button" aria-label="Ícone de informação">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--t3)" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--t3)" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><circle cx="12" cy="8" r="1" fill="currentColor" stroke="none"/></svg>
             <span class="tt-body" role="tooltip">Tooltip num ícone de informação. Útil para explicar campos ou métricas sem ocupar espaço.</span>
           </span>
 
           <span class="tt tt-right" tabindex="0" role="button" aria-label="Tooltip à direita">
             <span style="display:inline-flex;align-items:center;gap:6px;font-size:.84rem;font-weight:500;padding:7px 13px;border:1px solid var(--border2);background:var(--surface);border-radius:var(--rsm);color:var(--t2)">
-              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><circle cx="12" cy="8" r="1" fill="currentColor" stroke="none"/></svg>
               Variante direita
             </span>
             <span class="tt-body" role="tooltip">Tooltip posicionado à direita com a classe <code style="font-family:monospace;font-size:.8em">.tt-right</code>.</span>
@@ -513,6 +514,112 @@
           <span class="ds-value"><span class="ds-token">.pg-wrap</span> + <span class="ds-token">.pg-fill</span> + <span class="ds-token">.g</span> / <span class="ds-token">.a</span> / <span class="ds-token">.r</span></span>
         </div>
       </div>
+    </div>
+
+    <!-- ── STAT CARDS ── -->
+    <div class="ds-section" id="stat-cards">
+      <div class="ds-section-title">Stat Cards</div>
+      <div class="ds-section-desc">Usados para apresentar um valor numérico com contexto. A cor semântica aparece apenas na faixa lateral esquerda e no valor — o título é sempre neutro. Existem duas variantes de tamanho.</div>
+
+      <!-- Normal -->
+      <div class="ds-card">
+        <div class="ds-card-preview" style="padding-top:28px">
+          <p style="font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--t3);margin-bottom:14px">Normal</p>
+          <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:13px">
+
+            <div class="card est-card ec-liq">
+              <div class="ec-lbl"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg> Recebe líquido</div>
+              <div class="ec-val g mono">€1.225</div>
+              <div class="ec-sub">61% do bruto · −€350 despesas</div>
+              <div class="ec-prog"><div class="ec-bar eb-g" style="width:61%"></div></div>
+            </div>
+
+            <div class="card est-card ec-irs">
+              <div class="ec-lbl"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="19" y1="5" x2="5" y2="19"/><circle cx="6.5" cy="6.5" r="2.5"/><circle cx="17.5" cy="17.5" r="2.5"/></svg> IRS estimado</div>
+              <div class="ec-val b mono">€500</div>
+              <div class="ec-sub">Retenção: 25% (Cat. B)</div>
+              <div class="ec-prog"><div class="ec-bar eb-b" style="width:25%"></div></div>
+            </div>
+
+            <div class="card est-card ec-ss">
+              <div class="ec-lbl"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg> Segurança Social</div>
+              <div class="ec-val p mono">€0 — Isento</div>
+              <div class="ec-sub">Rend. relevante abaixo de €2.090/mês</div>
+              <div class="ec-prog"><div class="ec-bar eb-p" style="width:0%"></div></div>
+            </div>
+
+          </div>
+        </div>
+        <div class="ds-card-meta">
+          <span class="ds-card-meta-label">Classes</span>
+          <span class="ds-value"><span class="ds-token">.card.est-card</span> + variante de cor <span class="ds-token">.ec-liq</span> / <span class="ds-token">.ec-irs</span> / <span class="ds-token">.ec-ss</span></span>
+        </div>
+      </div>
+
+      <!-- Compact -->
+      <div class="ds-card">
+        <div class="ds-card-preview" style="padding-top:28px">
+          <p style="font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--t3);margin-bottom:14px">Compact</p>
+          <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px">
+
+            <div class="card est-card est-card-sm ec-liq">
+              <div class="ec-lbl"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg> Recebe líquido</div>
+              <div class="ec-val g mono">€1.225</div>
+              <div class="ec-sub">61% do bruto</div>
+              <div class="ec-prog"><div class="ec-bar eb-g" style="width:61%"></div></div>
+            </div>
+
+            <div class="card est-card est-card-sm ec-irs">
+              <div class="ec-lbl"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="19" y1="5" x2="5" y2="19"/><circle cx="6.5" cy="6.5" r="2.5"/><circle cx="17.5" cy="17.5" r="2.5"/></svg> IRS estimado</div>
+              <div class="ec-val b mono">€500</div>
+              <div class="ec-sub">25% (Cat. B)</div>
+              <div class="ec-prog"><div class="ec-bar eb-b" style="width:25%"></div></div>
+            </div>
+
+            <div class="card est-card est-card-sm ec-ss">
+              <div class="ec-lbl"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg> SS</div>
+              <div class="ec-val p mono">€0</div>
+              <div class="ec-sub">Isento</div>
+              <div class="ec-prog"><div class="ec-bar eb-p" style="width:0%"></div></div>
+            </div>
+
+          </div>
+        </div>
+        <div class="ds-card-meta">
+          <span class="ds-card-meta-label">Classes</span>
+          <span class="ds-value">Adicionar <span class="ds-token">.est-card-sm</span> ao elemento <span class="ds-token">.est-card</span></span>
+        </div>
+      </div>
+
+      <!-- Mobile -->
+      <div class="ds-card">
+        <div class="ds-card-preview" style="padding-top:28px">
+          <p style="font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--t3);margin-bottom:14px">Mobile (≤520px) — 1 coluna</p>
+          <div style="display:flex;flex-direction:column;gap:10px;max-width:320px">
+
+            <div class="card est-card ec-liq">
+              <div class="ec-lbl"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg> Recebe líquido</div>
+              <div class="ec-val g mono">€1.225</div>
+              <div class="ec-sub">61% do bruto · −€350 despesas</div>
+              <div class="ec-prog"><div class="ec-bar eb-g" style="width:61%"></div></div>
+            </div>
+
+            <div class="card est-card ec-irs">
+              <div class="ec-lbl"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="19" y1="5" x2="5" y2="19"/><circle cx="6.5" cy="6.5" r="2.5"/><circle cx="17.5" cy="17.5" r="2.5"/></svg> IRS estimado</div>
+              <div class="ec-val b mono">€500</div>
+              <div class="ec-sub">Retenção: 25% (Cat. B)</div>
+              <div class="ec-prog"><div class="ec-bar eb-b" style="width:25%"></div></div>
+            </div>
+
+          </div>
+          <p style="font-size:.74rem;color:var(--t3);margin-top:12px">Em ecrãs ≤880px as cards ficam em 2 colunas; em ≤520px ficam em 1 coluna (stack total).</p>
+        </div>
+        <div class="ds-card-meta">
+          <span class="ds-card-meta-label">Responsive</span>
+          <span class="ds-value"><span class="ds-token">@media(max-width:880px)</span> → 2 col · <span class="ds-token">@media(max-width:520px)</span> → 1 col</span>
+        </div>
+      </div>
+
     </div>
 
   </main>

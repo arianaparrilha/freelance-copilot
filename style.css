@@ -112,6 +112,7 @@ input,select,textarea{font-family:inherit}
 .user-menu-trigger{display:flex;align-items:center;gap:8px;background:none;border:none;cursor:pointer;padding:5px 8px;border-radius:var(--rsm);transition:background .12s}
 .user-menu-trigger:hover{background:var(--bg)}
 .user-av-sm{width:30px;height:30px;border-radius:50%;background:var(--blue);color:#fff;font-family:var(--font-heading);font-weight:var(--fw-semibold);font-size:var(--text-sm);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.user-av-lg{width:56px;height:56px;border-radius:50%;background:var(--blue);color:#fff;font-family:var(--font-heading);font-weight:700;font-size:1.4rem;display:flex;align-items:center;justify-content:center;flex-shrink:0}
 .user-menu-info{display:flex;flex-direction:column;align-items:flex-start}
 .user-menu-name{font-size:var(--text-sm);font-weight:var(--fw-semibold);color:var(--t1);font-family:var(--font-heading);line-height:1.2}
 .user-menu-role{font-size:var(--text-xs);color:var(--t3);line-height:1.2}
@@ -339,17 +340,26 @@ hr.dv{border:none;border-top:1px solid var(--border);margin:16px 0}
 .rb-sub{font-size:.75rem;color:var(--green);opacity:.8;font-weight:400}
 
 .est-cards{display:grid;grid-template-columns:1fr 1fr 1fr;gap:13px;margin:16px 0}
-.est-card{padding:17px 19px;position:relative;overflow:hidden}
-.est-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px}
-.ec-liq::before{background:var(--green)}.ec-irs::before{background:var(--amber)}.ec-ss::before{background:var(--red)}
-.ec-lbl{font-size:.76rem;font-weight:600;display:flex;align-items:center;gap:4px;margin-bottom:5px}
-.ec-lbl.g{color:var(--green)}.ec-lbl.a{color:var(--amber)}.ec-lbl.r{color:var(--red)}
-.ec-val{font-size:1.55rem;font-weight:700;letter-spacing:-.5px;margin-bottom:3px}
-.ec-val.g{color:var(--green)}.ec-val.a{color:var(--amber)}.ec-val.r{color:var(--red)}
+
+/* Stat card — normal */
+.est-card{padding:20px 20px 20px 23px;position:relative;overflow:hidden}
+.est-card::before{content:'';position:absolute;top:0;left:0;bottom:0;width:3px}
+.ec-liq::before{background:var(--green)}
+.ec-irs::before{background:var(--blue)}
+.ec-ss::before{background:var(--purple)}
+.ec-lbl{font-size:.75rem;font-weight:600;color:var(--t2);display:flex;align-items:center;gap:4px;margin-bottom:8px}
+.ec-val{font-size:1.7rem;font-weight:800;letter-spacing:-.5px;margin-bottom:4px}
+.ec-val.g{color:var(--green)}.ec-val.b{color:var(--blue)}.ec-val.p{color:var(--purple)}
 .ec-sub{font-size:.73rem;color:var(--t3);line-height:1.5}
-.ec-prog{margin-top:10px;height:3px;background:var(--border);border-radius:99px;overflow:hidden}
+.ec-prog{margin-top:12px;height:4px;background:var(--border);border-radius:99px;overflow:hidden}
 .ec-bar{height:100%;border-radius:99px;transition:width .6s cubic-bezier(.4,0,.2,1)}
-.eb-g{background:var(--green)}.eb-a{background:var(--amber)}.eb-r{background:var(--red)}
+.eb-g{background:var(--green)}.eb-b{background:var(--blue)}.eb-p{background:var(--purple)}
+
+/* Stat card — compact */
+.est-card-sm{padding:13px 16px 13px 19px}
+.est-card-sm .ec-lbl{font-size:.72rem;margin-bottom:5px}
+.est-card-sm .ec-val{font-size:1.2rem}
+.est-card-sm .ec-prog{margin-top:8px;height:3px}
 
 .lim-grid{display:grid;grid-template-columns:1fr 1fr;gap:13px;margin-bottom:20px}
 .lim-card{padding:17px 19px}
@@ -428,14 +438,178 @@ hr.dv{border:none;border-top:1px solid var(--border);margin:16px 0}
 }
 #mdUploadZone.drag-over{border-color:var(--green);background:var(--green-lt)}
 
+/* ═══════════════════════════════════════════
+   RESUMO FISCAL — DATA STRIP
+═══════════════════════════════════════════ */
+.est-data-strip{display:flex;align-items:center;justify-content:space-between;padding:14px 20px;margin-bottom:16px;gap:12px;flex-wrap:wrap}
+.est-strip-fields{display:flex;align-items:center;gap:0;flex:1;flex-wrap:wrap;min-width:0}
+.est-strip-field{display:flex;flex-direction:column;gap:2px;padding:0 18px}
+.est-strip-field:first-child{padding-left:0}
+.est-strip-lbl{font-size:.72rem;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--t3)}
+.est-strip-val{font-size:.9rem;font-weight:700;color:var(--t1)}
+.est-strip-sep{width:1px;height:32px;background:var(--border);flex-shrink:0}
+.est-strip-edit{display:flex;align-items:center;gap:6px;font-size:.78rem;font-weight:600;color:var(--blue);white-space:nowrap;flex-shrink:0}
+.est-strip-edit:hover{text-decoration:underline}
+
+/* ═══════════════════════════════════════════
+   PLANO E FATURAÇÃO
+═══════════════════════════════════════════ */
+.plano-top-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-bottom:4px}
+.plano-current-card{padding:24px}
+.plano-badge-row{display:flex;align-items:center;gap:10px;margin-bottom:14px}
+.plano-badge{display:inline-block;font-size:.72rem;font-weight:700;letter-spacing:.04em;text-transform:uppercase;padding:3px 10px;border-radius:99px}
+.plano-badge-free{background:var(--bg);border:1px solid var(--border2);color:var(--t2)}
+.plano-badge-pro{background:var(--blue-lt);border:1px solid #bfdbfe;color:var(--blue)}
+.plano-badge-biz{background:var(--purple-lt);border:1px solid #ddd6fe;color:var(--purple)}
+.plano-current-label{font-size:.76rem;color:var(--t3);font-weight:500}
+.plano-price-row{display:flex;align-items:baseline;gap:4px;margin-bottom:8px}
+.plano-price{font-size:2rem;font-weight:800;color:var(--t1);line-height:1}
+.plano-price-period{font-size:.85rem;color:var(--t3);font-weight:500}
+.plano-desc{font-size:.8rem;color:var(--t3);margin-bottom:18px;line-height:1.5}
+.plano-features{list-style:none;padding:0;margin:0 0 20px;display:flex;flex-direction:column;gap:9px}
+.plano-feat{display:flex;align-items:center;gap:8px;font-size:.83rem;color:var(--t1)}
+.plano-feat-no{opacity:.6}
+
+/* Usage card */
+.plano-usage-card{padding:24px}
+.plano-usage-list{display:flex;flex-direction:column;gap:18px}
+.plano-usage-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:7px}
+.plano-usage-label{font-size:.82rem;color:var(--t2);font-weight:500}
+.plano-usage-val{font-size:.82rem;font-weight:700}
+.plano-usage-green{color:var(--green)}
+.plano-usage-amber{color:var(--amber)}
+.plano-usage-red{color:var(--red)}
+.plano-bar-track{height:6px;background:var(--border);border-radius:99px;overflow:hidden}
+.plano-bar-fill{height:100%;border-radius:99px;transition:width .4s ease}
+.plano-bar-green{background:var(--green)}
+.plano-bar-amber{background:var(--amber)}
+.plano-bar-red{background:var(--red)}
+.plano-usage-hint{font-size:.74rem;color:var(--amber);margin-top:5px;font-weight:500}
+
+/* Plan comparison grid */
+.plano-compare-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.plano-compare-card{padding:24px;position:relative;transition:box-shadow .15s}
+.plano-compare-tier{font-size:.82rem;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--t3);margin-bottom:10px}
+.plano-compare-price-row{display:flex;align-items:baseline;gap:3px;margin-bottom:10px}
+.plano-compare-price{font-size:1.8rem;font-weight:800;color:var(--t1);line-height:1}
+.plano-compare-period{font-size:.8rem;color:var(--t3);font-weight:500}
+.plano-compare-tag{font-size:.72rem;font-weight:700;border-radius:99px;padding:3px 10px;margin-bottom:18px;display:inline-block}
+.plano-compare-tag-current{background:var(--bg);border:1px solid var(--border2);color:var(--t3)}
+.plano-compare-tag-popular{background:var(--blue-lt);color:var(--blue)}
+.plano-compare-tag-biz{background:var(--purple-lt);color:var(--purple)}
+.plano-compare-feats{list-style:none;padding:0;margin:0 0 20px;display:flex;flex-direction:column;gap:8px;font-size:.82rem;color:var(--t2);line-height:1.4}
+.plano-compare-feats li::before{content:"✓  ";color:var(--green);font-weight:700}
+.plano-feat-muted{color:var(--t3)!important}
+.plano-feat-muted::before{content:"";margin:0}
+.plano-compare-free{opacity:.85}
+.plano-compare-pro{border:2px solid var(--blue)!important}
+.plano-compare-biz{border:2px solid #c4b5fd!important}
+
+/* ═══════════════════════════════════════════
+   MOBILE UTILITIES (always defined)
+═══════════════════════════════════════════ */
+.topbar-menu-btn{display:none;width:34px;height:34px;align-items:center;justify-content:center;border-radius:var(--rsm);color:var(--t2);transition:background .12s;flex-shrink:0}
+.topbar-menu-btn:hover{background:var(--bg)}
+.sb-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.35);z-index:99}
+.sb-overlay.open{display:block}
+/* Close btn inside sidebar — hidden on desktop */
+.sb-close{display:none;width:28px;height:28px;border-radius:var(--rsm);align-items:center;justify-content:center;color:var(--t3);margin-left:auto;flex-shrink:0;transition:background .12s}
+.sb-close:hover{background:var(--bg)}
+/* Status tag — replaces kpi-status card on tablet/phone */
+.kpi-ok-tag{display:none;align-items:center;gap:6px;font-size:.78rem;font-weight:600;color:var(--green);background:var(--green-lt);border:1px solid #a7f3d0;border-radius:99px;padding:5px 13px;width:fit-content;margin-bottom:16px}
+/* Client detail back button — hidden on desktop */
+.cd-back-btn{display:none;align-items:center;gap:6px;font-size:.82rem;font-weight:600;color:var(--blue);padding:10px 22px 9px;border-bottom:1px solid var(--border);cursor:pointer;background:none;border-top:none;border-left:none;border-right:none;width:100%;text-align:left;transition:background .1s}
+.cd-back-btn:hover{background:var(--blue-lt)}
+
+/* ═══════════════════════════════════════════
+   RESPONSIVE — tablet (≤880px)
+═══════════════════════════════════════════ */
 @media(max-width:880px){
   html{font-size:14px}
+  body{overflow-x:hidden}
+
+  /* Sidebar */
   .sidebar{transform:translateX(-100%);transition:transform .25s ease}
   .sidebar.open{transform:none;box-shadow:var(--sh-lg)}
-  .main{margin-left:0}
-  .kpi-row,.dash-grid,.dash-bot{grid-template-columns:1fr}
-  .est-cards,.lim-grid{grid-template-columns:1fr}
-  .clients-layout{grid-template-columns:1fr}
+  .main{margin-left:0;min-width:0}
+  .topbar-menu-btn{display:flex}
+  .topbar{padding:0 14px}
+  .sb-close{display:flex}
+
+  /* Page layout */
+  .page-header{padding:12px 16px 13px;flex-wrap:wrap;gap:10px;align-items:flex-start}
+  .page-content{padding:18px 16px 48px}
+
+  /* Dashboard KPI — 3 cards side by side, hide status card + secondary info */
+  .kpi-row{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .kpi-status{display:none}
+  .kpi-ok-tag{display:inline-flex}
+  .kpi-card{padding:12px 10px;min-width:0}
+  .kpi-v{font-size:1.15rem}
+  .kpi-lbl{font-size:.7rem;word-break:break-word}
+  .kpi-sub,.kpi-foot,.kpi-card .link{display:none!important}
+
+  /* Calendar + activity stay side by side on tablet */
+  .dash-bot{grid-template-columns:1fr}
+  .qa-grid{grid-template-columns:1fr 1fr}
+  .donut-sec{grid-template-columns:1fr;justify-items:center}
+
+  /* Clients summary — compact 2×2 */
+  .cl-kpi-grid{grid-template-columns:1fr 1fr!important}
+  .cl-kpi-grid .card{padding:9px 11px!important}
+  #sumTotal,#sumPendente{font-size:1.15rem!important}
+  #sumClSec,#clIVApct{font-size:1.05rem!important}
+
+  /* Clients panel: list full-width, detail hidden until selected */
+  .clients-layout{grid-template-columns:1fr!important;height:auto!important;overflow:hidden;min-width:0;width:100%}
+  .cl-left{width:100%;min-width:0;border-right:none;height:55vh!important;min-height:300px;max-height:480px}
+  .cd-panel{display:none;flex-direction:column}
+  .cd-panel.visible-mobile{display:flex;min-height:calc(100vh - var(--hh) - 60px)}
+  .cl-left.hidden-mobile{display:none!important}
+  .cd-back-btn{display:flex}
   .cd-stats{grid-template-columns:1fr 1fr}
+
+  /* Resumo Fiscal */
+  .est-cards{grid-template-columns:1fr 1fr}
+  .lim-grid{grid-template-columns:1fr}
+  .est-data-strip{flex-direction:column;align-items:flex-start;gap:14px}
+  .est-strip-fields{display:grid;grid-template-columns:1fr 1fr;gap:12px 0;width:100%}
+  .est-strip-sep{display:none}
+  .est-strip-field{padding:0 0 0 16px;border-left:1px solid var(--border)}
+  .est-strip-field:first-child,.est-strip-field:nth-child(2){padding-left:0;border-left:none}
   .fg4{grid-template-columns:1fr 1fr}
+
+  /* Tabs — horizontal scroll */
+  .tabs{overflow-x:auto;-webkit-overflow-scrolling:touch}
+  .tabs::-webkit-scrollbar{display:none}
+  .plano-compare-grid{grid-template-columns:1fr}
+  .plano-top-grid{grid-template-columns:1fr}
+}
+
+/* ═══════════════════════════════════════════
+   RESPONSIVE — phone (≤520px)
+═══════════════════════════════════════════ */
+@media(max-width:520px){
+  /* Sidebar goes full-width on phone */
+  .sidebar{width:100vw}
+
+  /* KPI cards: 1 column, full width, stacked */
+  .kpi-row{grid-template-columns:1fr}
+  .kpi-card{padding:13px 16px;min-width:0}
+  .kpi-v{font-size:1.3rem}
+  .kpi-lbl{font-size:.76rem}
+
+  .cl-kpi-grid{grid-template-columns:1fr 1fr!important}
+  .cl-left{height:50vh!important;min-height:260px;max-height:380px}
+  /* Stack calendar + activity on phone */
+  .dash-grid{grid-template-columns:1fr}
+  .fg2{grid-template-columns:1fr}
+  .page-content{padding:14px 12px 40px}
+  .page-header{padding:10px 12px 11px}
+  /* Modal becomes bottom sheet */
+  .modal-ov{padding:0;align-items:flex-end}
+  .modal{border-radius:var(--rxl) var(--rxl) 0 0;max-width:100%!important;max-height:88vh}
+  /* Resumo Fiscal — single column on phone */
+  .est-cards{grid-template-columns:1fr}
+  .est-strip-fields{grid-template-columns:1fr 1fr}
 }

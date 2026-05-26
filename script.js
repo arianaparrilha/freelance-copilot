@@ -1,7 +1,7 @@
 // Switch to the correct page immediately (before async auth) to avoid flash on refresh
 ;(()=>{
   const p=location.hash.slice(1)
-  const valid=['dashboard','clientes','estimador']
+  const valid=['dashboard','clientes','estimador','plano','perfil']
   if(!valid.includes(p)) return
   document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'))
   const el=document.getElementById('page-'+p)
@@ -34,9 +34,9 @@
         <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
       </button>
       <div class="user-menu-dropdown">
-        <a href="#" class="umd-item"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>O meu perfil</a>
+        <a href="#" class="umd-item" onclick="navegarPara('perfil');document.querySelectorAll('.user-menu-dropdown').forEach(d=>d.classList.remove('open'));return false"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>O meu perfil</a>
         <a href="#" class="umd-item"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93l-1.41 1.41M4.93 4.93l1.41 1.41M12 2v2M12 20v2M20 12h2M2 12h2M19.07 19.07l-1.41-1.41M4.93 19.07l1.41-1.41"/></svg>Definições</a>
-        <a href="#" class="umd-item"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>Plano e faturação</a>
+        <a href="#" class="umd-item" onclick="navegarPara('plano');document.querySelectorAll('.user-menu-dropdown').forEach(d=>d.classList.remove('open'));return false"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>Plano e faturação</a>
         <div class="umd-sep"></div>
         <button class="umd-item umd-signout" onclick="signOut()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>Terminar sessão</button>
       </div>
@@ -213,9 +213,17 @@ function renderSummary(){
 /* ───────────────────────────────────────
    NAVIGATION
 ─────────────────────────────────────── */
+function toggleSidebar(){
+  document.getElementById('sidebar').classList.toggle('open')
+  document.getElementById('sbOverlay').classList.toggle('open')
+}
+function closeMobileDetail(){
+  document.querySelector('.cl-left').classList.remove('hidden-mobile')
+  document.querySelector('.cd-panel').classList.remove('visible-mobile')
+}
 function nav(p){navegarPara(p)}
 function navegarPara(p, addToHistory=true){
-  const valid=['dashboard','clientes','estimador']
+  const valid=['dashboard','clientes','estimador','plano','perfil']
   if(!valid.includes(p)) p='dashboard'
   document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'))
   document.getElementById('page-'+p).classList.add('active')
@@ -224,7 +232,11 @@ function navegarPara(p, addToHistory=true){
   if(b) b.classList.add('active')
   if(p==='clientes') renderCl()
   if(p==='dashboard') renderActivity()
+  if(p==='perfil') renderPerfil()
+  if(p==='estimador') renderEstStrip()
   document.getElementById('sidebar').classList.remove('open')
+  const ovEl=document.getElementById('sbOverlay')
+  if(ovEl) ovEl.classList.remove('open')
   if(addToHistory) history.pushState({page:p},'','#'+p)
   else history.replaceState({page:p},'','#'+p)
 }
@@ -263,6 +275,11 @@ async function selCl(id){
   renderCl()
   const c=clientes.find(x=>x.id===id)
   if(!c) return
+  // On tablet/phone: hide list, show detail panel
+  if(window.innerWidth<=880){
+    document.querySelector('.cl-left').classList.add('hidden-mobile')
+    document.querySelector('.cd-panel').classList.add('visible-mobile')
+  }
   faturas[id] = await loadFaturas(id)
   documentos[id] = await loadDocumentos(id)
 
@@ -898,6 +915,43 @@ async function guardarDocumento(){
 ─────────────────────────────────────── */
 let formLocked = true
 
+/* ───────────────────────────────────────
+   PERFIL
+─────────────────────────────────────── */
+function renderPerfil(){
+  const user = currentUser
+  if(!user) return
+  const name = user.email.split('@')[0].replace(/[._]/g,' ').replace(/\b\w/g,c=>c.toUpperCase())
+  const el = document.getElementById('perfilNome')
+  if(el) el.textContent = name
+  const em = document.getElementById('perfilEmail')
+  if(em) em.textContent = user.email
+  const av = document.getElementById('perfilAvatar')
+  if(av) av.textContent = name[0].toUpperCase()
+}
+
+function setPerfilEditable(editable){
+  const inputs = ['eR','eD','eI']
+  const selects = ['eReg','eT']
+  inputs.forEach(id=>{ const el=document.getElementById(id); if(el) el.readOnly=!editable })
+  selects.forEach(id=>{ const el=document.getElementById(id); if(el) el.disabled=!editable })
+  const emp = document.getElementById('eEmp')
+  if(emp) emp.disabled = !editable
+  document.getElementById('perfilBtnEditar').style.display = editable ? 'none' : 'flex'
+  document.getElementById('perfilBtnGuardar').style.display = editable ? 'flex' : 'none'
+  document.getElementById('perfilBtnCancelar').style.display = editable ? 'flex' : 'none'
+  if(!editable){
+    const msg = document.getElementById('perfilSavedMsg')
+    if(msg) msg.style.display = 'none'
+  }
+}
+
+function guardarPerfilFiscal(){
+  setPerfilEditable(false)
+  const msg = document.getElementById('perfilSavedMsg')
+  if(msg){ msg.style.display = 'flex'; setTimeout(()=>{ msg.style.display='none' }, 3000) }
+}
+
 function setFormEditable(editable){
   formLocked = !editable
   const inputs = ['eR','eD','eI']
@@ -913,16 +967,23 @@ function setFormEditable(editable){
   const emp=document.getElementById('eEmp')
   if(emp) emp.disabled=!editable
 
-  document.getElementById('btnEditar').style.display=editable?'none':'flex'
-  document.getElementById('btnCancelar').style.display=editable?'flex':'none'
-  document.getElementById('formSubtitle').textContent=editable
-    ?'A editar — altera os valores e clica em Calcular'
-    :'Revê os dados antes de calcular'
 }
 
 /* ───────────────────────────────────────
-   ESTIMADOR — CALC (uses fixed total)
+   RESUMO FISCAL
 ─────────────────────────────────────── */
+function renderEstStrip(){
+  const r=parseFloat(document.getElementById('eR')?.value)||0
+  const d=parseFloat(document.getElementById('eD')?.value)||0
+  const reg=document.getElementById('eReg')?.value||'simplificado'
+  const totalFats=Object.values(faturas).flat().filter(f=>f.estado!=='cancelada').reduce((s,f)=>s+f.valor,0)
+  set('stripR', r>0 ? `${f0(r)}/mês` : '—')
+  set('stripD', d>0 ? `${f0(d)}/mês` : '—')
+  set('stripReg', reg==='ato_isolado' ? 'Ato Isolado' : 'Regime Simplificado')
+  const displayEl=document.getElementById('totalFaturadoDisplay')
+  if(displayEl) displayEl.textContent=totalFats>0 ? f2(totalFats) : '—'
+}
+
 function calcEst(){
   const r=parseFloat(document.getElementById('eR').value)||0
   const d=parseFloat(document.getElementById('eD').value)||0
@@ -933,9 +994,12 @@ function calcEst(){
   const tco=document.getElementById('eEmp').checked
   if(r<=0){alert('Introduz um rendimento mensal válido.');return}
 
-  // Update total display
+  // Update data strip
   const displayEl=document.getElementById('totalFaturadoDisplay')
   if(displayEl) displayEl.textContent=f2(a)
+  set('stripR',`${f0(r)}/mês`)
+  set('stripD',`${f0(d)}/mês`)
+  set('stripReg',reg==='ato_isolado'?'Ato Isolado':'Regime Simplificado')
 
   const irs=r*0.25
   let ss=0, ssInfo=''
@@ -986,9 +1050,6 @@ function calcEst(){
   set('bIRS',`(${f2(ia)})`); set('bSS',ss===0?'€0 (Isento)':`(${f2(sa)})`); set('bLiq',f2(la))
   set('dCV',f0(la))
 
-  // Lock form after calculating
-  setFormEditable(false)
-
   // Timestamp
   const ts=document.getElementById('lastCalcTime')
   if(ts) ts.textContent=`Calculado às ${new Date().toLocaleTimeString('pt-PT',{hour:'2-digit',minute:'2-digit'})}`
@@ -1003,7 +1064,7 @@ function calcEst(){
 
   const svgIcons={
     'alert-triangle':'<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>',
-    'alert-circle':'<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>',
+    'alert-circle':'<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><circle cx="12" cy="8" r="1" fill="currentColor" stroke="none"/></svg>',
     'shield':'<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>',
     'trending-up':'<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>',
     'briefcase':'<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/></svg>',
@@ -1292,7 +1353,7 @@ function renderCalendar(){
   await loadClientes()
   await loadAllFaturas()
   renderCl()
-  if(clientes.length > 0) selCl(clientes[0].id)
+  if(clientes.length > 0 && window.innerWidth > 880) selCl(clientes[0].id)
   setFormEditable(false)
   renderSummary()
   setTimeout(calcEst,100)

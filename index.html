@@ -19,6 +19,9 @@
   <div class="sb-logo">
     <div class="logo-mark">F</div>
     <span class="logo-name">Fiscal Copilot</span>
+    <button class="sb-close" onclick="toggleSidebar()" aria-label="Fechar menu">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
   </div>
   <div class="nav-sec">
     <button class="nav-item active" data-page="dashboard">
@@ -34,7 +37,7 @@
     <button class="nav-item" data-page="estimador">
       <!-- bar-chart icon -->
       <svg class="ni" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
-      Estimador
+      Resumo Fiscal
     </button>
     <button class="nav-item">
       <!-- folder icon -->
@@ -55,7 +58,7 @@
         Tira o máximo
       </div>
       <div class="up-desc">Desbloqueia relatórios avançados e mais automações.</div>
-      <a href="#" class="up-btn">Fazer upgrade</a>
+      <a href="#" class="up-btn" onclick="navegarPara('plano');return false">Fazer upgrade</a>
     </div>
   </div>
 
@@ -69,11 +72,10 @@
 <!-- ══ PAGE: DASHBOARD ══ -->
 <div class="page active" id="page-dashboard">
   <div class="topbar">
+    <button class="topbar-menu-btn" onclick="toggleSidebar()" aria-label="Abrir menu">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    </button>
     <div class="tb-right">
-      <button class="btn btn-s btn-sm" style="gap:5px">
-        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-3.5"/></svg>
-        Sincronizar dados
-      </button>
       <button class="ico-btn"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></button>
       <button class="ico-btn" style="position:relative"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg><span class="notif-n">3</span></button>
     </div>
@@ -86,6 +88,11 @@
         <div class="tb-sub">Aqui tens o resumo do teu negócio.</div>
       </div>
     </div>
+    <!-- Status tag — shown on tablet/phone instead of status card -->
+    <div class="kpi-ok-tag">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2.5"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+      Estás a gerir bem!
+    </div>
     <!-- KPIs -->
     <div class="kpi-row">
       <div class="card kpi-card">
@@ -95,18 +102,18 @@
         <a href="#" class="link">Ver detalhes <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg></a>
       </div>
       <div class="card kpi-card">
-        <div class="kpi-lbl"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg> Limite IVA (art. 53.º) <span class="tt" tabindex="0" role="button" aria-label="Mais informação sobre o limite IVA"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg><span class="tt-body" role="tooltip">Calculado com base em todos os recibos emitidos (pagos e pendentes), conforme o art. 53.º do CIVA. O limite aplica-se ao volume de negócios, não apenas ao valor recebido.</span></span></div>
+        <div class="kpi-lbl"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg> Limite IVA (art. 53.º) <span class="tt" tabindex="0" role="button" aria-label="Mais informação sobre o limite IVA"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><circle cx="12" cy="8" r="1" fill="currentColor" stroke="none"/></svg><span class="tt-body" role="tooltip">Calculado com base em todos os recibos emitidos (pagos e pendentes), conforme o art. 53.º do CIVA. O limite aplica-se ao volume de negócios, não apenas ao valor recebido.</span></span></div>
         <div class="kpi-v" id="dashIVApct" style="color:var(--amber)">—</div>
         <div class="kpi-sub">do limite de isenção (€14.500)</div>
         <div class="pg-wrap"><div class="pg-fill a" id="dashIVAbar" style="width:0%"></div></div>
-        <div style="display:flex;justify-content:space-between;font-size:.7rem;color:var(--t3);margin-top:3px"><span id="dashIVAsub">—</span></div>
+        <div class="kpi-foot" style="display:flex;justify-content:space-between;font-size:.7rem;color:var(--t3);margin-top:3px"><span id="dashIVAsub">—</span></div>
       </div>
       <div class="card kpi-card">
         <div class="kpi-lbl"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg> Segurança Social</div>
         <div class="kpi-v" style="color:var(--green)">Isento</div>
         <div class="kpi-sub">rendimento relevante &lt; 4×IAS (€2.090/mês)</div>
         <div class="pg-wrap"><div class="pg-fill g" style="width:45%"></div></div>
-        <div style="display:flex;justify-content:space-between;font-size:.7rem;color:var(--t3);margin-top:3px">
+        <div class="kpi-foot" style="display:flex;justify-content:space-between;font-size:.7rem;color:var(--t3);margin-top:3px">
           <span>€937/mês rel. de €2.090 limite</span>
           <span style="color:var(--green);font-weight:600">45% do limiar</span>
         </div>
@@ -164,7 +171,7 @@
       <div>
         <p class="sec-lbl">Sugestão do Copilot</p>
         <div class="card sug-card">
-          <div class="sug-title"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg> Fiscal Copilot sugere</div>
+          <div class="sug-title"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><circle cx="12" cy="8" r="1" fill="currentColor" stroke="none"/></svg> Fiscal Copilot sugere</div>
           <div class="sug-body">Estás a 77% do limite de isenção de IVA. Com o ritmo atual, podes ultrapassá-lo em <strong>Agosto</strong>. Começa a planear a transição agora para evitar surpresas.</div>
           <button class="btn btn-p btn-sm" onclick="nav('estimador')">Simular cenário <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg></button>
         </div>
@@ -176,6 +183,9 @@
 <!-- ══ PAGE: CLIENTES ══ -->
 <div class="page" id="page-clientes">
   <div class="topbar">
+    <button class="topbar-menu-btn" onclick="toggleSidebar()" aria-label="Abrir menu">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    </button>
     <div class="tb-right">
       <button class="ico-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></button>
       <button class="ico-btn" style="position:relative"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg><span class="notif-n">3</span></button>
@@ -202,7 +212,7 @@
       </div>
     </div>
     <!-- RESUMO EM DESTAQUE — sempre visível no topo -->
-    <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:10px;margin-bottom:12px">
+    <div class="cl-kpi-grid" style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:10px;margin-bottom:12px">
 
       <!-- HERO: Total faturado — destaque máximo -->
       <div class="card" style="padding:12px 16px;border-left:4px solid var(--blue);grid-column:span 1">
@@ -233,7 +243,7 @@
 
       <!-- Secondary: Limite IVA -->
       <div class="card" style="padding:10px 14px;background:var(--bg);box-shadow:none;border-color:var(--border)">
-        <div style="font-size:.7rem;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--t2);margin-bottom:3px;display:flex;align-items:center;gap:5px">Limite IVA (art. 53.º) <span class="tt" tabindex="0" role="button" aria-label="Mais informação sobre o limite IVA"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg><span class="tt-body" role="tooltip">Calculado com base em todos os recibos emitidos (pagos e pendentes), conforme o art. 53.º do CIVA. O limite aplica-se ao volume de negócios, não apenas ao valor recebido.</span></span></div>
+        <div style="font-size:.7rem;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--t2);margin-bottom:3px;display:flex;align-items:center;gap:5px">Limite IVA (art. 53.º) <span class="tt" tabindex="0" role="button" aria-label="Mais informação sobre o limite IVA"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><circle cx="12" cy="8" r="1" fill="currentColor" stroke="none"/></svg><span class="tt-body" role="tooltip">Calculado com base em todos os recibos emitidos (pagos e pendentes), conforme o art. 53.º do CIVA. O limite aplica-se ao volume de negócios, não apenas ao valor recebido.</span></span></div>
         <div class="mono" style="font-size:1.15rem;font-weight:700;color:var(--amber)" id="clIVApct">—</div>
         <div class="pg-wrap" style="margin:4px 0 2px;height:5px"><div class="pg-fill a" id="clIVAbar" style="width:0%"></div></div>
         <div style="font-size:.71rem;color:var(--t3)" id="clIVAsub">—</div>
@@ -262,6 +272,10 @@
 
       <!-- RIGHT DETAIL -->
       <div class="cd-panel">
+        <button class="cd-back-btn" onclick="closeMobileDetail()">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>
+          Clientes
+        </button>
         <div class="cd-hdr" id="cdHdr">
           <div class="cd-top">
             <div class="cd-av" id="cdAv">ND</div>
@@ -341,14 +355,17 @@
 <!-- ══ PAGE: ESTIMADOR ══ -->
 <div class="page" id="page-estimador">
   <div class="topbar">
+    <button class="topbar-menu-btn" onclick="toggleSidebar()" aria-label="Abrir menu">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    </button>
     <div class="tb-right"></div>
   </div>
 
   <div class="page-content">
     <div class="page-header">
       <div>
-        <div class="tb-title">Estimador</div>
-        <div class="tb-sub">Calcula a tua situação fiscal estimada com base nos recibos registados.</div>
+        <div class="tb-title">Resumo Fiscal</div>
+        <div class="tb-sub">Estimativa fiscal com base nos teus recibos e dados de perfil.</div>
       </div>
       <div class="page-actions">
         <div style="display:flex;align-items:center;gap:7px;border:1px solid var(--border2);border-radius:var(--rsm);padding:5px 11px;font-size:.82rem;font-weight:600;background:var(--surface);cursor:pointer">
@@ -358,93 +375,50 @@
         </div>
       </div>
     </div>
-    <!-- SS info banner -->
-    <div class="al-info">
-      <svg class="al-ico" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
-      <div class="al-body">
-        <div class="al-title">SS com emprego por conta de outrem</div>
-        Estás <strong>isento de SS</strong> enquanto o rendimento relevante mensal (faturação × 70% ÷ 3) for inferior a <strong>4 × IAS = €2.090/mês</strong>. Se ultrapassares, pagas 21,4% apenas sobre o excedente.
+    <!-- Data strip — reads from profile fields -->
+    <div class="card est-data-strip">
+      <div class="est-strip-fields">
+        <div class="est-strip-field">
+          <span class="est-strip-lbl">Rendimento bruto</span>
+          <span class="est-strip-val mono" id="stripR">—</span>
+        </div>
+        <div class="est-strip-sep"></div>
+        <div class="est-strip-field">
+          <span class="est-strip-lbl">Despesas/mês</span>
+          <span class="est-strip-val mono" id="stripD">—</span>
+        </div>
+        <div class="est-strip-sep"></div>
+        <div class="est-strip-field">
+          <span class="est-strip-lbl">Regime</span>
+          <span class="est-strip-val" id="stripReg">—</span>
+        </div>
+        <div class="est-strip-sep"></div>
+        <div class="est-strip-field">
+          <span class="est-strip-lbl">Total faturado 2025</span>
+          <span class="est-strip-val mono" id="totalFaturadoDisplay">—</span>
+        </div>
       </div>
-      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="2" style="flex-shrink:0;margin-left:8px"><polyline points="9 18 15 12 9 6"/></svg>
+      <a href="#" class="est-strip-edit" onclick="navegarPara('perfil');return false">
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+        Editar dados
+      </a>
     </div>
 
-    <!-- FORM: Os teus dados — locked by default, unlock to edit -->
-    <div class="card" style="padding:22px 24px;margin-bottom:20px">
-      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
-        <div>
-          <p class="sec-lbl" style="margin:0">Os teus dados</p>
-          <p id="formSubtitle" style="font-size:.82rem;color:var(--t2);margin-top:3px">Revê os dados antes de calcular</p>
-        </div>
-        <div style="display:flex;gap:8px;align-items:center">
-          <!-- Shown when locked -->
-          <button class="btn btn-s btn-sm" id="btnEditar" onclick="setFormEditable(true)">
-            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
-            Editar dados
-          </button>
-          <!-- Shown when editing -->
-          <button class="btn btn-s btn-sm" id="btnCancelar" style="display:none" onclick="setFormEditable(false)">
-            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-            Cancelar
-          </button>
-        </div>
-      </div>
-
-      <!-- Total faturado — always read-only, auto from app data -->
-      <div style="background:var(--bg);border:1px solid var(--border);border-radius:var(--rsm);padding:12px 16px;margin-bottom:16px;display:flex;align-items:center;justify-content:space-between">
-        <div>
-          <div style="font-size:.75rem;font-weight:600;color:var(--t2);text-transform:uppercase;letter-spacing:.07em;margin-bottom:3px">Total faturado em 2025</div>
-          <div class="mono" style="font-size:1.4rem;font-weight:700;color:var(--t1)" id="totalFaturadoDisplay">€7.390,00</div>
-        </div>
-        <span class="badge bg-b" style="font-size:.72rem">Calculado automaticamente</span>
-      </div>
-
-      <div class="fg4" id="formFields" style="margin-bottom:14px">
-        <div class="fc">
-          <label>Rendimento bruto mensal (€/mês)</label>
-          <input type="number" id="eR" value="2000" readonly/>
-        </div>
-        <div class="fc">
-          <label>Despesas mensais estimadas (€/mês)</label>
-          <input type="number" id="eD" value="350" readonly/>
-        </div>
-        <div class="fc">
-          <label>Data de início de atividade</label>
-          <input type="date" id="eI" value="2024-01-01" readonly/>
-        </div>
-        <div class="fc">
-          <label>Regime fiscal</label>
-          <select id="eReg" disabled>
-            <option value="simplificado" selected>Regime Simplificado</option>
-            <option value="ato_isolado">Ato Isolado</option>
-          </select>
-        </div>
-      </div>
-      <div class="fc" style="margin-bottom:14px">
-        <label>Tipo de atividade</label>
-        <select id="eT" disabled style="max-width:320px">
-          <option value="servicos" selected>Prestação de serviços (Cat. B)</option>
-          <option value="outros">Outros rendimentos</option>
-        </select>
-      </div>
-      <div class="ck-row">
-        <input type="checkbox" id="eEmp" checked disabled/>
-        <label for="eEmp">Tenho emprego por conta de outrem (já desconto SS e IRS pela entidade patronal)</label>
-      </div>
-      <div style="margin-top:16px;display:flex;gap:10px;align-items:center">
-        <button class="btn btn-p" onclick="calcEst()">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
-          Calcular estimativa
-        </button>
-        <span id="lastCalcTime" style="font-size:.76rem;color:var(--t3)"></span>
-      </div>
+    <!-- Calc button -->
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:22px">
+      <button class="btn btn-p" onclick="calcEst()">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+        Calcular estimativa
+      </button>
+      <span id="lastCalcTime" style="font-size:.76rem;color:var(--t3)"></span>
     </div>
 
     <!-- RESULTS -->
     <p class="sec-lbl">Resumo mensal estimado</p>
     <div class="est-cards">
-      <div class="card est-card ec-liq"><div class="ec-lbl g"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg> Recebe líquido</div><div class="ec-val g mono" id="eVL">—</div><div class="ec-sub" id="eSL">—</div><div class="ec-prog"><div class="ec-bar eb-g" id="eBL" style="width:0%"></div></div></div>
-      <div class="card est-card ec-irs"><div class="ec-lbl a"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg> IRS estimado</div><div class="ec-val a mono" id="eVI">—</div><div class="ec-sub">Retenção: 25% (Cat. B)</div><div class="ec-prog"><div class="ec-bar eb-a" id="eBI" style="width:0%"></div></div></div>
-      <div class="card est-card ec-ss"><div class="ec-lbl r"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg> Segurança Social</div><div class="ec-val r mono" id="eVS">—</div><div class="ec-sub" id="eSS2">—</div><div class="ec-prog"><div class="ec-bar eb-r" id="eBS" style="width:0%"></div></div></div>
+      <div class="card est-card ec-liq"><div class="ec-lbl"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg> Recebe líquido</div><div class="ec-val g mono" id="eVL">—</div><div class="ec-sub" id="eSL">—</div><div class="ec-prog"><div class="ec-bar eb-g" id="eBL" style="width:0%"></div></div></div>
+      <div class="card est-card ec-irs"><div class="ec-lbl"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="19" y1="5" x2="5" y2="19"/><circle cx="6.5" cy="6.5" r="2.5"/><circle cx="17.5" cy="17.5" r="2.5"/></svg> IRS estimado</div><div class="ec-val b mono" id="eVI">—</div><div class="ec-sub">Retenção: 25% (Cat. B)</div><div class="ec-prog"><div class="ec-bar eb-b" id="eBI" style="width:0%"></div></div></div>
+      <div class="card est-card ec-ss"><div class="ec-lbl"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg> Segurança Social</div><div class="ec-val p mono" id="eVS">—</div><div class="ec-sub" id="eSS2">—</div><div class="ec-prog"><div class="ec-bar eb-p" id="eBS" style="width:0%"></div></div></div>
     </div>
 
     <!-- SS detail info (shown dynamically) -->
@@ -487,6 +461,298 @@
   </div>
 </div><!-- /estimador -->
 
+<!-- ══ PAGE: PLANO E FATURAÇÃO ══ -->
+<div class="page" id="page-plano">
+  <div class="topbar">
+    <button class="topbar-menu-btn" onclick="toggleSidebar()" aria-label="Abrir menu">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    </button>
+    <div class="tb-right"></div>
+  </div>
+
+  <div class="page-content">
+    <div class="page-header">
+      <div>
+        <div class="tb-title">Plano e Faturação</div>
+        <div class="tb-sub">Gere o teu plano e histórico de pagamentos.</div>
+      </div>
+    </div>
+
+    <!-- Current plan + Usage row -->
+    <div class="plano-top-grid">
+
+      <!-- Current plan card -->
+      <div class="card plano-current-card">
+        <div class="plano-badge-row">
+          <span class="plano-badge plano-badge-free">Plano Free</span>
+          <span class="plano-current-label">Plano atual</span>
+        </div>
+        <div class="plano-price-row">
+          <span class="plano-price">€0</span>
+          <span class="plano-price-period">/mês</span>
+        </div>
+        <p class="plano-desc">Ideal para começar. Sem cartão de crédito necessário.</p>
+        <ul class="plano-features">
+          <li class="plano-feat plano-feat-ok">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+            Até 3 clientes
+          </li>
+          <li class="plano-feat plano-feat-ok">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+            Até 20 recibos/ano
+          </li>
+          <li class="plano-feat plano-feat-ok">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+            5 extrações IA/mês
+          </li>
+          <li class="plano-feat plano-feat-ok">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+            Estimador fiscal
+          </li>
+          <li class="plano-feat plano-feat-no">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--t3)" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+            <span style="color:var(--t3)">Alertas fiscais por email</span>
+          </li>
+          <li class="plano-feat plano-feat-no">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--t3)" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+            <span style="color:var(--t3)">Exportar relatórios PDF</span>
+          </li>
+          <li class="plano-feat plano-feat-no">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--t3)" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+            <span style="color:var(--t3)">Suporte prioritário</span>
+          </li>
+        </ul>
+        <button class="btn btn-p" style="width:100%;margin-top:6px">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+          Fazer upgrade para Pro
+        </button>
+      </div>
+
+      <!-- Usage card -->
+      <div class="card plano-usage-card">
+        <p class="sec-lbl" style="margin:0 0 18px">Utilização este mês</p>
+        <div class="plano-usage-list">
+
+          <div class="plano-usage-item">
+            <div class="plano-usage-header">
+              <span class="plano-usage-label">Clientes</span>
+              <span class="plano-usage-val plano-usage-amber">2 / 3</span>
+            </div>
+            <div class="plano-bar-track">
+              <div class="plano-bar-fill plano-bar-amber" style="width:66%"></div>
+            </div>
+            <div class="plano-usage-hint">1 restante — considera fazer upgrade</div>
+          </div>
+
+          <div class="plano-usage-item">
+            <div class="plano-usage-header">
+              <span class="plano-usage-label">Recibos registados</span>
+              <span class="plano-usage-val plano-usage-green">2 / 20</span>
+            </div>
+            <div class="plano-bar-track">
+              <div class="plano-bar-fill plano-bar-green" style="width:10%"></div>
+            </div>
+          </div>
+
+          <div class="plano-usage-item">
+            <div class="plano-usage-header">
+              <span class="plano-usage-label">Extrações IA</span>
+              <span class="plano-usage-val plano-usage-green">2 / 5</span>
+            </div>
+            <div class="plano-bar-track">
+              <div class="plano-bar-fill plano-bar-green" style="width:40%"></div>
+            </div>
+          </div>
+
+          <div class="plano-usage-item">
+            <div class="plano-usage-header">
+              <span class="plano-usage-label">Armazenamento</span>
+              <span class="plano-usage-val plano-usage-green">12 MB / 500 MB</span>
+            </div>
+            <div class="plano-bar-track">
+              <div class="plano-bar-fill plano-bar-green" style="width:2.4%"></div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </div><!-- /plano-top-grid -->
+
+    <!-- Plan comparison -->
+    <p class="sec-lbl" style="margin:28px 0 14px">Comparar planos</p>
+    <div class="plano-compare-grid">
+
+      <!-- Free -->
+      <div class="card plano-compare-card plano-compare-free">
+        <div class="plano-compare-tier">Free</div>
+        <div class="plano-compare-price-row">
+          <span class="plano-compare-price">€0</span>
+          <span class="plano-compare-period">/mês</span>
+        </div>
+        <div class="plano-compare-tag plano-compare-tag-current">Plano atual</div>
+        <ul class="plano-compare-feats">
+          <li>3 clientes</li>
+          <li>20 recibos/ano</li>
+          <li>5 extrações IA/mês</li>
+          <li>Estimador fiscal</li>
+          <li class="plano-feat-muted">— Alertas por email</li>
+          <li class="plano-feat-muted">— Exportar PDF</li>
+          <li class="plano-feat-muted">— Suporte prioritário</li>
+        </ul>
+        <button class="btn btn-s" style="width:100%;opacity:.55;cursor:default" disabled>Plano atual</button>
+      </div>
+
+      <!-- Pro -->
+      <div class="card plano-compare-card plano-compare-pro">
+        <div class="plano-compare-tier">Pro</div>
+        <div class="plano-compare-price-row">
+          <span class="plano-compare-price">€9</span>
+          <span class="plano-compare-period">/mês</span>
+        </div>
+        <div class="plano-compare-tag plano-compare-tag-popular">⭐ Mais popular</div>
+        <ul class="plano-compare-feats">
+          <li>Clientes ilimitados</li>
+          <li>Recibos ilimitados</li>
+          <li>50 extrações IA/mês</li>
+          <li>Estimador fiscal</li>
+          <li>Alertas fiscais por email</li>
+          <li>Exportar relatórios PDF</li>
+          <li class="plano-feat-muted">— Suporte prioritário</li>
+        </ul>
+        <button class="btn btn-p" style="width:100%">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+          Fazer upgrade
+        </button>
+      </div>
+
+      <!-- Business -->
+      <div class="card plano-compare-card plano-compare-biz">
+        <div class="plano-compare-tier">Business</div>
+        <div class="plano-compare-price-row">
+          <span class="plano-compare-price">€19</span>
+          <span class="plano-compare-period">/mês</span>
+        </div>
+        <div class="plano-compare-tag plano-compare-tag-biz">Para empresas</div>
+        <ul class="plano-compare-feats">
+          <li>Tudo do Pro</li>
+          <li>Extrações IA ilimitadas</li>
+          <li>Multi-utilizador (até 5)</li>
+          <li>Relatórios avançados</li>
+          <li>Integração contabilista</li>
+          <li>API access</li>
+          <li>Suporte prioritário 24/7</li>
+        </ul>
+        <button class="btn btn-s" style="width:100%;border-color:var(--purple);color:var(--purple)" onmouseenter="this.style.background='#f5f3ff'" onmouseleave="this.style.background=''">
+          Contactar
+        </button>
+      </div>
+
+    </div><!-- /plano-compare-grid -->
+
+    <!-- Billing history -->
+    <p class="sec-lbl" style="margin:28px 0 14px">Histórico de pagamentos</p>
+    <div class="card" style="padding:40px 24px;text-align:center">
+      <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="var(--t3)" stroke-width="1.5" style="margin:0 auto 12px;display:block"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+      <div style="font-size:.9rem;font-weight:600;color:var(--t2);margin-bottom:6px">Sem histórico de pagamentos</div>
+      <div style="font-size:.8rem;color:var(--t3)">Os recibos e faturas dos teus planos aparecerão aqui.</div>
+    </div>
+
+  </div>
+</div><!-- /plano -->
+
+<!-- ══ PAGE: O MEU PERFIL ══ -->
+<div class="page" id="page-perfil">
+  <div class="topbar">
+    <button class="topbar-menu-btn" onclick="toggleSidebar()" aria-label="Abrir menu">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    </button>
+    <div class="tb-right"></div>
+  </div>
+
+  <div class="page-content">
+    <div class="page-header">
+      <div>
+        <div class="tb-title">O meu perfil</div>
+        <div class="tb-sub">Dados pessoais e configuração fiscal.</div>
+      </div>
+    </div>
+
+    <!-- Account info -->
+    <p class="sec-lbl">Conta</p>
+    <div class="card" style="padding:20px 24px;margin-bottom:24px">
+      <div style="display:flex;align-items:center;gap:16px">
+        <div class="user-av-lg" id="perfilAvatar"></div>
+        <div>
+          <div style="font-size:1rem;font-weight:700;color:var(--t1)" id="perfilNome">—</div>
+          <div style="font-size:.82rem;color:var(--t3);margin-top:2px" id="perfilEmail">—</div>
+          <span class="badge bg-b" style="margin-top:6px;display:inline-block">Freelancer · Plano Free</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Fiscal data -->
+    <p class="sec-lbl">Os meus dados fiscais</p>
+    <div class="card" style="padding:22px 24px;margin-bottom:24px">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:18px">
+        <p style="font-size:.82rem;color:var(--t2);margin:0" id="perfilFiscalSubtitle">Estes dados são usados no Resumo Fiscal para calcular as tuas estimativas.</p>
+        <div style="display:flex;gap:8px">
+          <button class="btn btn-s btn-sm" id="perfilBtnEditar" onclick="setPerfilEditable(true)">
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+            Editar
+          </button>
+          <button class="btn btn-p btn-sm" id="perfilBtnGuardar" style="display:none" onclick="guardarPerfilFiscal()">
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+            Guardar
+          </button>
+          <button class="btn btn-s btn-sm" id="perfilBtnCancelar" style="display:none" onclick="setPerfilEditable(false)">
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+            Cancelar
+          </button>
+        </div>
+      </div>
+
+      <div class="fg4" style="margin-bottom:14px">
+        <div class="fc">
+          <label>Rendimento bruto mensal (€/mês)</label>
+          <input type="number" id="eR" value="2000" readonly/>
+        </div>
+        <div class="fc">
+          <label>Despesas mensais estimadas (€/mês)</label>
+          <input type="number" id="eD" value="350" readonly/>
+        </div>
+        <div class="fc">
+          <label>Data de início de atividade</label>
+          <input type="date" id="eI" value="2024-01-01" readonly/>
+        </div>
+        <div class="fc">
+          <label>Regime fiscal</label>
+          <select id="eReg" disabled>
+            <option value="simplificado" selected>Regime Simplificado</option>
+            <option value="ato_isolado">Ato Isolado</option>
+          </select>
+        </div>
+      </div>
+      <div class="fc" style="margin-bottom:14px">
+        <label>Tipo de atividade</label>
+        <select id="eT" disabled style="max-width:320px">
+          <option value="servicos" selected>Prestação de serviços (Cat. B)</option>
+          <option value="outros">Outros rendimentos</option>
+        </select>
+      </div>
+      <div class="ck-row">
+        <input type="checkbox" id="eEmp" checked disabled/>
+        <label for="eEmp">Tenho emprego por conta de outrem (já desconto SS e IRS pela entidade patronal)</label>
+      </div>
+      <div id="perfilSavedMsg" style="display:none;margin-top:14px;font-size:.8rem;color:var(--green);font-weight:600;display:flex;align-items:center;gap:6px">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+        Dados guardados
+      </div>
+    </div>
+
+  </div>
+</div><!-- /perfil -->
+
 <!-- ══ PAGE: COMPONENTES — see /docs ══ -->
 <div style="display:none">
   <div class="topbar">
@@ -510,7 +776,7 @@
         <div style="display:flex;flex-direction:column;align-items:center;gap:10px">
           <span class="tt" tabindex="0" role="button" aria-label="Exemplo de tooltip">
             <span style="display:inline-flex;align-items:center;gap:5px;font-size:.84rem;font-weight:500;color:var(--blue);padding:6px 12px;border:1px solid var(--blue-lt);background:var(--blue-lt);border-radius:var(--rsm)">
-              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><circle cx="12" cy="8" r="1" fill="currentColor" stroke="none"/></svg>
               Hover ou Tab aqui
             </span>
             <span class="tt-body" role="tooltip">Este é um tooltip. Aparece ao fazer hover ou ao focar com o teclado.</span>
@@ -521,7 +787,7 @@
         <!-- With icon only trigger -->
         <div style="display:flex;flex-direction:column;align-items:center;gap:10px">
           <span class="tt" tabindex="0" role="button" aria-label="Informação adicional">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--t3)" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--t3)" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><circle cx="12" cy="8" r="1" fill="currentColor" stroke="none"/></svg>
             <span class="tt-body" role="tooltip">Tooltip num ícone de informação. Útil para explicar campos ou métricas.</span>
           </span>
           <span style="font-size:.72rem;color:var(--t3)">Ícone ℹ</span>
@@ -531,7 +797,7 @@
         <div style="display:flex;flex-direction:column;align-items:center;gap:10px">
           <span class="tt tt-right" tabindex="0" role="button" aria-label="Tooltip à direita">
             <span style="display:inline-flex;align-items:center;gap:5px;font-size:.84rem;font-weight:500;padding:6px 12px;border:1px solid var(--border2);background:var(--surface);border-radius:var(--rsm);color:var(--t2)">
-              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><circle cx="12" cy="8" r="1" fill="currentColor" stroke="none"/></svg>
               À direita
             </span>
             <span class="tt-body" role="tooltip">Tooltip posicionado à direita do elemento. Usa a classe <code style="font-family:monospace">.tt-right</code>.</span>
@@ -994,6 +1260,7 @@
   </div>
 </div>
 
+<div class="sb-overlay" id="sbOverlay" onclick="toggleSidebar()"></div>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="supabase-client.js"></script>
 <script src="auth.js"></script>
