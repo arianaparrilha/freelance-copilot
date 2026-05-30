@@ -212,7 +212,7 @@
       </div>
     </div>
     <!-- RESUMO EM DESTAQUE — sempre visível no topo -->
-    <div class="cl-kpi-grid" style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:10px;margin-bottom:12px">
+    <div class="cl-kpi-grid" style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:10px;margin-bottom:12px;pointer-events:none">
 
       <!-- HERO: Total faturado — destaque máximo -->
       <div class="card" style="padding:12px 16px;border-left:4px solid var(--blue);grid-column:span 1">
@@ -243,7 +243,7 @@
 
       <!-- Secondary: Limite IVA -->
       <div class="card" style="padding:10px 14px;background:var(--bg);box-shadow:none;border-color:var(--border)">
-        <div style="font-size:.7rem;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--t2);margin-bottom:3px;display:flex;align-items:center;gap:5px">Limite IVA (art. 53.º) <span class="tt" tabindex="0" role="button" aria-label="Mais informação sobre o limite IVA"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><circle cx="12" cy="8" r="1" fill="currentColor" stroke="none"/></svg><span class="tt-body" role="tooltip">Calculado com base em todos os recibos emitidos (pagos e pendentes), conforme o art. 53.º do CIVA. O limite aplica-se ao volume de negócios, não apenas ao valor recebido.</span></span></div>
+        <div style="font-size:.7rem;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--t2);margin-bottom:3px;display:flex;align-items:center;gap:5px">Limite IVA (art. 53.º) <span class="tt" tabindex="0" role="button" aria-label="Mais informação sobre o limite IVA" style="pointer-events:auto"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><circle cx="12" cy="8" r="1" fill="currentColor" stroke="none"/></svg><span class="tt-body" role="tooltip">Calculado com base em todos os recibos emitidos (pagos e pendentes), conforme o art. 53.º do CIVA. O limite aplica-se ao volume de negócios, não apenas ao valor recebido.</span></span></div>
         <div class="mono" style="font-size:1.15rem;font-weight:700;color:var(--amber)" id="clIVApct">—</div>
         <div class="pg-wrap" style="margin:4px 0 2px;height:5px"><div class="pg-fill a" id="clIVAbar" style="width:0%"></div></div>
         <div style="font-size:.71rem;color:var(--t3)" id="clIVAsub">—</div>

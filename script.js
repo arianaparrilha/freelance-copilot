@@ -765,7 +765,8 @@ function resetDocModal(){
   document.getElementById('mdMetaTags').style.display='none'
   document.getElementById('mdProcessing').style.display='none'
   document.getElementById('mdFilePreview').style.display='none'
-  // Reset upload zone appearance
+  // Reset file input and upload zone appearance
+  const fi=document.getElementById('mdFileInput'); if(fi) fi.value=''
   const uz=document.getElementById('mdUploadZone')
   uz.style.borderColor='var(--border2)'
   uz.style.background='var(--bg)'
@@ -1083,6 +1084,10 @@ function calcEst(){
    MODAL — NOVO RECIBO (cliente page)
 ─────────────────────────────────────── */
 function abrirModalRecibo(clienteId){
+  // Reset upload zone and banners
+  resetReciboUpload()
+  document.getElementById('mrExtractedBanner').style.display='none'
+  document.getElementById('mrProcessing').style.display='none'
   // Pre-select client if provided
   const sel=document.getElementById('mrCliente')
   sel.innerHTML='<option value="">— Selecionar —</option>'+
