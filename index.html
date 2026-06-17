@@ -94,7 +94,7 @@
         <div class="kpi-lbl"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg> Total faturado em 2025</div>
         <div class="kpi-v mono" id="dashTotalV">€0,00</div>
         <div class="kpi-sub">+22% vs. período homólogo</div>
-        <a href="#" class="link">Ver detalhes <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg></a>
+        <a href="#" class="link" onclick="nav('estimador');return false">Ver detalhes <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="9 18 15 12 9 6"/></svg></a>
       </div>
       <div class="card kpi-card">
         <div class="kpi-lbl"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg> Limite IVA (art. 53.º) <span class="tt" tabindex="0" role="button" aria-label="Mais informação sobre o limite IVA"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><circle cx="12" cy="8" r="1" fill="currentColor" stroke="none"/></svg><span class="tt-body" role="tooltip">Calculado com base em todos os recibos emitidos (pagos e pendentes), conforme o art. 53.º do CIVA. O limite aplica-se ao volume de negócios, não apenas ao valor recebido.</span></span></div>
@@ -112,11 +112,6 @@
           <span>€937/mês rel. de €2.090 limite</span>
           <span style="color:var(--green);font-weight:600">45% do limiar</span>
         </div>
-      </div>
-      <div class="card kpi-status">
-        <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="1.5"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
-        <div class="kpi-s-title">Estás a gerir bem!</div>
-        <div class="kpi-s-sub">Continua assim.</div>
       </div>
     </div>
 
@@ -142,33 +137,28 @@
 
     <!-- Quick actions + Suggestion -->
     <div class="dash-bot">
-      <div>
+      <div class="dash-qa-section">
         <p class="sec-lbl">Ações rápidas</p>
         <div class="qa-grid">
           <div class="card qa-card" onclick="abrirModalCl()">
-            <div class="qa-ico" style="background:var(--blue-lt)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
+            <div class="qa-ico" style="background:var(--blue-lt)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="2" aria-hidden="true"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
             <div class="qa-lbl">Novo cliente</div><div class="qa-dc">Adicionar cliente ou projeto</div>
           </div>
           <div class="card qa-card" onclick="abrirModalRecibo()">
-            <div class="qa-ico" style="background:var(--green-lt)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="12" y1="18" x2="12" y2="12"/><line x1="9" y1="15" x2="15" y2="15"/></svg></div>
+            <div class="qa-ico" style="background:var(--green-lt)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="12" y1="18" x2="12" y2="12"/><line x1="9" y1="15" x2="15" y2="15"/></svg></div>
             <div class="qa-lbl">Novo recibo</div><div class="qa-dc">Emitir novo recibo verde</div>
           </div>
           <div class="card qa-card" onclick="abrirModalDoc()">
-            <div class="qa-ico" style="background:var(--amber-lt)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--amber)" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg></div>
-            <div class="qa-lbl">Enviar documento</div><div class="qa-dc">Guardar faturas, contratos</div>
-          </div>
-          <div class="card qa-card" onclick="nav('estimador')">
-            <div class="qa-ico" style="background:var(--purple-lt)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--purple)" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg></div>
-            <div class="qa-lbl">Simular rendimento</div><div class="qa-dc">Ver quanto sobra depois de impostos</div>
+            <div class="qa-ico" style="background:var(--amber-lt)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--amber)" stroke-width="2" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg></div>
+            <div class="qa-lbl">Adicionar documento</div><div class="qa-dc">Guardar faturas, contratos</div>
           </div>
         </div>
       </div>
       <div>
         <p class="sec-lbl">Sugestão do Copilot</p>
         <div class="card sug-card">
-          <div class="sug-title"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><circle cx="12" cy="8" r="1" fill="currentColor" stroke="none"/></svg> Fiscal Copilot sugere</div>
-          <div class="sug-body">Estás a 77% do limite de isenção de IVA. Com o ritmo atual, podes ultrapassá-lo em <strong>Agosto</strong>. Começa a planear a transição agora para evitar surpresas.</div>
-          <button class="btn btn-p btn-sm" onclick="nav('estimador')">Simular cenário <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg></button>
+          <div class="sug-title"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><circle cx="12" cy="8" r="1" fill="currentColor" stroke="none"/></svg> Fiscal Copilot sugere</div>
+          <div class="sug-body">Em breve vais poder ter dicas personalizadas e fazer questões ao Fiscal Copilot.</div>
         </div>
       </div>
     </div>
