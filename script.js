@@ -611,9 +611,9 @@ async function guardarCliente(){
   const nif=document.getElementById('cNIF').value.trim()
   const email=document.getElementById('cEmail').value.trim()
   let ok=true
-  if(!nome){erroCampo('cNome','Nome é obrigatório.');ok=false}
-  if(!validarNIF(nif)){erroCampo('cNIF','NIF inválido — deve ter 9 dígitos.');ok=false}
-  if(!validarEmail(email)){erroCampo('cEmail','Email inválido.');ok=false}
+  if(!nome){erroCampo('cNome','O nome é obrigatório.');ok=false}
+  if(!validarNIF(nif)){erroCampo('cNIF','NIF inválido. Deve ter 9 dígitos, sem espaços. Ex: 123456789');ok=false}
+  if(!validarEmail(email)){erroCampo('cEmail','Formato de email inválido. Ex: nome@empresa.pt');ok=false}
   if(!ok) return
   const { data, error } = await db.from('clients').insert({
     name: nome,
@@ -623,7 +623,7 @@ async function guardarCliente(){
     address: document.getElementById('cMorada').value.trim()||null,
     client_since: document.getElementById('cSince').value||null,
   }).select().single()
-  if(error){erroGeral('modalCl','Erro ao guardar. Tenta novamente.');return}
+  if(error){erroGeral('modalCl','Não foi possível guardar. Verifica a tua ligação e tenta novamente.');return}
   const c = mapClientFromDB(data)
   clientes.unshift(c)
   faturas[c.id]=[]
@@ -985,8 +985,8 @@ async function guardarDocumento(){
   const clienteId=document.getElementById('mdCliente').value||ativo
   const tipo=document.getElementById('mdTipo').value
   let ok=true
-  if(!nome){erroCampo('mdNome','Nome do documento é obrigatório.');ok=false}
-  if(!clienteId){erroCampo('mdCliente','Seleciona um cliente.');ok=false}
+  if(!nome){erroCampo('mdNome','O nome do documento é obrigatório.');ok=false}
+  if(!clienteId){erroCampo('mdCliente','Seleciona o cliente associado a este documento.');ok=false}
   if(!ok) return
   const { data, error } = await db.from('documents').insert({
     client_id: clienteId,
@@ -994,7 +994,7 @@ async function guardarDocumento(){
     type: tipo,
     url: null,
   }).select().single()
-  if(error){erroGeral('modalDoc','Erro ao guardar. Tenta novamente.');return}
+  if(error){erroGeral('modalDoc','Não foi possível guardar. Verifica a tua ligação e tenta novamente.');return}
   if(!documentos[clienteId]) documentos[clienteId]=[]
   documentos[clienteId].unshift(mapDocFromDB(data))
   fecharModal('modalDoc')
@@ -1215,9 +1215,9 @@ async function guardarRecibo(){
   const desc=document.getElementById('mrDesc').value.trim()||'Serviço prestado'
   const estado=document.getElementById('mrEstado').value
   let ok=true
-  if(!clienteId){erroCampo('mrCliente','Seleciona um cliente.');ok=false}
-  if(valor<=0){erroCampo('mrValor','Introduz um valor válido.');ok=false}
-  if(!dataVal){erroCampo('mrData','Seleciona a data do recibo.');ok=false}
+  if(!clienteId){erroCampo('mrCliente','Seleciona o cliente associado a este recibo.');ok=false}
+  if(valor<=0){erroCampo('mrValor','O valor tem de ser superior a €0,00.');ok=false}
+  if(!dataVal){erroCampo('mrData','A data do recibo é obrigatória.');ok=false}
   if(!ok) return
   const { data, error } = await db.from('invoices').insert({
     client_id: clienteId,
@@ -1227,7 +1227,7 @@ async function guardarRecibo(){
     amount: valor,
     status: estado,
   }).select().single()
-  if(error){erroGeral('modalRecibo','Erro ao guardar. Tenta novamente.');return}
+  if(error){erroGeral('modalRecibo','Não foi possível guardar. Verifica a tua ligação e tenta novamente.');return}
   if(!faturas[clienteId]) faturas[clienteId]=[]
   faturas[clienteId].unshift(mapInvoiceFromDB(data))
   fecharModal('modalRecibo')
@@ -1282,7 +1282,7 @@ async function apagarCliente(){
   await db.from('documents').delete().eq('client_id', id)
   await db.from('invoices').delete().eq('client_id', id)
   const { error } = await db.from('clients').delete().eq('id', id)
-  if(error){erroGeral('modalApagarCl','Erro ao apagar. Tenta novamente.');return}
+  if(error){erroGeral('modalApagarCl','Não foi possível apagar. Verifica a tua ligação e tenta novamente.');return}
   // Remove from local state
   clientes=clientes.filter(x=>x.id!==id)
   delete faturas[id]
@@ -1319,7 +1319,7 @@ async function apagarRecibo(){
     documentos[ativo]=(documentos[ativo]||[]).filter(d=>d.id!==fat.document_id)
   }
   const { error }=await db.from('invoices').delete().eq('id', ativoRecibo)
-  if(error){erroGeral('modalApagarRecibo','Erro ao apagar. Tenta novamente.');return}
+  if(error){erroGeral('modalApagarRecibo','Não foi possível apagar. Verifica a tua ligação e tenta novamente.');return}
   faturas[ativo]=(faturas[ativo]||[]).filter(f=>f.id!==ativoRecibo)
   ativoRecibo=null
   fecharModal('modalApagarRecibo')
@@ -1345,7 +1345,7 @@ async function apagarDoc(){
   const doc=(documentos[ativo]||[]).find(d=>d.id===ativoDoc); if(!doc) return
   if(doc.url) await db.storage.from('documents').remove([doc.url])
   const { error }=await db.from('documents').delete().eq('id', ativoDoc)
-  if(error){erroGeral('modalApagarDoc','Erro ao apagar. Tenta novamente.');return}
+  if(error){erroGeral('modalApagarDoc','Não foi possível apagar. Verifica a tua ligação e tenta novamente.');return}
   documentos[ativo]=(documentos[ativo]||[]).filter(d=>d.id!==ativoDoc)
   ativoDoc=null
   fecharModal('modalApagarDoc')
@@ -1359,9 +1359,9 @@ async function guardarEdicaoCliente(){
   const nif=document.getElementById('ecNIF').value.trim()
   const email=document.getElementById('ecEmail').value.trim()
   let ok=true
-  if(!nome){erroCampo('ecNome','Nome é obrigatório.');ok=false}
-  if(!validarNIF(nif)){erroCampo('ecNIF','NIF inválido — deve ter 9 dígitos.');ok=false}
-  if(!validarEmail(email)){erroCampo('ecEmail','Email inválido.');ok=false}
+  if(!nome){erroCampo('ecNome','O nome é obrigatório.');ok=false}
+  if(!validarNIF(nif)){erroCampo('ecNIF','NIF inválido. Deve ter 9 dígitos, sem espaços. Ex: 123456789');ok=false}
+  if(!validarEmail(email)){erroCampo('ecEmail','Formato de email inválido. Ex: nome@empresa.pt');ok=false}
   if(!ok) return
   const updates = {
     name: nome||c.nome,
@@ -1373,7 +1373,7 @@ async function guardarEdicaoCliente(){
     client_since: document.getElementById('ecSince').value||null,
   }
   const { error } = await db.from('clients').update(updates).eq('id', id)
-  if(error){erroGeral('modalEditCl','Erro ao guardar. Tenta novamente.');return}
+  if(error){erroGeral('modalEditCl','Não foi possível guardar. Verifica a tua ligação e tenta novamente.');return}
   Object.assign(c, mapClientFromDB({ ...c, name: updates.name, nif: updates.nif, phone: updates.phone, address: updates.address, notes: updates.notes, created_at: new Date().toISOString() }))
   fecharModal('modalEditCl')
   renderCl()
