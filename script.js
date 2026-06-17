@@ -61,6 +61,47 @@
   await init()
 })()
 
+/* ── Validation helpers ── */
+function validarNIF(nif){const n=nif.replace(/[\s.]/g,'');return n===''||/^\d{9}$/.test(n)}
+function validarEmail(email){return email===''||/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)}
+function erroCampo(id,msg){
+  const el=document.getElementById(id); if(!el) return
+  el.classList.add('invalid')
+  el.setAttribute('aria-invalid','true')
+  let err=document.getElementById(id+'-err')
+  if(!err){
+    err=document.createElement('span')
+    err.id=id+'-err'; err.className='field-err'
+    err.setAttribute('role','alert')
+    el.parentElement.appendChild(err)
+    el.setAttribute('aria-describedby',id+'-err')
+  }
+  err.textContent=msg; err.style.display='block'
+  const clear=()=>{
+    el.classList.remove('invalid'); el.removeAttribute('aria-invalid')
+    err.style.display='none'
+    el.removeEventListener('input',clear); el.removeEventListener('change',clear)
+  }
+  el.addEventListener('input',clear); el.addEventListener('change',clear)
+}
+function limparErros(modalId){
+  const ov=document.getElementById(modalId); if(!ov) return
+  ov.querySelectorAll('.invalid').forEach(el=>{el.classList.remove('invalid');el.removeAttribute('aria-invalid')})
+  ov.querySelectorAll('.field-err').forEach(el=>el.style.display='none')
+  const ge=document.getElementById(modalId+'-geral-err'); if(ge) ge.style.display='none'
+}
+function erroGeral(modalId,msg){
+  let err=document.getElementById(modalId+'-geral-err')
+  if(!err){
+    const ft=document.querySelector('#'+modalId+' .modal-ft'); if(!ft) return
+    err=document.createElement('div')
+    err.id=modalId+'-geral-err'; err.className='modal-geral-err'
+    err.setAttribute('role','alert')
+    ft.insertBefore(err,ft.firstChild)
+  }
+  err.textContent=msg; err.style.display='block'
+}
+
 // IAS 2025
 const IAS = 522.50
 const LIMIAR_SS = 4 * IAS           // €2.090 rendimento relevante mensal médio
@@ -383,6 +424,7 @@ function abrirModalCl(){
 let _modalTrigger=null
 function abrirModal(id){
   _modalTrigger=document.activeElement
+  limparErros(id)
   const ov=document.getElementById(id)
   ov.classList.add('open')
   const first=ov.querySelector('input:not([disabled]):not([type=hidden]),select:not([disabled]),textarea:not([disabled]),button:not([disabled])')
@@ -566,16 +608,22 @@ function limparCamposExtraidos(){
 
 async function guardarCliente(){
   const nome=document.getElementById('cNome').value.trim()
-  if(!nome){alert('Nome é obrigatório.');return}
+  const nif=document.getElementById('cNIF').value.trim()
+  const email=document.getElementById('cEmail').value.trim()
+  let ok=true
+  if(!nome){erroCampo('cNome','Nome é obrigatório.');ok=false}
+  if(!validarNIF(nif)){erroCampo('cNIF','NIF inválido — deve ter 9 dígitos.');ok=false}
+  if(!validarEmail(email)){erroCampo('cEmail','Email inválido.');ok=false}
+  if(!ok) return
   const { data, error } = await db.from('clients').insert({
     name: nome,
-    nif: document.getElementById('cNIF').value.trim()||null,
-    email: document.getElementById('cEmail').value.trim()||null,
+    nif: nif||null,
+    email: email||null,
     phone: document.getElementById('cTel').value.trim()||null,
     address: document.getElementById('cMorada').value.trim()||null,
     client_since: document.getElementById('cSince').value||null,
   }).select().single()
-  if(error){alert('Erro ao guardar cliente: '+error.message);return}
+  if(error){erroGeral('modalCl','Erro ao guardar. Tenta novamente.');return}
   const c = mapClientFromDB(data)
   clientes.unshift(c)
   faturas[c.id]=[]
@@ -600,21 +648,36 @@ function onDocDrop(e){
 }
 async function addDocsToCurrent(files){
   if(!ativo||!currentUser) return
+  let falhou=0
   for(const f of files){
     const path=`${currentUser.id}/${Date.now()}_${f.name}`
     const { error: upErr } = await db.storage.from('documents').upload(path, f)
-    if(upErr){ alert('Erro ao carregar ficheiro: '+upErr.message); continue }
+    if(upErr){ console.error('Upload error:',upErr.message); falhou++; continue }
     const { data, error } = await db.from('documents').insert({
       client_id: ativo,
       name: f.name,
       type: 'Outro',
       url: path,
     }).select().single()
-    if(error){ alert('Erro ao guardar documento: '+error.message); continue }
+    if(error){ console.error('Doc save error:',error.message); falhou++; continue }
     if(!documentos[ativo]) documentos[ativo]=[]
     documentos[ativo].unshift(mapDocFromDB(data))
   }
   selCl(ativo)
+  if(falhou){
+    let el=document.getElementById('docUploadErr')
+    if(!el){
+      el=document.createElement('div')
+      el.id='docUploadErr'
+      el.style.cssText='font-size:.78rem;color:var(--red);background:var(--red-lt);border-radius:var(--rsm);padding:6px 10px;margin-top:8px'
+      el.setAttribute('role','alert')
+      const dropArea=document.querySelector('.drop-area')
+      if(dropArea) dropArea.insertAdjacentElement('afterend',el)
+    }
+    el.textContent=`${falhou} ficheiro(s) não foram guardados. Tenta novamente.`
+    el.style.display='block'
+    setTimeout(()=>el.style.display='none',5000)
+  }
 }
 
 /* ───────────────────────────────────────
@@ -919,17 +982,19 @@ function aplicarCamposDoc(fields, filename, ext){
 
 async function guardarDocumento(){
   const nome=document.getElementById('mdNome').value.trim()
-  if(!nome){alert('O nome do documento é obrigatório.');return}
   const clienteId=document.getElementById('mdCliente').value||ativo
   const tipo=document.getElementById('mdTipo').value
-  if(!clienteId){alert('Seleciona um cliente.');return}
+  let ok=true
+  if(!nome){erroCampo('mdNome','Nome do documento é obrigatório.');ok=false}
+  if(!clienteId){erroCampo('mdCliente','Seleciona um cliente.');ok=false}
+  if(!ok) return
   const { data, error } = await db.from('documents').insert({
     client_id: clienteId,
     name: nome,
     type: tipo,
     url: null,
   }).select().single()
-  if(error){alert('Erro ao guardar documento: '+error.message);return}
+  if(error){erroGeral('modalDoc','Erro ao guardar. Tenta novamente.');return}
   if(!documentos[clienteId]) documentos[clienteId]=[]
   documentos[clienteId].unshift(mapDocFromDB(data))
   fecharModal('modalDoc')
@@ -1019,7 +1084,21 @@ function calcEst(){
   const a=totalFats||11240
   const reg=document.getElementById('eReg').value
   const tco=document.getElementById('eEmp').checked
-  if(r<=0){alert('Introduz um rendimento mensal válido.');return}
+  if(r<=0){
+    let err=document.getElementById('calcEstErr')
+    if(!err){
+      err=document.createElement('span')
+      err.id='calcEstErr'
+      err.style.cssText='font-size:.75rem;color:var(--red);margin-left:10px'
+      err.setAttribute('role','alert')
+      document.getElementById('lastCalcTime').parentElement.appendChild(err)
+    }
+    err.textContent='Preenche o teu rendimento no perfil antes de calcular.'
+    err.style.display='inline'
+    setTimeout(()=>{err.style.display='none'},4000)
+    return
+  }
+  const calcErr=document.getElementById('calcEstErr'); if(calcErr) calcErr.style.display='none'
 
   // Update data strip
   const displayEl=document.getElementById('totalFaturadoDisplay')
@@ -1135,7 +1214,11 @@ async function guardarRecibo(){
   const num=document.getElementById('mrNum').value.trim()
   const desc=document.getElementById('mrDesc').value.trim()||'Serviço prestado'
   const estado=document.getElementById('mrEstado').value
-  if(!clienteId||valor<=0||!dataVal){alert('Seleciona cliente, data e valor.');return}
+  let ok=true
+  if(!clienteId){erroCampo('mrCliente','Seleciona um cliente.');ok=false}
+  if(valor<=0){erroCampo('mrValor','Introduz um valor válido.');ok=false}
+  if(!dataVal){erroCampo('mrData','Seleciona a data do recibo.');ok=false}
+  if(!ok) return
   const { data, error } = await db.from('invoices').insert({
     client_id: clienteId,
     invoice_number: num,
@@ -1144,7 +1227,7 @@ async function guardarRecibo(){
     amount: valor,
     status: estado,
   }).select().single()
-  if(error){alert('Erro ao guardar recibo: '+error.message);return}
+  if(error){erroGeral('modalRecibo','Erro ao guardar. Tenta novamente.');return}
   if(!faturas[clienteId]) faturas[clienteId]=[]
   faturas[clienteId].unshift(mapInvoiceFromDB(data))
   fecharModal('modalRecibo')
@@ -1157,7 +1240,7 @@ async function toggleEstadoRecibo(invoiceId){
   const fat=(faturas[ativo]||[]).find(f=>f.id===invoiceId); if(!fat) return
   const novoEstado=fat.estado==='pago'?'pendente':'pago'
   const { error }=await db.from('invoices').update({status:novoEstado, updated_at:new Date().toISOString()}).eq('id',invoiceId)
-  if(error){alert('Erro ao atualizar estado: '+error.message);return}
+  if(error){console.error('Erro ao atualizar estado:',error.message);return}
   fat.estado=novoEstado
   await selCl(ativo)
   renderCl()
@@ -1199,7 +1282,7 @@ async function apagarCliente(){
   await db.from('documents').delete().eq('client_id', id)
   await db.from('invoices').delete().eq('client_id', id)
   const { error } = await db.from('clients').delete().eq('id', id)
-  if(error){alert('Erro ao apagar cliente: '+error.message);return}
+  if(error){erroGeral('modalApagarCl','Erro ao apagar. Tenta novamente.');return}
   // Remove from local state
   clientes=clientes.filter(x=>x.id!==id)
   delete faturas[id]
@@ -1236,7 +1319,7 @@ async function apagarRecibo(){
     documentos[ativo]=(documentos[ativo]||[]).filter(d=>d.id!==fat.document_id)
   }
   const { error }=await db.from('invoices').delete().eq('id', ativoRecibo)
-  if(error){alert('Erro ao apagar recibo: '+error.message);return}
+  if(error){erroGeral('modalApagarRecibo','Erro ao apagar. Tenta novamente.');return}
   faturas[ativo]=(faturas[ativo]||[]).filter(f=>f.id!==ativoRecibo)
   ativoRecibo=null
   fecharModal('modalApagarRecibo')
@@ -1262,7 +1345,7 @@ async function apagarDoc(){
   const doc=(documentos[ativo]||[]).find(d=>d.id===ativoDoc); if(!doc) return
   if(doc.url) await db.storage.from('documents').remove([doc.url])
   const { error }=await db.from('documents').delete().eq('id', ativoDoc)
-  if(error){alert('Erro ao apagar documento: '+error.message);return}
+  if(error){erroGeral('modalApagarDoc','Erro ao apagar. Tenta novamente.');return}
   documentos[ativo]=(documentos[ativo]||[]).filter(d=>d.id!==ativoDoc)
   ativoDoc=null
   fecharModal('modalApagarDoc')
@@ -1272,17 +1355,25 @@ async function apagarDoc(){
 async function guardarEdicaoCliente(){
   const id=document.getElementById('modalEditCl').dataset.editId
   const c=clientes.find(x=>x.id===id); if(!c) return
+  const nome=document.getElementById('ecNome').value.trim()
+  const nif=document.getElementById('ecNIF').value.trim()
+  const email=document.getElementById('ecEmail').value.trim()
+  let ok=true
+  if(!nome){erroCampo('ecNome','Nome é obrigatório.');ok=false}
+  if(!validarNIF(nif)){erroCampo('ecNIF','NIF inválido — deve ter 9 dígitos.');ok=false}
+  if(!validarEmail(email)){erroCampo('ecEmail','Email inválido.');ok=false}
+  if(!ok) return
   const updates = {
-    name: document.getElementById('ecNome').value.trim()||c.nome,
-    nif: document.getElementById('ecNIF').value.trim()||null,
-    email: document.getElementById('ecEmail').value.trim()||null,
+    name: nome||c.nome,
+    nif: nif||null,
+    email: email||null,
     phone: document.getElementById('ecTel').value.trim()||null,
     address: document.getElementById('ecMorada').value.trim()||null,
     notes: document.getElementById('ecNotas').value.trim()||null,
     client_since: document.getElementById('ecSince').value||null,
   }
   const { error } = await db.from('clients').update(updates).eq('id', id)
-  if(error){alert('Erro ao guardar: '+error.message);return}
+  if(error){erroGeral('modalEditCl','Erro ao guardar. Tenta novamente.');return}
   Object.assign(c, mapClientFromDB({ ...c, name: updates.name, nif: updates.nif, phone: updates.phone, address: updates.address, notes: updates.notes, created_at: new Date().toISOString() }))
   fecharModal('modalEditCl')
   renderCl()
