@@ -68,6 +68,8 @@ function erroCampo(id,msg){
   const el=document.getElementById(id); if(!el) return
   el.classList.add('invalid')
   el.setAttribute('aria-invalid','true')
+  const hint=el.parentElement.querySelector('.field-hint')
+  if(hint) hint.style.display='none'
   let err=document.getElementById(id+'-err')
   if(!err){
     err=document.createElement('span')
@@ -80,6 +82,7 @@ function erroCampo(id,msg){
   const clear=()=>{
     el.classList.remove('invalid'); el.removeAttribute('aria-invalid')
     err.style.display='none'
+    if(hint) hint.style.display=''
     el.removeEventListener('input',clear); el.removeEventListener('change',clear)
   }
   el.addEventListener('input',clear); el.addEventListener('change',clear)
@@ -88,6 +91,7 @@ function limparErros(modalId){
   const ov=document.getElementById(modalId); if(!ov) return
   ov.querySelectorAll('.invalid').forEach(el=>{el.classList.remove('invalid');el.removeAttribute('aria-invalid')})
   ov.querySelectorAll('.field-err').forEach(el=>el.style.display='none')
+  ov.querySelectorAll('.field-hint').forEach(el=>el.style.display='')
   const ge=document.getElementById(modalId+'-geral-err'); if(ge) ge.style.display='none'
 }
 function erroGeral(modalId,msg){

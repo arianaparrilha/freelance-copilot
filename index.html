@@ -902,9 +902,21 @@
 
       <div class="fg2" style="margin-bottom:13px">
         <div class="fc"><label>Nome / Empresa *</label><input type="text" id="cNome" placeholder="Empresa Lda."/></div>
-        <div class="fc"><label>NIF / NIPC</label><input type="text" id="cNIF" placeholder="123 456 789"/></div>
-        <div class="fc"><label>Email</label><input type="email" id="cEmail" placeholder="contacto@empresa.pt"/></div>
-        <div class="fc"><label>Telefone</label><input type="text" id="cTel" placeholder="+351 912 345 678"/></div>
+        <div class="fc">
+          <label>NIF / NIPC</label>
+          <input type="text" id="cNIF" inputmode="numeric" maxlength="9" placeholder="123456789" oninput="this.value=this.value.replace(/[^0-9]/g,'')" onblur="if(this.value&&!validarNIF(this.value))erroCampo('cNIF','NIF inválido. Deve ter 9 dígitos, sem espaços. Ex: 123456789')"/>
+          <span class="field-hint">Ex: 123456789</span>
+        </div>
+        <div class="fc">
+          <label>Email</label>
+          <input type="email" id="cEmail" placeholder="contacto@empresa.pt" onblur="if(this.value&&!validarEmail(this.value))erroCampo('cEmail','Formato de email inválido. Ex: nome@empresa.pt')"/>
+          <span class="field-hint">Opcional</span>
+        </div>
+        <div class="fc">
+          <label>Telefone</label>
+          <input type="text" id="cTel" placeholder="+351 912 345 678"/>
+          <span class="field-hint">Opcional</span>
+        </div>
       </div>
       <div class="fc"><label>Morada</label><input type="text" id="cMorada" placeholder="Rua, Cidade"/></div>
       <div class="fc"><label>Cliente desde</label><input type="date" id="cSince"/></div>
@@ -934,9 +946,21 @@
     <div class="modal-body">
       <div class="fg2" style="margin-bottom:13px">
         <div class="fc"><label>Nome / Empresa *</label><input type="text" id="ecNome" placeholder="Empresa Lda."/></div>
-        <div class="fc"><label>NIF / NIPC</label><input type="text" id="ecNIF" placeholder="123 456 789"/></div>
-        <div class="fc"><label>Email</label><input type="email" id="ecEmail" placeholder="contacto@empresa.pt"/></div>
-        <div class="fc"><label>Telefone</label><input type="text" id="ecTel" placeholder="+351 912 345 678"/></div>
+        <div class="fc">
+          <label>NIF / NIPC</label>
+          <input type="text" id="ecNIF" inputmode="numeric" maxlength="9" placeholder="123456789" oninput="this.value=this.value.replace(/[^0-9]/g,'')" onblur="if(this.value&&!validarNIF(this.value))erroCampo('ecNIF','NIF inválido. Deve ter 9 dígitos, sem espaços. Ex: 123456789')"/>
+          <span class="field-hint">Ex: 123456789</span>
+        </div>
+        <div class="fc">
+          <label>Email</label>
+          <input type="email" id="ecEmail" placeholder="contacto@empresa.pt" onblur="if(this.value&&!validarEmail(this.value))erroCampo('ecEmail','Formato de email inválido. Ex: nome@empresa.pt')"/>
+          <span class="field-hint">Opcional</span>
+        </div>
+        <div class="fc">
+          <label>Telefone</label>
+          <input type="text" id="ecTel" placeholder="+351 912 345 678"/>
+          <span class="field-hint">Opcional</span>
+        </div>
       </div>
       <div class="fc" style="margin-bottom:13px"><label>Morada</label><input type="text" id="ecMorada" placeholder="Rua, Cidade"/></div>
       <div class="fc"><label>Cliente desde</label><input type="date" id="ecSince"/></div>
@@ -1024,6 +1048,7 @@
         <div class="fc">
           <label>Valor (€) *</label>
           <input type="number" id="mrValor" placeholder="0,00" min="0" step="0.01"/>
+          <span class="field-hint">Em euros, ex: 1500.00</span>
         </div>
       </div>
       <div class="fc" style="margin-bottom:12px">
