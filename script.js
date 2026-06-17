@@ -378,10 +378,36 @@ function abrirModalCl(){
   if(sinceEl) sinceEl.value=new Date().toISOString().split('T')[0]
   document.getElementById('extractedPreview').style.display='none'
   document.getElementById('extractingIndicator').style.display='none'
-  document.getElementById('modalCl').classList.add('open')
+  abrirModal('modalCl')
 }
-function fecharModal(id){document.getElementById(id).classList.remove('open')}
-document.getElementById('modalCl').addEventListener('click',e=>{if(e.target===e.currentTarget)fecharModal('modalCl')})
+let _modalTrigger=null
+function abrirModal(id){
+  _modalTrigger=document.activeElement
+  const ov=document.getElementById(id)
+  ov.classList.add('open')
+  const first=ov.querySelector('input:not([disabled]):not([type=hidden]),select:not([disabled]),textarea:not([disabled]),button:not([disabled])')
+  if(first) requestAnimationFrame(()=>first.focus())
+  ov.addEventListener('keydown',_modalKeyHandler)
+}
+function fecharModal(id){
+  const ov=document.getElementById(id)
+  ov.classList.remove('open')
+  ov.removeEventListener('keydown',_modalKeyHandler)
+  if(_modalTrigger && typeof _modalTrigger.focus==='function') _modalTrigger.focus()
+  _modalTrigger=null
+}
+function _modalKeyHandler(e){
+  if(e.key==='Escape'){const ov=e.currentTarget;fecharModal(ov.id);return}
+  if(e.key!=='Tab') return
+  const focusable=[...e.currentTarget.querySelectorAll('button:not([disabled]),input:not([disabled]):not([type=hidden]),select:not([disabled]),textarea:not([disabled]),[tabindex]:not([tabindex="-1"])')]
+  if(!focusable.length) return
+  const first=focusable[0],last=focusable[focusable.length-1]
+  if(e.shiftKey){if(document.activeElement===first){e.preventDefault();last.focus()}}
+  else{if(document.activeElement===last){e.preventDefault();first.focus()}}
+}
+;['modalCl','modalEditCl','modalRecibo','modalDoc','modalApagarCl','modalApagarRecibo','modalApagarDoc'].forEach(id=>{
+  document.getElementById(id).addEventListener('click',e=>{if(e.target===e.currentTarget)fecharModal(id)})
+})
 
 function triggerDocUpload(){document.getElementById('docUploadInput').click()}
 
@@ -754,7 +780,7 @@ function abrirModalDoc(){
   sel.innerHTML='<option value="">— Nenhum —</option>'+
     clientes.map(c=>`<option value="${c.id}"${c.id===ativo?' selected':''}>${escH(c.nome)}</option>`).join('')
   document.getElementById('mdData').value=new Date().toISOString().slice(0,10)
-  document.getElementById('modalDoc').classList.add('open')
+  abrirModal('modalDoc')
 }
 
 function resetDocModal(){
@@ -1099,7 +1125,7 @@ function abrirModalRecibo(clienteId){
   document.getElementById('mrValor').value=''
   document.getElementById('mrDesc').value=''
   document.getElementById('mrEstado').value='pendente'
-  document.getElementById('modalRecibo').classList.add('open')
+  abrirModal('modalRecibo')
 }
 
 async function guardarRecibo(){
@@ -1151,7 +1177,7 @@ function abrirModalEditarCl(id){
   document.getElementById('ecNotas').value=c.notas||''
   document.getElementById('ecSince').value=c.client_since||''
   document.getElementById('modalEditCl').dataset.editId=id
-  document.getElementById('modalEditCl').classList.add('open')
+  abrirModal('modalEditCl')
 }
 
 function confirmarApagarCliente(){
@@ -1159,7 +1185,7 @@ function confirmarApagarCliente(){
   document.getElementById('apagarClNome').textContent=c.nome
   document.getElementById('apagarClCheck').checked=false
   document.getElementById('btnConfirmarApagar').disabled=true
-  document.getElementById('modalApagarCl').classList.add('open')
+  abrirModal('modalApagarCl')
   document.querySelectorAll('.user-menu-dropdown').forEach(d=>d.classList.remove('open'))
 }
 
@@ -1196,7 +1222,7 @@ function confirmarApagarRecibo(invoiceId){
   document.getElementById('apagarReciboVal').textContent=f2(fat.valor)
   document.getElementById('apagarReciboCheck').checked=false
   document.getElementById('btnConfirmarApagarRecibo').disabled=true
-  document.getElementById('modalApagarRecibo').classList.add('open')
+  abrirModal('modalApagarRecibo')
 }
 
 async function apagarRecibo(){
@@ -1228,7 +1254,7 @@ function confirmarApagarDoc(docId){
   document.getElementById('apagarDocNome').textContent=doc.nome
   document.getElementById('apagarDocCheck').checked=false
   document.getElementById('btnConfirmarApagarDoc').disabled=true
-  document.getElementById('modalApagarDoc').classList.add('open')
+  abrirModal('modalApagarDoc')
 }
 
 async function apagarDoc(){
