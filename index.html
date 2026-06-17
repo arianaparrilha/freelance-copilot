@@ -30,7 +30,7 @@
     </button>
     <button class="nav-item" data-page="clientes">
       <svg class="ni" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-      Clientes e Projetos
+      Clientes
     </button>
     <button class="nav-item" data-page="estimador">
       <svg class="ni" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
@@ -106,7 +106,7 @@
       <div class="card kpi-card">
         <div class="kpi-lbl"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg> Segurança Social</div>
         <div class="kpi-v" style="color:var(--green)">Isento</div>
-        <div class="kpi-sub">rendimento relevante &lt; 4×IAS (€2.090/mês)</div>
+        <div class="kpi-sub"><span class="tt" tabindex="0" role="button" aria-label="O que é o rendimento relevante">rendimento relevante<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true" style="margin-left:3px"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><circle cx="12" cy="8" r="1" fill="currentColor" stroke="none"/></svg><span class="tt-body" role="tooltip">Base de cálculo da Segurança Social. Corresponde a 70% da tua faturação trimestral dividida por 3 meses. Abaixo de €2.090/mês (4×IAS), estás isento de contribuições.</span></span> &lt; 4×IAS (€2.090/mês)</div>
         <div class="pg-wrap"><div class="pg-fill g" style="width:45%"></div></div>
         <div class="kpi-foot" style="display:flex;justify-content:space-between;font-size:.7rem;color:var(--t3);margin-top:3px">
           <span>€937/mês rel. de €2.090 limite</span>
@@ -180,7 +180,7 @@
   <div class="page-content" style="padding-bottom:0">
     <div class="page-header">
       <div>
-        <div class="tb-title">Clientes e Projetos</div>
+        <div class="tb-title">Clientes</div>
         <div class="tb-sub">Gere os seus clientes, projetos e toda a documentação num só lugar.</div>
       </div>
       <div class="page-actions">
@@ -309,7 +309,7 @@
             <div id="recibosTableWrap"></div>
           </div>
           <!-- TAB: Projetos -->
-          <div class="tab-pane" id="tp"><p style="color:var(--t3);font-size:.82rem;padding:18px 0">Nenhum projeto configurado.</p></div>
+          <div class="tab-pane" id="tp"><p style="color:var(--t3);font-size:.82rem;padding:18px 0">Gestão de projetos estará disponível em breve.</p></div>
           <!-- TAB: Contactos (dynamic) -->
           <div class="tab-pane" id="tc"><div id="contactosInfo" style="font-size:.84rem;line-height:2.3;color:var(--t2);padding:10px 0"></div></div>
           <!-- TAB: Notas -->
@@ -402,7 +402,7 @@
     <p class="sec-lbl">Resumo mensal estimado</p>
     <div class="est-cards">
       <div class="card est-card ec-liq"><div class="ec-lbl"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg> Recebe líquido</div><div class="ec-val g mono" id="eVL">—</div><div class="ec-sub" id="eSL">—</div><div class="ec-prog"><div class="ec-bar eb-g" id="eBL" style="width:0%"></div></div></div>
-      <div class="card est-card ec-irs"><div class="ec-lbl"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="19" y1="5" x2="5" y2="19"/><circle cx="6.5" cy="6.5" r="2.5"/><circle cx="17.5" cy="17.5" r="2.5"/></svg> IRS estimado</div><div class="ec-val b mono" id="eVI">—</div><div class="ec-sub">Retenção: 25% (Cat. B)</div><div class="ec-prog"><div class="ec-bar eb-b" id="eBI" style="width:0%"></div></div></div>
+      <div class="card est-card ec-irs"><div class="ec-lbl"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="19" y1="5" x2="5" y2="19"/><circle cx="6.5" cy="6.5" r="2.5"/><circle cx="17.5" cy="17.5" r="2.5"/></svg> IRS estimado</div><div class="ec-val b mono" id="eVI">—</div><div class="ec-sub"><span class="tt" tabindex="0" role="button" aria-label="O que é a retenção na fonte">Retenção: 25% (Cat. B)<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true" style="margin-left:3px"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><circle cx="12" cy="8" r="1" fill="currentColor" stroke="none"/></svg><span class="tt-body" role="tooltip">O cliente retém 25% do valor da fatura e entrega-o diretamente ao Estado em teu nome. Aplica-se quando o cliente é uma empresa ou entidade coletiva. Clientes particulares não retêm IRS.</span></span></div><div class="ec-prog"><div class="ec-bar eb-b" id="eBI" style="width:0%"></div></div></div>
       <div class="card est-card ec-ss"><div class="ec-lbl"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg> Segurança Social</div><div class="ec-val p mono" id="eVS">—</div><div class="ec-sub" id="eSS2">—</div><div class="ec-prog"><div class="ec-bar eb-p" id="eBS" style="width:0%"></div></div></div>
     </div>
 
@@ -412,7 +412,7 @@
     <p class="sec-lbl">Proximidade de limites</p>
     <div class="lim-grid">
       <div class="card lim-card"><div class="lim-hdr"><div class="lim-lbl"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg> Limite IVA (art. 53.º)</div><div class="lim-pct" id="ePIVA">—</div></div><div class="pg-wrap"><div class="pg-fill a" id="eBIVA" style="width:0%"></div></div><div class="lim-ft"><span id="eLIVA">—</span><span id="eRIVA">—</span></div></div>
-      <div class="card lim-card"><div class="lim-hdr"><div class="lim-lbl"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg> Regime Simplificado</div><div class="lim-pct" id="ePRS">—</div></div><div class="pg-wrap"><div class="pg-fill g" id="eBRS" style="width:0%"></div></div><div class="lim-ft"><span id="eLRS">—</span><span id="eRRS">—</span></div></div>
+      <div class="card lim-card"><div class="lim-hdr"><div class="lim-lbl"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg> Regime Simplificado<span class="tt" tabindex="0" role="button" aria-label="O que é o Regime Simplificado" style="margin-left:4px"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><circle cx="12" cy="8" r="1" fill="currentColor" stroke="none"/></svg><span class="tt-body tt-right" role="tooltip">Regime fiscal para prestadores de serviços com faturação até €200.000/ano. A base tributável é calculada aplicando o coeficiente 0,75 ao volume de negócios.</span></span></div><div class="lim-pct" id="ePRS">—</div></div><div class="pg-wrap"><div class="pg-fill g" id="eBRS" style="width:0%"></div></div><div class="lim-ft"><span id="eLRS">—</span><span id="eRRS">—</span></div></div>
     </div>
 
     <p class="sec-lbl">Detalhe da estimativa anual</p>
@@ -711,7 +711,7 @@
           <input type="date" id="eI" value="2024-01-01" readonly/>
         </div>
         <div class="fc">
-          <label>Regime fiscal</label>
+          <label>Regime fiscal <span class="tt" tabindex="0" role="button" aria-label="Diferença entre regimes fiscais"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><circle cx="12" cy="8" r="1" fill="currentColor" stroke="none"/></svg><span class="tt-body" role="tooltip">Regime Simplificado: para prestações regulares com faturação até €200.000/ano. Ato Isolado: para prestações ocasionais sem atividade aberta nas Finanças — a partir do 2.º ato ao mesmo cliente pode ser obrigatório abrir atividade.</span></span></label>
           <select id="eReg" disabled>
             <option value="simplificado" selected>Regime Simplificado</option>
             <option value="ato_isolado">Ato Isolado</option>
