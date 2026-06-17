@@ -306,7 +306,7 @@ function renderCl(){
       <div class="cl-av" style="background:${c.cor}">${c.in}</div>
       <div style="flex:1;min-width:0">
         <div class="cl-nm">${escH(c.nome)}</div>
-        <div class="cl-mt">NIF ${c.nif} · ${(faturas[c.id]||[]).length} recibos</div>
+        <div class="cl-mt">NIF ${c.nif} · ${(faturas[c.id]||[]).length} faturas</div>
       </div>
       <div class="cl-am">${f0(totalCl(c.id))}</div>
     </div>`).join('')
@@ -342,7 +342,7 @@ async function selCl(id){
   const ultimo=fats.length>0?fats[0].data:'—'
   const pendente=fats.filter(f=>f.estado==='pendente').reduce((s,f)=>s+f.valor,0)
   document.getElementById('cdTot').textContent=f2(total)
-  document.getElementById('cdTotSub').textContent=`${fats.length} recibo${fats.length!==1?'s':''}`
+  document.getElementById('cdTotSub').textContent=`${fats.length} fatura${fats.length!==1?'s':''}`
   document.getElementById('cdAvg').textContent=f2(medio)
   document.getElementById('cdLast').textContent=ultimo
 
@@ -359,7 +359,7 @@ async function selCl(id){
   // TAB: Recibos
   const rbody=document.getElementById('recibosTableWrap')
   if(fats.length===0){
-    rbody.innerHTML='<p style="color:var(--t3);font-size:.82rem;padding:18px 0">Sem recibos registados.</p>'
+    rbody.innerHTML='<p style="color:var(--t3);font-size:.82rem;padding:18px 0">Sem faturas registadas.</p>'
   } else {
     rbody.innerHTML=`<table class="inv-tbl" style="table-layout:fixed;width:100%">
       <thead><tr><th style="width:130px">Nº</th><th style="width:110px">Data</th><th>Descrição</th><th style="width:100px">Valor</th><th style="width:100px">Estado</th><th style="width:44px"></th></tr></thead>
@@ -370,7 +370,7 @@ async function selCl(id){
           <td>${escH(f.desc)}</td>
           <td class="mono">${f2(f.valor)}</td>
           <td><span class="badge ${f.estado==='pago'?'bg-g':f.estado==='pendente'?'bg-a':'bg-n'}">${escH(f.estado)}</span></td>
-          <td><div class="user-menu"><button class="ico-btn user-menu-trigger"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></svg></button><div class="user-menu-dropdown"><button class="umd-item" onclick="toggleEstadoRecibo('${f.id}')">${f.estado==='pago'?'<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>Marcar como pendente':'<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2.5"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>Marcar como pago'}</button><div class="umd-sep"></div><button class="umd-item umd-signout" onclick="confirmarApagarRecibo('${f.id}')"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg>Apagar recibo</button></div></div></td>
+          <td><div class="user-menu"><button class="ico-btn user-menu-trigger"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></svg></button><div class="user-menu-dropdown"><button class="umd-item" onclick="toggleEstadoRecibo('${f.id}')">${f.estado==='pago'?'<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>Marcar como pendente':'<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2.5"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>Marcar como pago'}</button><div class="umd-sep"></div><button class="umd-item umd-signout" onclick="confirmarApagarRecibo('${f.id}')"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg>Apagar fatura</button></div></div></td>
         </tr>`).join('')}
       </tbody></table>`
   }
@@ -865,7 +865,7 @@ function resetReciboUpload(){
     <div style="width:40px;height:40px;background:var(--blue-lt);border-radius:var(--r);display:flex;align-items:center;justify-content:center;margin:0 auto 10px">
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="12" y1="18" x2="12" y2="12"/><line x1="9" y1="15" x2="15" y2="15"/></svg>
     </div>
-    <div style="font-size:.88rem;font-weight:600;color:var(--blue);margin-bottom:3px">Carregar recibo verde</div>
+    <div style="font-size:.88rem;font-weight:600;color:var(--blue);margin-bottom:3px">Carregar fatura</div>
     <div style="font-size:.75rem;color:var(--t3)">Arrasta ou clica para selecionar · PDF, imagem ou Word</div>
     <div style="margin-top:10px">
       <span style="font-size:.72rem;background:var(--blue-lt);color:var(--blue);border-radius:99px;padding:3px 10px;font-weight:600">Preenche os campos automaticamente</span>
@@ -1262,9 +1262,9 @@ async function guardarRecibo(){
   const desc=document.getElementById('mrDesc').value.trim()||'Serviço prestado'
   const estado=document.getElementById('mrEstado').value
   let ok=true
-  if(!clienteId){erroCampo('mrCliente','Seleciona o cliente associado a este recibo.');ok=false}
+  if(!clienteId){erroCampo('mrCliente','Seleciona o cliente associado a esta fatura.');ok=false}
   if(valor<=0){erroCampo('mrValor','O valor tem de ser superior a €0,00.');ok=false}
-  if(!dataVal){erroCampo('mrData','A data do recibo é obrigatória.');ok=false}
+  if(!dataVal){erroCampo('mrData','A data da fatura é obrigatória.');ok=false}
   if(!ok) return
   const { data, error } = await db.from('invoices').insert({
     client_id: clienteId,
@@ -1442,10 +1442,10 @@ async function renderActivity(){
   ;(rInvoices||[]).forEach(f=>{
     const cl=clientes.find(x=>x.id===f.client_id)
     const clNome=cl?cl.nome:'—'
-    events.push({type:'invoice',date:new Date(f.created_at),label:`Recibo ${f.invoice_number||'—'} · ${clNome}`,sub:f2(parseFloat(f.amount)||0)})
+    events.push({type:'invoice',date:new Date(f.created_at),label:`Fatura ${f.invoice_number||'—'} · ${clNome}`,sub:f2(parseFloat(f.amount)||0)})
     if(f.updated_at){
       const statusLabel=f.status==='pago'?'marcado como pago':'marcado como pendente'
-      events.push({type:'paid',date:new Date(f.updated_at),label:`Recibo ${f.invoice_number||'—'} ${statusLabel}`,sub:clNome})
+      events.push({type:'paid',date:new Date(f.updated_at),label:`Fatura ${f.invoice_number||'—'} ${statusLabel}`,sub:clNome})
     }
   })
   ;(rDocs||[]).forEach(d=>{

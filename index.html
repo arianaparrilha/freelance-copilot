@@ -97,7 +97,7 @@
         <a href="#" class="link" onclick="nav('estimador');return false">Ver detalhes <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="9 18 15 12 9 6"/></svg></a>
       </div>
       <div class="card kpi-card">
-        <div class="kpi-lbl"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg> Limite IVA (art. 53.º) <span class="tt" tabindex="0" role="button" aria-label="Mais informação sobre o limite IVA"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><circle cx="12" cy="8" r="1" fill="currentColor" stroke="none"/></svg><span class="tt-body" role="tooltip">Calculado com base em todos os recibos emitidos (pagos e pendentes), conforme o art. 53.º do CIVA. O limite aplica-se ao volume de negócios, não apenas ao valor recebido.</span></span></div>
+        <div class="kpi-lbl"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg> Limite IVA (art. 53.º) <span class="tt" tabindex="0" role="button" aria-label="Mais informação sobre o limite IVA"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><circle cx="12" cy="8" r="1" fill="currentColor" stroke="none"/></svg><span class="tt-body" role="tooltip">Calculado com base em todas as faturas emitidas (pagas e pendentes), conforme o art. 53.º do CIVA. O limite aplica-se ao volume de negócios, não apenas ao valor recebido.</span></span></div>
         <div class="kpi-v" id="dashIVApct" style="color:var(--amber)">—</div>
         <div class="kpi-sub">do limite de isenção (€14.500)</div>
         <div class="pg-wrap"><div class="pg-fill a" id="dashIVAbar" style="width:0%"></div></div>
@@ -146,7 +146,7 @@
           </div>
           <div class="card qa-card" onclick="abrirModalRecibo()">
             <div class="qa-ico" style="background:var(--green-lt)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="12" y1="18" x2="12" y2="12"/><line x1="9" y1="15" x2="15" y2="15"/></svg></div>
-            <div class="qa-lbl">Novo recibo</div><div class="qa-dc">Emitir novo recibo verde</div>
+            <div class="qa-lbl">Nova fatura</div><div class="qa-dc">Emitir nova fatura</div>
           </div>
           <div class="card qa-card" onclick="abrirModalDoc()">
             <div class="qa-ico" style="background:var(--amber-lt)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--amber)" stroke-width="2" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg></div>
@@ -206,7 +206,7 @@
           Total faturado 2025
         </div>
         <div class="mono" style="font-size:1.5rem;font-weight:700;letter-spacing:-.6px;color:var(--t1);line-height:1.1" id="sumTotal">€0,00</div>
-        <div style="font-size:.75rem;color:var(--t3);margin-top:4px">em <span id="sumRec">0</span> recibos · <span id="sumCl">0</span> clientes</div>
+        <div style="font-size:.75rem;color:var(--t3);margin-top:4px">em <span id="sumRec">0</span> faturas · <span id="sumCl">0</span> clientes</div>
       </div>
 
       <!-- HERO: Pendente por receber -->
@@ -228,7 +228,7 @@
 
       <!-- Secondary: Limite IVA -->
       <div class="card" style="padding:10px 14px;background:var(--bg);box-shadow:none;border-color:var(--border)">
-        <div style="font-size:.7rem;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--t2);margin-bottom:3px;display:flex;align-items:center;gap:5px">Limite IVA (art. 53.º) <span class="tt" tabindex="0" role="button" aria-label="Mais informação sobre o limite IVA" style="pointer-events:auto"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><circle cx="12" cy="8" r="1" fill="currentColor" stroke="none"/></svg><span class="tt-body" role="tooltip">Calculado com base em todos os recibos emitidos (pagos e pendentes), conforme o art. 53.º do CIVA. O limite aplica-se ao volume de negócios, não apenas ao valor recebido.</span></span></div>
+        <div style="font-size:.7rem;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--t2);margin-bottom:3px;display:flex;align-items:center;gap:5px">Limite IVA (art. 53.º) <span class="tt" tabindex="0" role="button" aria-label="Mais informação sobre o limite IVA" style="pointer-events:auto"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><circle cx="12" cy="8" r="1" fill="currentColor" stroke="none"/></svg><span class="tt-body" role="tooltip">Calculado com base em todas as faturas emitidas (pagas e pendentes), conforme o art. 53.º do CIVA. O limite aplica-se ao volume de negócios, não apenas ao valor recebido.</span></span></div>
         <div class="mono" style="font-size:1.15rem;font-weight:700;color:var(--amber)" id="clIVApct">—</div>
         <div class="pg-wrap" style="margin:4px 0 2px;height:5px"><div class="pg-fill a" id="clIVAbar" style="width:0%"></div></div>
         <div style="font-size:.71rem;color:var(--t3)" id="clIVAsub">—</div>
@@ -283,13 +283,13 @@
             </div>
           </div>
           <div class="cd-stats">
-            <div class="cd-st"><div class="cd-st-lbl">Total recebido (2025)</div><div class="cd-st-v" id="cdTot">€4.200,00</div><div class="cd-st-sub" id="cdTotSub">7 recibos</div></div>
-            <div class="cd-st"><div class="cd-st-lbl">Valor médio por recibo</div><div class="cd-st-v" id="cdAvg">€600,00</div><div class="cd-st-sub">recibo médio</div></div>
-            <div class="cd-st"><div class="cd-st-lbl">Último recibo</div><div class="cd-st-v" id="cdLast">08 Mai 2025</div></div>
+            <div class="cd-st"><div class="cd-st-lbl">Total recebido (2025)</div><div class="cd-st-v" id="cdTot">€4.200,00</div><div class="cd-st-sub" id="cdTotSub">7 faturas</div></div>
+            <div class="cd-st"><div class="cd-st-lbl">Valor médio por fatura</div><div class="cd-st-v" id="cdAvg">€600,00</div><div class="cd-st-sub">fatura média</div></div>
+            <div class="cd-st"><div class="cd-st-lbl">Última fatura</div><div class="cd-st-v" id="cdLast">08 Mai 2025</div></div>
             <div class="cd-st"><div class="cd-st-lbl">Estado</div><div class="cd-st-v"><span class="badge" id="cdStatus" style="font-size:.82rem">Em dia</span></div></div>
           </div>
           <div class="tabs">
-            <button class="tab-btn active" id="tab-rec-btn" onclick="switchTab(this,'tr')">Recibos</button>
+            <button class="tab-btn active" id="tab-rec-btn" onclick="switchTab(this,'tr')">Faturas</button>
             <button class="tab-btn" id="tab-proj-btn" onclick="switchTab(this,'tp')">Projetos</button>
             <button class="tab-btn" id="tab-cont-btn" onclick="switchTab(this,'tc')">Contactos</button>
             <button class="tab-btn" id="tab-nota-btn" onclick="switchTab(this,'tn')">Notas</button>
@@ -297,13 +297,13 @@
           </div>
         </div>
         <div class="cd-body">
-          <!-- TAB: Recibos (dynamic) -->
+          <!-- TAB: Faturas (dynamic) -->
           <div class="tab-pane active" id="tr">
             <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
-              <p class="sec-lbl" style="margin:0">Recibos emitidos</p>
+              <p class="sec-lbl" style="margin:0">Faturas emitidas</p>
               <button class="btn btn-p btn-sm" onclick="abrirModalRecibo(ativo)">
                 <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-                Novo recibo
+                Nova fatura
               </button>
             </div>
             <div id="recibosTableWrap"></div>
@@ -350,7 +350,7 @@
     <div class="page-header">
       <div>
         <div class="tb-title">Resumo Fiscal</div>
-        <div class="tb-sub">Estimativa fiscal com base nos teus recibos e dados de perfil.</div>
+        <div class="tb-sub">Estimativa fiscal com base nas tuas faturas e dados de perfil.</div>
       </div>
       <div class="page-actions">
         <div style="display:flex;align-items:center;gap:7px;border:1px solid var(--border2);border-radius:var(--rsm);padding:5px 11px;font-size:.82rem;font-weight:600;background:var(--surface);cursor:pointer">
@@ -484,7 +484,7 @@
           </li>
           <li class="plano-feat plano-feat-ok">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
-            Até 20 recibos/ano
+            Até 20 faturas/ano
           </li>
           <li class="plano-feat plano-feat-ok">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
@@ -531,7 +531,7 @@
 
           <div class="plano-usage-item">
             <div class="plano-usage-header">
-              <span class="plano-usage-label">Recibos registados</span>
+              <span class="plano-usage-label">Faturas registadas</span>
               <span class="plano-usage-val plano-usage-green">2 / 20</span>
             </div>
             <div class="plano-bar-track">
@@ -578,7 +578,7 @@
         <div class="plano-compare-tag plano-compare-tag-current">Plano atual</div>
         <ul class="plano-compare-feats">
           <li>3 clientes</li>
-          <li>20 recibos/ano</li>
+          <li>20 faturas/ano</li>
           <li>5 extrações IA/mês</li>
           <li>Estimador fiscal</li>
           <li class="plano-feat-muted">— Alertas por email</li>
@@ -598,7 +598,7 @@
         <div class="plano-compare-tag plano-compare-tag-popular">⭐ Mais popular</div>
         <ul class="plano-compare-feats">
           <li>Clientes ilimitados</li>
-          <li>Recibos ilimitados</li>
+          <li>Faturas ilimitadas</li>
           <li>50 extrações IA/mês</li>
           <li>Estimador fiscal</li>
           <li>Alertas fiscais por email</li>
@@ -640,7 +640,7 @@
     <div class="card" style="padding:40px 24px;text-align:center">
       <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="var(--t3)" stroke-width="1.5" style="margin:0 auto 12px;display:block"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
       <div style="font-size:.9rem;font-weight:600;color:var(--t2);margin-bottom:6px">Sem histórico de pagamentos</div>
-      <div style="font-size:.8rem;color:var(--t3)">Os recibos e faturas dos teus planos aparecerão aqui.</div>
+      <div style="font-size:.8rem;color:var(--t3)">As faturas dos teus planos aparecerão aqui.</div>
     </div>
 
   </div>
@@ -984,7 +984,7 @@
     <div class="modal-hdr">
       <span class="modal-title" id="modalReciboTitle">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
-        Novo Recibo
+        Nova Fatura
       </span>
       <button class="modal-x" onclick="fecharModal('modalRecibo')" aria-label="Fechar">✕</button>
     </div>
@@ -1006,7 +1006,7 @@
         <div style="width:40px;height:40px;background:var(--blue-lt);border-radius:var(--r);display:flex;align-items:center;justify-content:center;margin:0 auto 10px">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="12" y1="18" x2="12" y2="12"/><line x1="9" y1="15" x2="15" y2="15"/></svg>
         </div>
-        <div style="font-size:.88rem;font-weight:600;color:var(--blue);margin-bottom:3px">Carregar recibo verde</div>
+        <div style="font-size:.88rem;font-weight:600;color:var(--blue);margin-bottom:3px">Carregar fatura</div>
         <div style="font-size:.75rem;color:var(--t3)">Arrasta ou clica para selecionar · PDF, imagem ou Word</div>
         <div style="margin-top:10px">
           <span style="font-size:.72rem;background:var(--blue-lt);color:var(--blue);border-radius:99px;padding:3px 10px;font-weight:600">
@@ -1019,7 +1019,7 @@
       <!-- ESTADO: A processar -->
       <div id="mrProcessing" style="display:none;text-align:center;padding:14px;margin-bottom:16px">
         <div style="width:28px;height:28px;border:2px solid var(--border);border-top-color:var(--blue);border-radius:50%;animation:spin .7s linear infinite;margin:0 auto 8px"></div>
-        <div style="font-size:.82rem;color:var(--blue);font-weight:500">A extrair dados do recibo...</div>
+        <div style="font-size:.82rem;color:var(--blue);font-weight:500">A extrair dados da fatura...</div>
       </div>
 
       <!-- BANNER: Campos extraídos -->
@@ -1029,7 +1029,7 @@
       </div>
 
       <!-- DIVISOR -->
-      <div style="font-size:.74rem;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--t2);margin-bottom:12px">Dados do recibo</div>
+      <div style="font-size:.74rem;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--t2);margin-bottom:12px">Dados da fatura</div>
 
       <!-- CAMPOS (preenchidos automaticamente ou manualmente) -->
       <div class="fg2" style="margin-bottom:12px">
@@ -1038,7 +1038,7 @@
           <select id="mrCliente"><option value="">— Selecionar —</option></select>
         </div>
         <div class="fc">
-          <label>Nº do recibo</label>
+          <label>Nº da fatura</label>
           <input type="text" id="mrNum" placeholder="FT 2025/019"/>
         </div>
         <div class="fc">
@@ -1067,7 +1067,7 @@
       <button class="btn btn-s" onclick="fecharModal('modalRecibo')">Cancelar</button>
       <button class="btn btn-p" onclick="guardarRecibo()">
         <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
-        Registar recibo
+        Registar fatura
       </button>
     </div>
   </div>
@@ -1139,7 +1139,7 @@
             <option value="Contrato">Contrato</option>
             <option value="Proposta">Proposta</option>
             <option value="Fatura">Fatura</option>
-            <option value="Recibo">Recibo</option>
+            <option value="Fatura">Fatura</option>
             <option value="Briefing">Briefing</option>
             <option value="Financeiro">Financeiro</option>
             <option value="Legal">Legal</option>
@@ -1214,7 +1214,7 @@
     <div class="modal-hdr">
       <div class="modal-title" id="modalApagarReciboTitle" style="color:var(--red)">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg>
-        Apagar recibo
+        Apagar fatura
       </div>
       <button class="modal-x" onclick="fecharModal('modalApagarRecibo')" aria-label="Fechar">✕</button>
     </div>
@@ -1232,7 +1232,7 @@
       <button class="btn btn-s" onclick="fecharModal('modalApagarRecibo')">Cancelar</button>
       <button class="btn btn-danger" id="btnConfirmarApagarRecibo" disabled onclick="apagarRecibo()">
         <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg>
-        Apagar recibo
+        Apagar fatura
       </button>
     </div>
   </div>
