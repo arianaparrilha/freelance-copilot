@@ -1,3 +1,25 @@
+// Apply saved theme before first paint to avoid flash
+;(()=>{
+  if(localStorage.getItem('theme')==='dark') document.documentElement.classList.add('dark')
+})()
+
+function toggleTheme(){
+  const isDark=document.documentElement.classList.toggle('dark')
+  localStorage.setItem('theme', isDark ? 'dark' : 'light')
+  updateThemeBtn()
+}
+function updateThemeBtn(){
+  const isDark=document.documentElement.classList.contains('dark')
+  const label=document.getElementById('themeLabel')
+  const icon=document.getElementById('themeIcon')
+  if(label) label.textContent=isDark ? 'Modo escuro' : 'Modo claro'
+  if(icon){
+    icon.innerHTML=isDark
+      ? '<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>'
+      : '<circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>'
+  }
+}
+
 // Switch to the correct page immediately (before async auth) to avoid flash on refresh
 ;(()=>{
   const p=location.hash.slice(1)
@@ -231,7 +253,7 @@ function renderSummary(){
   // IVA uses total emitido (all issued invoices) per art. 53 CIVA
   const pIVA=Math.min(100,(totalEmitido/LIMITE_IVA)*100)
   const ivaCls='pg-fill '+(pIVA>=90?'r':pIVA>=70?'a':'g')
-  const ivaColor=pIVA>=90?'var(--red)':pIVA>=70?'var(--amber)':'var(--green)'
+  const ivaColor=pIVA>=90?'var(--accent-error)':pIVA>=70?'var(--accent-caution)':'var(--accent-success)'
   // clients page
   set('sumTotal',f2(totalPago))
   set('sumPendente',f2(totalPend))
@@ -359,18 +381,18 @@ async function selCl(id){
   // TAB: Recibos
   const rbody=document.getElementById('recibosTableWrap')
   if(fats.length===0){
-    rbody.innerHTML='<p style="color:var(--t3);font-size:.82rem;padding:18px 0">Sem faturas registadas.</p>'
+    rbody.innerHTML='<p style="color:var(--text-tertiary);font-size:.82rem;padding:18px 0">Sem faturas registadas.</p>'
   } else {
     rbody.innerHTML=`<table class="inv-tbl" style="table-layout:fixed;width:100%">
       <thead><tr><th style="width:130px">Nº</th><th style="width:110px">Data</th><th>Descrição</th><th style="width:100px">Valor</th><th style="width:100px">Estado</th><th style="width:44px"></th></tr></thead>
       <tbody>${fats.map(f=>`
         <tr>
-          <td class="mono" style="color:var(--t3)">${escH(f.num)}</td>
+          <td class="mono" style="color:var(--text-tertiary)">${escH(f.num)}</td>
           <td>${escH(f.data)}</td>
           <td>${escH(f.desc)}</td>
           <td class="mono">${f2(f.valor)}</td>
           <td><span class="badge ${f.estado==='pago'?'bg-g':f.estado==='pendente'?'bg-a':'bg-n'}">${escH(f.estado)}</span></td>
-          <td><div class="user-menu"><button class="ico-btn user-menu-trigger"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></svg></button><div class="user-menu-dropdown"><button class="umd-item" onclick="toggleEstadoRecibo('${f.id}')">${f.estado==='pago'?'<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>Marcar como pendente':'<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2.5"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>Marcar como pago'}</button><div class="umd-sep"></div><button class="umd-item umd-signout" onclick="confirmarApagarRecibo('${f.id}')"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg>Apagar fatura</button></div></div></td>
+          <td><div class="user-menu"><button class="ico-btn user-menu-trigger"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></svg></button><div class="user-menu-dropdown"><button class="umd-item" onclick="toggleEstadoRecibo('${f.id}')">${f.estado==='pago'?'<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>Marcar como pendente':'<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--accent-success)" stroke-width="2.5"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>Marcar como pago'}</button><div class="umd-sep"></div><button class="umd-item umd-signout" onclick="confirmarApagarRecibo('${f.id}')"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg>Apagar fatura</button></div></div></td>
         </tr>`).join('')}
       </tbody></table>`
   }
@@ -378,9 +400,9 @@ async function selCl(id){
   // TAB: Contactos
   const ci=document.getElementById('contactosInfo')
   ci.innerHTML=`
-    ${c.email?`<span style="display:flex;align-items:center;gap:7px"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--t3)" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>${escH(c.email)}</span>`:''}
-    ${c.tel?`<span style="display:flex;align-items:center;gap:7px"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--t3)" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 1.27h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9a16 16 0 0 0 6.29 6.29l.82-.74a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 21.73 17z"/></svg>${escH(c.tel)}</span>`:''}
-    ${c.morada?`<span style="display:flex;align-items:center;gap:7px"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--t3)" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>${escH(c.morada)}</span>`:''}
+    ${c.email?`<span style="display:flex;align-items:center;gap:7px"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--text-tertiary)" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>${escH(c.email)}</span>`:''}
+    ${c.tel?`<span style="display:flex;align-items:center;gap:7px"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--text-tertiary)" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 1.27h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9a16 16 0 0 0 6.29 6.29l.82-.74a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 21.73 17z"/></svg>${escH(c.tel)}</span>`:''}
+    ${c.morada?`<span style="display:flex;align-items:center;gap:7px"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--text-tertiary)" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>${escH(c.morada)}</span>`:''}
   `
 
   // TAB: Documentos
@@ -388,16 +410,16 @@ async function selCl(id){
   document.getElementById('docCount').textContent=docs.length
   const dt=document.getElementById('docTableWrap')
   if(docs.length===0){
-    dt.innerHTML='<p style="color:var(--t3);font-size:.82rem;padding:10px 0">Sem documentos carregados.</p>'
+    dt.innerHTML='<p style="color:var(--text-tertiary);font-size:.82rem;padding:10px 0">Sem documentos carregados.</p>'
   } else {
     dt.innerHTML=`<table class="doc-tbl">
       <thead><tr><th>Nome do documento</th><th>Tipo</th><th>Data</th><th>Tamanho</th><th></th></tr></thead>
       <tbody>${docs.map(d=>`
         <tr>
           <td><div class="doc-nc"><span class="doc-ext de-${d.ext}">${d.ext.toUpperCase()}</span>${escH(d.nome)}</div></td>
-          <td style="color:var(--t3)">${escH(d.tipo)}</td>
+          <td style="color:var(--text-tertiary)">${escH(d.tipo)}</td>
           <td>${escH(d.data)}</td>
-          <td style="color:var(--t3)">${escH(d.tam)}</td>
+          <td style="color:var(--text-tertiary)">${escH(d.tam)}</td>
           <td><div class="user-menu"><button class="ico-btn user-menu-trigger"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></svg></button><div class="user-menu-dropdown"><button class="umd-item umd-signout" onclick="confirmarApagarDoc('${d.id}')"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg>Apagar documento</button></div></div></td>
         </tr>`).join('')}
       </tbody></table>`
@@ -533,7 +555,7 @@ function showExtractedAndApply(){
   const flds=document.getElementById('extractedFields')
   const entries=Object.entries(extractedData).filter(([k])=>labelMap[k])
   if(!entries.length){
-    flds.innerHTML='<p style="font-size:.78rem;color:var(--t2)">Não foi possível extrair campos. Preenche manualmente.</p>'
+    flds.innerHTML='<p style="font-size:.78rem;color:var(--text-secondary)">Não foi possível extrair campos. Preenche manualmente.</p>'
     document.getElementById('extractedPreview').style.display='block'
     return
   }
@@ -673,7 +695,7 @@ async function addDocsToCurrent(files){
     if(!el){
       el=document.createElement('div')
       el.id='docUploadErr'
-      el.style.cssText='font-size:.78rem;color:var(--red);background:var(--red-lt);border-radius:var(--rsm);padding:6px 10px;margin-top:8px'
+      el.style.cssText='font-size:.78rem;color:var(--accent-error);background:var(--accent-error-light);border-radius:var(--radius-sm);padding:6px 10px;margin-top:8px'
       el.setAttribute('role','alert')
       const dropArea=document.querySelector('.drop-area')
       if(dropArea) dropArea.insertAdjacentElement('afterend',el)
@@ -711,7 +733,7 @@ function processReciboFile(e){
     const wrap=document.createElement('div')
     wrap.style.cssText='text-align:center;padding:4px 0'
     const msg=document.createElement('div')
-    msg.style.cssText='font-size:.82rem;color:var(--t2);margin-bottom:12px'
+    msg.style.cssText='font-size:.82rem;color:var(--text-secondary);margin-bottom:12px'
     msg.textContent='A extração está a demorar mais do que o esperado.'
     const btns=document.createElement('div')
     btns.style.cssText='display:flex;gap:8px;justify-content:center'
@@ -726,7 +748,7 @@ function processReciboFile(e){
       controller.abort()
       uz.style.opacity='1'
       uz.style.pointerEvents='auto'
-      proc.innerHTML='<div style="font-size:.82rem;color:var(--t3);text-align:center;padding:4px 0">A extração de dados não foi concluída. Preenche os campos manualmente.</div>'
+      proc.innerHTML='<div style="font-size:.82rem;color:var(--text-tertiary);text-align:center;padding:4px 0">A extração de dados não foi concluída. Preenche os campos manualmente.</div>'
     }
     btns.appendChild(btnAguardar)
     btns.appendChild(btnCancelar)
@@ -830,14 +852,14 @@ function aplicarCamposRecibo(fields, filename){
   // Update upload zone to show file name
   document.getElementById('mrUploadZone').innerHTML=`
     <div style="display:flex;align-items:center;gap:10px;padding:4px 0">
-      <div style="width:36px;height:36px;background:var(--blue-lt);border-radius:var(--rsm);display:flex;align-items:center;justify-content:center;flex-shrink:0">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+      <div style="width:36px;height:36px;background:var(--accent-primary-light);border-radius:var(--radius-sm);display:flex;align-items:center;justify-content:center;flex-shrink:0">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--accent-primary)" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
       </div>
       <div style="flex:1;text-align:left;min-width:0">
-        <div style="font-size:.84rem;font-weight:600;color:var(--t1);overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${escH(filename)}</div>
-        <div style="font-size:.73rem;color:var(--t3)">Carregado com sucesso</div>
+        <div style="font-size:.84rem;font-weight:600;color:var(--text-primary);overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${escH(filename)}</div>
+        <div style="font-size:.73rem;color:var(--text-tertiary)">Carregado com sucesso</div>
       </div>
-      <button onclick="resetReciboUpload()" style="font-size:.75rem;color:var(--t3);background:none;border:none;cursor:pointer;padding:4px">Alterar</button>
+      <button onclick="resetReciboUpload()" style="font-size:.75rem;color:var(--text-tertiary);background:none;border:none;cursor:pointer;padding:4px">Alterar</button>
     </div>`
 
   // Fill fields
@@ -862,19 +884,19 @@ function aplicarCamposRecibo(fields, filename){
 
 function resetReciboUpload(){
   document.getElementById('mrUploadZone').innerHTML=`
-    <div style="width:40px;height:40px;background:var(--blue-lt);border-radius:var(--r);display:flex;align-items:center;justify-content:center;margin:0 auto 10px">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="12" y1="18" x2="12" y2="12"/><line x1="9" y1="15" x2="15" y2="15"/></svg>
+    <div style="width:40px;height:40px;background:var(--accent-primary-light);border-radius:var(--radius-md);display:flex;align-items:center;justify-content:center;margin:0 auto 10px">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--accent-primary)" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="12" y1="18" x2="12" y2="12"/><line x1="9" y1="15" x2="15" y2="15"/></svg>
     </div>
-    <div style="font-size:.88rem;font-weight:600;color:var(--blue);margin-bottom:3px">Carregar fatura</div>
-    <div style="font-size:.75rem;color:var(--t3)">Arrasta ou clica para selecionar · PDF, imagem ou Word</div>
+    <div style="font-size:.88rem;font-weight:600;color:var(--accent-primary);margin-bottom:3px">Carregar fatura</div>
+    <div style="font-size:.75rem;color:var(--text-tertiary)">Arrasta ou clica para selecionar · PDF, imagem ou Word</div>
     <div style="margin-top:10px">
-      <span style="font-size:.72rem;background:var(--blue-lt);color:var(--blue);border-radius:99px;padding:3px 10px;font-weight:600">Preenche os campos automaticamente</span>
+      <span style="font-size:.72rem;background:var(--accent-primary-light);color:var(--accent-primary);border-radius:99px;padding:3px 10px;font-weight:600">Preenche os campos automaticamente</span>
     </div>`
   document.getElementById('mrUploadZone').onclick=()=>document.getElementById('mrFileInput').click()
   document.getElementById('mrExtractedBanner').style.display='none'
   const proc=document.getElementById('mrProcessing')
   proc.style.display='none'
-  proc.innerHTML='<div style="width:28px;height:28px;border:2px solid var(--border);border-top-color:var(--blue);border-radius:50%;animation:spin .7s linear infinite;margin:0 auto 8px"></div><div style="font-size:.82rem;color:var(--blue);font-weight:500">A extrair dados do recibo...</div>'
+  proc.innerHTML='<div style="width:28px;height:28px;border:2px solid var(--border-subtle);border-top-color:var(--accent-primary);border-radius:50%;animation:spin .7s linear infinite;margin:0 auto 8px"></div><div style="font-size:.82rem;color:var(--accent-primary);font-weight:500">A extrair dados do recibo...</div>'
   ;['mrValor','mrData','mrNum','mrDesc'].forEach(id=>{const e=document.getElementById(id);if(e)e.value=''})
   document.getElementById('mrEstado').value='pendente'
 }
@@ -904,8 +926,8 @@ function resetDocModal(){
   // Reset file input and upload zone appearance
   const fi=document.getElementById('mdFileInput'); if(fi) fi.value=''
   const uz=document.getElementById('mdUploadZone')
-  uz.style.borderColor='var(--border2)'
-  uz.style.background='var(--bg)'
+  uz.style.borderColor='var(--border-strong)'
+  uz.style.background='var(--bg-page)'
 }
 
 function onDocModalDrop(e){
@@ -1067,6 +1089,7 @@ function renderPerfil(){
   if(em) em.textContent = user.email
   const av = document.getElementById('perfilAvatar')
   if(av) av.textContent = name[0].toUpperCase()
+  updateThemeBtn()
 }
 
 function setPerfilEditable(editable){
@@ -1136,7 +1159,7 @@ function calcEst(){
     if(!err){
       err=document.createElement('span')
       err.id='calcEstErr'
-      err.style.cssText='font-size:.75rem;color:var(--red);margin-left:10px'
+      err.style.cssText='font-size:.75rem;color:var(--accent-error);margin-left:10px'
       err.setAttribute('role','alert')
       document.getElementById('lastCalcTime').parentElement.appendChild(err)
     }
@@ -1188,13 +1211,13 @@ function calcEst(){
   const pIVA=Math.min(100,(tot/LIMITE_IVA)*100), pRS=Math.min(100,(tot/LIMITE_RS)*100)
   set('ePIVA',fp(pIVA))
   const pivEl=document.getElementById('ePIVA')
-  if(pivEl) pivEl.style.color=pIVA>=90?'var(--red)':pIVA>=70?'var(--amber)':'var(--green)'
+  if(pivEl) pivEl.style.color=pIVA>=90?'var(--accent-error)':pIVA>=70?'var(--accent-caution)':'var(--accent-success)'
   setW('eBIVA',pIVA)
   const bivaEl=document.getElementById('eBIVA')
   if(bivaEl) bivaEl.className='pg-fill '+(pIVA>=90?'r':pIVA>=70?'a':'g')
   set('eLIVA',`${f0(tot)} de ${f0(LIMITE_IVA)}`); set('eRIVA',`Restam ${f0(LIMITE_IVA-tot)}`)
   const rivaEl=document.getElementById('eRIVA')
-  if(rivaEl) rivaEl.style.color=pIVA>=70?'var(--amber)':'var(--green)'
+  if(rivaEl) rivaEl.style.color=pIVA>=70?'var(--accent-caution)':'var(--accent-success)'
   set('ePRS',fp(pRS)); setW('eBRS',pRS)
   set('eLRS',`${f0(tot)} de ${f0(LIMITE_RS)}`); set('eRRS',`Restam ${f0(LIMITE_RS-tot)}`)
 
@@ -1228,7 +1251,7 @@ function calcEst(){
       <div class="rec-ico ${rc.cls}">${svgIcons[rc.icon]||''}</div>
       <div class="rec-body"><div class="rec-title">${rc.title}</div><div class="rec-desc">${rc.desc}</div></div>
       <span class="rec-tag ${rc.label}">${rc.tag}</span>
-      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="var(--t3)" stroke-width="2" style="flex-shrink:0;margin-left:4px"><polyline points="9 18 15 12 9 6"/></svg>
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="var(--text-tertiary)" stroke-width="2" style="flex-shrink:0;margin-left:4px"><polyline points="9 18 15 12 9 6"/></svg>
     </div>`).join('')
 }
 
@@ -1461,7 +1484,7 @@ async function renderActivity(){
   const icoMap={client:icoCl,invoice:icoInv,doc:icoDoc,paid:icoPaid}
   const clsMap={client:'ai-cl',invoice:'ai-inv',doc:'ai-doc',paid:'ai-inv'}
   el.innerHTML=top.length===0
-    ?'<p style="color:var(--t3);font-size:.82rem;padding:8px 0">Sem atividade recente.</p>'
+    ?'<p style="color:var(--text-tertiary);font-size:.82rem;padding:8px 0">Sem atividade recente.</p>'
     :top.map(e=>{
         const dt=e.date.toLocaleDateString('pt-PT',{day:'2-digit',month:'short'})
         return `<div class="act-item"><div class="act-ico ${clsMap[e.type]}">${icoMap[e.type]}</div><div class="act-body"><div class="act-ev">${escH(e.label)}</div>${e.sub?`<div class="act-mt">${escH(e.sub)}</div>`:''}</div><div class="act-dt">${dt}</div></div>`
@@ -1511,7 +1534,7 @@ function renderCalendar(){
         ?`${o.startD.getDate()} ${MESES_PT[o.startD.getMonth()]} – ${dia} ${mes}`
         :`até ${dia} ${mes}`
     }
-    return `<div class="cal-item"><div class="cal-dt"><div class="cal-mo">${mes}</div><div class="cal-d">${dia}</div></div><div class="cal-info"><div class="cal-ev">${o.ev}</div><div class="cal-dc">${o.dc}</div></div><div style="text-align:right;flex-shrink:0"><div class="cal-tag ${tagCls}">${tagText}</div><div style="font-size:.71rem;color:var(--t3);margin-top:4px;white-space:nowrap">${rangeText}</div></div></div>`
+    return `<div class="cal-item"><div class="cal-dt"><div class="cal-mo">${mes}</div><div class="cal-d">${dia}</div></div><div class="cal-info"><div class="cal-ev">${o.ev}</div><div class="cal-dc">${o.dc}</div></div><div style="text-align:right;flex-shrink:0"><div class="cal-tag ${tagCls}">${tagText}</div><div style="font-size:.71rem;color:var(--text-tertiary);margin-top:4px;white-space:nowrap">${rangeText}</div></div></div>`
   }).join('')
 }
 

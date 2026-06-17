@@ -85,7 +85,7 @@
     </div>
     <!-- Status tag — shown on tablet/phone instead of status card -->
     <div class="kpi-ok-tag">
-      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2.5"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--accent-success)" stroke-width="2.5"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
       Estás a gerir bem!
     </div>
     <!-- KPIs -->
@@ -98,19 +98,19 @@
       </div>
       <div class="card kpi-card">
         <div class="kpi-lbl"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg> Limite IVA (art. 53.º) <span class="tt" tabindex="0" role="button" aria-label="Mais informação sobre o limite IVA"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><circle cx="12" cy="8" r="1" fill="currentColor" stroke="none"/></svg><span class="tt-body" role="tooltip">Calculado com base em todas as faturas emitidas (pagas e pendentes), conforme o art. 53.º do CIVA. O limite aplica-se ao volume de negócios, não apenas ao valor recebido.</span></span></div>
-        <div class="kpi-v" id="dashIVApct" style="color:var(--amber)">—</div>
+        <div class="kpi-v" id="dashIVApct" style="color:var(--accent-caution)">—</div>
         <div class="kpi-sub">do limite de isenção (€14.500)</div>
         <div class="pg-wrap"><div class="pg-fill a" id="dashIVAbar" style="width:0%"></div></div>
-        <div class="kpi-foot" style="display:flex;justify-content:space-between;font-size:.7rem;color:var(--t3);margin-top:3px"><span id="dashIVAsub">—</span></div>
+        <div class="kpi-foot" style="display:flex;justify-content:space-between;font-size:.7rem;color:var(--text-tertiary);margin-top:3px"><span id="dashIVAsub">—</span></div>
       </div>
       <div class="card kpi-card">
         <div class="kpi-lbl"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg> Segurança Social</div>
-        <div class="kpi-v" style="color:var(--green)">Isento</div>
+        <div class="kpi-v" style="color:var(--accent-success)">Isento</div>
         <div class="kpi-sub"><span class="tt" tabindex="0" role="button" aria-label="O que é o rendimento relevante">rendimento relevante<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true" style="margin-left:3px"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><circle cx="12" cy="8" r="1" fill="currentColor" stroke="none"/></svg><span class="tt-body" role="tooltip">Base de cálculo da Segurança Social. Corresponde a 70% da tua faturação trimestral dividida por 3 meses. Abaixo de €2.090/mês (4×IAS), estás isento de contribuições.</span></span> &lt; 4×IAS (€2.090/mês)</div>
         <div class="pg-wrap"><div class="pg-fill g" style="width:45%"></div></div>
-        <div class="kpi-foot" style="display:flex;justify-content:space-between;font-size:.7rem;color:var(--t3);margin-top:3px">
+        <div class="kpi-foot" style="display:flex;justify-content:space-between;font-size:.7rem;color:var(--text-tertiary);margin-top:3px">
           <span>€937/mês rel. de €2.090 limite</span>
-          <span style="color:var(--green);font-weight:600">45% do limiar</span>
+          <span style="color:var(--accent-success);font-weight:600">45% do limiar</span>
         </div>
       </div>
     </div>
@@ -120,7 +120,7 @@
       <div class="card cal-card">
         <div class="cal-hdr">
           <div class="cal-title">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--accent-primary)" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
             Calendário
           </div>
         </div>
@@ -141,15 +141,15 @@
         <p class="sec-lbl">Ações rápidas</p>
         <div class="qa-grid">
           <div class="card qa-card" onclick="abrirModalCl()">
-            <div class="qa-ico" style="background:var(--blue-lt)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="2" aria-hidden="true"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
+            <div class="qa-ico" style="background:var(--accent-primary-light)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--accent-primary)" stroke-width="2" aria-hidden="true"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
             <div class="qa-lbl">Novo cliente</div><div class="qa-dc">Adicionar cliente ou projeto</div>
           </div>
           <div class="card qa-card" onclick="abrirModalRecibo()">
-            <div class="qa-ico" style="background:var(--green-lt)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="12" y1="18" x2="12" y2="12"/><line x1="9" y1="15" x2="15" y2="15"/></svg></div>
+            <div class="qa-ico" style="background:var(--accent-success-light)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--accent-success)" stroke-width="2" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="12" y1="18" x2="12" y2="12"/><line x1="9" y1="15" x2="15" y2="15"/></svg></div>
             <div class="qa-lbl">Nova fatura</div><div class="qa-dc">Emitir nova fatura</div>
           </div>
           <div class="card qa-card" onclick="abrirModalDoc()">
-            <div class="qa-ico" style="background:var(--amber-lt)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--amber)" stroke-width="2" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg></div>
+            <div class="qa-ico" style="background:var(--accent-caution-light)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--accent-caution)" stroke-width="2" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg></div>
             <div class="qa-lbl">Adicionar documento</div><div class="qa-dc">Guardar faturas, contratos</div>
           </div>
         </div>
@@ -157,7 +157,7 @@
       <div>
         <p class="sec-lbl">Sugestão do Copilot</p>
         <div class="card sug-card">
-          <div class="sug-title"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><circle cx="12" cy="8" r="1" fill="currentColor" stroke="none"/></svg> Fiscal Copilot sugere</div>
+          <div class="sug-title"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--accent-primary)" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><circle cx="12" cy="8" r="1" fill="currentColor" stroke="none"/></svg> Fiscal Copilot sugere</div>
           <div class="sug-body">Em breve vais poder ter dicas personalizadas e fazer questões ao Fiscal Copilot.</div>
         </div>
       </div>
@@ -200,38 +200,38 @@
     <div class="cl-kpi-grid" style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:10px;margin-bottom:12px;pointer-events:none">
 
       <!-- HERO: Total faturado — destaque máximo -->
-      <div class="card" style="padding:12px 16px;border-left:4px solid var(--blue);grid-column:span 1">
-        <div style="font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.09em;color:var(--blue);margin-bottom:4px;display:flex;align-items:center;gap:6px">
+      <div class="card" style="padding:12px 16px;border-left:4px solid var(--accent-primary);grid-column:span 1">
+        <div style="font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.09em;color:var(--accent-primary);margin-bottom:4px;display:flex;align-items:center;gap:6px">
           <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
           Total faturado 2025
         </div>
-        <div class="mono" style="font-size:1.5rem;font-weight:700;letter-spacing:-.6px;color:var(--t1);line-height:1.1" id="sumTotal">€0,00</div>
-        <div style="font-size:.75rem;color:var(--t3);margin-top:4px">em <span id="sumRec">0</span> faturas · <span id="sumCl">0</span> clientes</div>
+        <div class="mono" style="font-size:1.5rem;font-weight:700;letter-spacing:-.6px;color:var(--text-primary);line-height:1.1" id="sumTotal">€0,00</div>
+        <div style="font-size:.75rem;color:var(--text-tertiary);margin-top:4px">em <span id="sumRec">0</span> faturas · <span id="sumCl">0</span> clientes</div>
       </div>
 
       <!-- HERO: Pendente por receber -->
-      <div class="card" style="padding:12px 16px;border-left:4px solid var(--amber);grid-column:span 1;position:relative;overflow:hidden">
-        <div style="font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.09em;color:var(--amber);margin-bottom:4px;display:flex;align-items:center;gap:6px">
+      <div class="card" style="padding:12px 16px;border-left:4px solid var(--accent-caution);grid-column:span 1;position:relative;overflow:hidden">
+        <div style="font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.09em;color:var(--accent-caution);margin-bottom:4px;display:flex;align-items:center;gap:6px">
           <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
           Pendente por receber
         </div>
-        <div class="mono" style="font-size:1.5rem;font-weight:700;letter-spacing:-.6px;color:var(--amber);line-height:1.1" id="sumPendente">€0,00</div>
-        <div style="font-size:.75rem;color:var(--t3);margin-top:4px" id="sumPendenteN">0 faturas em aberto</div>
-        <div style="position:absolute;right:-12px;bottom:-12px;width:60px;height:60px;background:var(--amber-lt);border-radius:50%;opacity:.6;pointer-events:none"></div>
+        <div class="mono" style="font-size:1.5rem;font-weight:700;letter-spacing:-.6px;color:var(--accent-caution);line-height:1.1" id="sumPendente">€0,00</div>
+        <div style="font-size:.75rem;color:var(--text-tertiary);margin-top:4px" id="sumPendenteN">0 faturas em aberto</div>
+        <div style="position:absolute;right:-12px;bottom:-12px;width:60px;height:60px;background:var(--accent-caution-light);border-radius:50%;opacity:.6;pointer-events:none"></div>
       </div>
 
       <!-- Secondary: Clientes ativos -->
-      <div class="card" style="padding:10px 14px;background:var(--bg);box-shadow:none;border-color:var(--border)">
-        <div style="font-size:.7rem;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--t2);margin-bottom:3px">Clientes ativos</div>
-        <div class="mono" style="font-size:1.15rem;font-weight:700;color:var(--t1)" id="sumClSec">0</div>
+      <div class="card" style="padding:10px 14px;background:var(--bg-page);box-shadow:none;border-color:var(--border-subtle)">
+        <div style="font-size:.7rem;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--text-secondary);margin-bottom:3px">Clientes ativos</div>
+        <div class="mono" style="font-size:1.15rem;font-weight:700;color:var(--text-primary)" id="sumClSec">0</div>
       </div>
 
       <!-- Secondary: Limite IVA -->
-      <div class="card" style="padding:10px 14px;background:var(--bg);box-shadow:none;border-color:var(--border)">
-        <div style="font-size:.7rem;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--t2);margin-bottom:3px;display:flex;align-items:center;gap:5px">Limite IVA (art. 53.º) <span class="tt" tabindex="0" role="button" aria-label="Mais informação sobre o limite IVA" style="pointer-events:auto"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><circle cx="12" cy="8" r="1" fill="currentColor" stroke="none"/></svg><span class="tt-body" role="tooltip">Calculado com base em todas as faturas emitidas (pagas e pendentes), conforme o art. 53.º do CIVA. O limite aplica-se ao volume de negócios, não apenas ao valor recebido.</span></span></div>
-        <div class="mono" style="font-size:1.15rem;font-weight:700;color:var(--amber)" id="clIVApct">—</div>
+      <div class="card" style="padding:10px 14px;background:var(--bg-page);box-shadow:none;border-color:var(--border-subtle)">
+        <div style="font-size:.7rem;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--text-secondary);margin-bottom:3px;display:flex;align-items:center;gap:5px">Limite IVA (art. 53.º) <span class="tt" tabindex="0" role="button" aria-label="Mais informação sobre o limite IVA" style="pointer-events:auto"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><circle cx="12" cy="8" r="1" fill="currentColor" stroke="none"/></svg><span class="tt-body" role="tooltip">Calculado com base em todas as faturas emitidas (pagas e pendentes), conforme o art. 53.º do CIVA. O limite aplica-se ao volume de negócios, não apenas ao valor recebido.</span></span></div>
+        <div class="mono" style="font-size:1.15rem;font-weight:700;color:var(--accent-caution)" id="clIVApct">—</div>
         <div class="pg-wrap" style="margin:4px 0 2px;height:5px"><div class="pg-fill a" id="clIVAbar" style="width:0%"></div></div>
-        <div style="font-size:.71rem;color:var(--t3)" id="clIVAsub">—</div>
+        <div style="font-size:.71rem;color:var(--text-tertiary)" id="clIVAsub">—</div>
       </div>
 
     </div>
@@ -310,16 +310,16 @@
             <div id="recibosTableWrap"></div>
           </div>
           <!-- TAB: Projetos -->
-          <div class="tab-pane" id="tp"><p style="color:var(--t3);font-size:.82rem;padding:18px 0">Gestão de projetos estará disponível em breve.</p></div>
+          <div class="tab-pane" id="tp"><p style="color:var(--text-tertiary);font-size:.82rem;padding:18px 0">Gestão de projetos estará disponível em breve.</p></div>
           <!-- TAB: Contactos (dynamic) -->
-          <div class="tab-pane" id="tc"><div id="contactosInfo" style="font-size:.84rem;line-height:2.3;color:var(--t2);padding:10px 0"></div></div>
+          <div class="tab-pane" id="tc"><div id="contactosInfo" style="font-size:.84rem;line-height:2.3;color:var(--text-secondary);padding:10px 0"></div></div>
           <!-- TAB: Notas -->
-          <div class="tab-pane" id="tn"><p style="color:var(--t3);font-size:.82rem;padding:18px 0">Sem notas adicionadas.</p></div>
+          <div class="tab-pane" id="tn"><p style="color:var(--text-tertiary);font-size:.82rem;padding:18px 0">Sem notas adicionadas.</p></div>
           <!-- TAB: Documentos -->
           <div class="tab-pane" id="td">
             <!-- Header row -->
             <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
-              <div style="font-size:.92rem;font-weight:700;color:var(--t1)">
+              <div style="font-size:.92rem;font-weight:700;color:var(--text-primary)">
                 Documentos
                 <span class="badge bg-n" id="docCount" style="font-size:.72rem;vertical-align:middle;margin-left:4px">6</span>
               </div>
@@ -354,7 +354,7 @@
         <div class="tb-sub">Estimativa fiscal com base nas tuas faturas e dados de perfil.</div>
       </div>
       <div class="page-actions">
-        <div style="display:flex;align-items:center;gap:7px;border:1px solid var(--border2);border-radius:var(--rsm);padding:5px 11px;font-size:.82rem;font-weight:600;background:var(--surface);cursor:pointer">
+        <div style="display:flex;align-items:center;gap:7px;border:1px solid var(--border-strong);border-radius:var(--radius-sm);padding:5px 11px;font-size:.82rem;font-weight:600;background:var(--surface-card);cursor:pointer">
           <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
           2025
           <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
@@ -396,7 +396,7 @@
         <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
         Calcular estimativa
       </button>
-      <span id="lastCalcTime" style="font-size:.76rem;color:var(--t3)"></span>
+      <span id="lastCalcTime" style="font-size:.76rem;color:var(--text-tertiary)"></span>
     </div>
 
     <!-- RESULTS -->
@@ -421,24 +421,24 @@
       <div class="donut-sec">
         <div class="donut-wrap">
           <svg class="donut-svg" viewBox="0 0 120 120" id="donutSvg">
-            <circle cx="60" cy="60" r="48" fill="none" stroke="var(--border)" stroke-width="13"/>
-            <circle id="donutIRS" cx="60" cy="60" r="48" fill="none" stroke="var(--amber)" stroke-width="13" stroke-dasharray="75 227" stroke-dashoffset="0" stroke-linecap="round"/>
-            <circle id="donutSS"  cx="60" cy="60" r="48" fill="none" stroke="var(--red)"   stroke-width="13" stroke-dasharray="45 257" stroke-dashoffset="-75" stroke-linecap="round"/>
+            <circle cx="60" cy="60" r="48" fill="none" stroke="var(--border-subtle)" stroke-width="13"/>
+            <circle id="donutIRS" cx="60" cy="60" r="48" fill="none" stroke="var(--accent-caution)" stroke-width="13" stroke-dasharray="75 227" stroke-dashoffset="0" stroke-linecap="round"/>
+            <circle id="donutSS"  cx="60" cy="60" r="48" fill="none" stroke="var(--accent-error)"   stroke-width="13" stroke-dasharray="45 257" stroke-dashoffset="-75" stroke-linecap="round"/>
             <circle id="donutD"   cx="60" cy="60" r="48" fill="none" stroke="#d1d5db"       stroke-width="13" stroke-dasharray="53 249" stroke-dashoffset="-120" stroke-linecap="round"/>
-            <circle id="donutLiq" cx="60" cy="60" r="48" fill="none" stroke="var(--green)"  stroke-width="13" stroke-dasharray="129 173" stroke-dashoffset="-173" stroke-linecap="round"/>
+            <circle id="donutLiq" cx="60" cy="60" r="48" fill="none" stroke="var(--accent-success)"  stroke-width="13" stroke-dasharray="129 173" stroke-dashoffset="-173" stroke-linecap="round"/>
           </svg>
           <div class="donut-ctr"><div class="donut-ctr-v" id="dCV">—</div><div class="donut-ctr-l">Recebe líquido<br>estimado</div></div>
         </div>
         <div class="bl-list">
-          <div class="bl-row"><div class="bl-l"><div class="bl-dot" style="background:var(--blue)"></div>Total faturado</div><div class="bl-v pos" id="bTot">—</div></div>
+          <div class="bl-row"><div class="bl-l"><div class="bl-dot" style="background:var(--accent-primary)"></div>Total faturado</div><div class="bl-v pos" id="bTot">—</div></div>
           <div class="bl-row"><div class="bl-l"><div class="bl-dot" style="background:#d1d5db"></div>Despesas dedutíveis</div><div class="bl-v neg" id="bDesp">—</div></div>
           <div class="bl-row"><div class="bl-l"><div class="bl-dot" style="background:#6366f1"></div>Rendimento tributável</div><div class="bl-v pos" id="bTrib">—</div></div>
-          <div class="bl-row"><div class="bl-l"><div class="bl-dot" style="background:var(--amber)"></div>IRS estimado</div><div class="bl-v neg" id="bIRS">—</div></div>
-          <div class="bl-row"><div class="bl-l"><div class="bl-dot" style="background:var(--red)"></div>Segurança Social</div><div class="bl-v neg" id="bSS">—</div></div>
-          <div class="bl-row hl"><div class="bl-l" style="font-weight:700;color:var(--green)"><div class="bl-dot" style="background:var(--green)"></div>Recebe líquido estimado</div><div class="bl-v res" id="bLiq">—</div></div>
+          <div class="bl-row"><div class="bl-l"><div class="bl-dot" style="background:var(--accent-caution)"></div>IRS estimado</div><div class="bl-v neg" id="bIRS">—</div></div>
+          <div class="bl-row"><div class="bl-l"><div class="bl-dot" style="background:var(--accent-error)"></div>Segurança Social</div><div class="bl-v neg" id="bSS">—</div></div>
+          <div class="bl-row hl"><div class="bl-l" style="font-weight:700;color:var(--accent-success)"><div class="bl-dot" style="background:var(--accent-success)"></div>Recebe líquido estimado</div><div class="bl-v res" id="bLiq">—</div></div>
         </div>
       </div>
-      <div style="padding:0 22px 13px;font-size:.71rem;color:var(--t3)">Valores aproximados. Não substitui aconselhamento de um contabilista certificado.</div>
+      <div style="padding:0 22px 13px;font-size:.71rem;color:var(--text-tertiary)">Valores aproximados. Não substitui aconselhamento de um contabilista certificado.</div>
     </div>
 
     <p class="sec-lbl">Recomendações personalizadas</p>
@@ -480,32 +480,32 @@
         <p class="plano-desc">Ideal para começar. Sem cartão de crédito necessário.</p>
         <ul class="plano-features">
           <li class="plano-feat plano-feat-ok">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--accent-success)" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
             Até 3 clientes
           </li>
           <li class="plano-feat plano-feat-ok">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--accent-success)" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
             Até 20 faturas/ano
           </li>
           <li class="plano-feat plano-feat-ok">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--accent-success)" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
             5 extrações IA/mês
           </li>
           <li class="plano-feat plano-feat-ok">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--accent-success)" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
             Estimador fiscal
           </li>
           <li class="plano-feat plano-feat-no">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--t3)" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-            <span style="color:var(--t3)">Alertas fiscais por email</span>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--text-tertiary)" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+            <span style="color:var(--text-tertiary)">Alertas fiscais por email</span>
           </li>
           <li class="plano-feat plano-feat-no">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--t3)" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-            <span style="color:var(--t3)">Exportar relatórios PDF</span>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--text-tertiary)" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+            <span style="color:var(--text-tertiary)">Exportar relatórios PDF</span>
           </li>
           <li class="plano-feat plano-feat-no">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--t3)" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-            <span style="color:var(--t3)">Suporte prioritário</span>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--text-tertiary)" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+            <span style="color:var(--text-tertiary)">Suporte prioritário</span>
           </li>
         </ul>
         <button class="btn btn-p" style="width:100%;margin-top:6px">
@@ -629,7 +629,7 @@
           <li>API access</li>
           <li>Suporte prioritário 24/7</li>
         </ul>
-        <button class="btn btn-s" style="width:100%;border-color:var(--purple);color:var(--purple)" onmouseenter="this.style.background='#f5f3ff'" onmouseleave="this.style.background=''">
+        <button class="btn btn-s" style="width:100%;border-color:var(--accent-purple);color:var(--accent-purple)" onmouseenter="this.style.background='#f5f3ff'" onmouseleave="this.style.background=''">
           Contactar
         </button>
       </div>
@@ -639,9 +639,9 @@
     <!-- Billing history -->
     <p class="sec-lbl" style="margin:28px 0 14px">Histórico de pagamentos</p>
     <div class="card" style="padding:40px 24px;text-align:center">
-      <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="var(--t3)" stroke-width="1.5" style="margin:0 auto 12px;display:block"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
-      <div style="font-size:.9rem;font-weight:600;color:var(--t2);margin-bottom:6px">Sem histórico de pagamentos</div>
-      <div style="font-size:.8rem;color:var(--t3)">As faturas dos teus planos aparecerão aqui.</div>
+      <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="var(--text-tertiary)" stroke-width="1.5" style="margin:0 auto 12px;display:block"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+      <div style="font-size:.9rem;font-weight:600;color:var(--text-secondary);margin-bottom:6px">Sem histórico de pagamentos</div>
+      <div style="font-size:.8rem;color:var(--text-tertiary)">As faturas dos teus planos aparecerão aqui.</div>
     </div>
 
   </div>
@@ -670,8 +670,8 @@
       <div style="display:flex;align-items:center;gap:16px">
         <div class="user-av-lg" id="perfilAvatar"></div>
         <div>
-          <div style="font-size:1rem;font-weight:700;color:var(--t1)" id="perfilNome">—</div>
-          <div style="font-size:.82rem;color:var(--t3);margin-top:2px" id="perfilEmail">—</div>
+          <div style="font-size:1rem;font-weight:700;color:var(--text-primary)" id="perfilNome">—</div>
+          <div style="font-size:.82rem;color:var(--text-tertiary);margin-top:2px" id="perfilEmail">—</div>
           <span class="badge bg-b" style="margin-top:6px;display:inline-block">Freelancer · Plano Free</span>
         </div>
       </div>
@@ -681,7 +681,7 @@
     <p class="sec-lbl">Os meus dados fiscais</p>
     <div class="card" style="padding:22px 24px;margin-bottom:24px">
       <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:18px">
-        <p style="font-size:.82rem;color:var(--t2);margin:0" id="perfilFiscalSubtitle">Estes dados são usados no Resumo Fiscal para calcular as tuas estimativas.</p>
+        <p style="font-size:.82rem;color:var(--text-secondary);margin:0" id="perfilFiscalSubtitle">Estes dados são usados no Resumo Fiscal para calcular as tuas estimativas.</p>
         <div style="display:flex;gap:8px">
           <button class="btn btn-s btn-sm" id="perfilBtnEditar" onclick="setPerfilEditable(true)">
             <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
@@ -730,9 +730,24 @@
         <input type="checkbox" id="eEmp" checked disabled/>
         <label for="eEmp">Tenho emprego por conta de outrem (já desconto SS e IRS pela entidade patronal)</label>
       </div>
-      <div id="perfilSavedMsg" style="display:none;margin-top:14px;font-size:.8rem;color:var(--green);font-weight:600;display:flex;align-items:center;gap:6px">
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+      <div id="perfilSavedMsg" style="display:none;margin-top:14px;font-size:.8rem;color:var(--accent-success);font-weight:600;display:flex;align-items:center;gap:6px">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--accent-success)" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
         Dados guardados
+      </div>
+    </div>
+
+    <!-- Appearance -->
+    <p class="sec-lbl">Aparência</p>
+    <div class="card" style="padding:20px 24px;margin-bottom:24px">
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:16px">
+        <div>
+          <div style="font-size:.9rem;font-weight:600;color:var(--text-primary);margin-bottom:2px">Tema</div>
+          <div style="font-size:.8rem;color:var(--text-tertiary)">Escolhe entre o modo claro e escuro.</div>
+        </div>
+        <button id="themeToggleBtn" onclick="toggleTheme()" style="display:flex;align-items:center;gap:8px;padding:8px 14px;border:1px solid var(--border-subtle);border-radius:var(--radius-md);background:var(--surface-secondary);color:var(--text-primary);font-family:var(--font-ui);font-size:.82rem;font-weight:600;cursor:pointer;white-space:nowrap;transition:border-color .15s">
+          <svg id="themeIcon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+          <span id="themeLabel">Modo claro</span>
+        </button>
       </div>
     </div>
 
@@ -755,40 +770,40 @@
     <!-- TOOLTIP -->
     <p class="sec-lbl" style="margin-top:24px">Tooltip</p>
     <div class="card" style="padding:24px;margin-bottom:24px">
-      <p style="font-size:.82rem;color:var(--t2);margin-bottom:20px;line-height:1.7">Aparece ao fazer hover ou ao focar com o teclado (Tab). Usa <code style="font-family:var(--mono);font-size:.8rem;background:var(--bg);padding:1px 5px;border-radius:4px">.tt</code> no elemento-gatilho e <code style="font-family:var(--mono);font-size:.8rem;background:var(--bg);padding:1px 5px;border-radius:4px">.tt-body</code> no conteúdo.</p>
+      <p style="font-size:.82rem;color:var(--text-secondary);margin-bottom:20px;line-height:1.7">Aparece ao fazer hover ou ao focar com o teclado (Tab). Usa <code style="font-family:var(--font-data);font-size:.8rem;background:var(--bg-page);padding:1px 5px;border-radius:4px">.tt</code> no elemento-gatilho e <code style="font-family:var(--font-data);font-size:.8rem;background:var(--bg-page);padding:1px 5px;border-radius:4px">.tt-body</code> no conteúdo.</p>
       <div style="display:flex;align-items:center;gap:32px;flex-wrap:wrap">
 
         <!-- Default (above) -->
         <div style="display:flex;flex-direction:column;align-items:center;gap:10px">
           <span class="tt" tabindex="0" role="button" aria-label="Exemplo de tooltip">
-            <span style="display:inline-flex;align-items:center;gap:5px;font-size:.84rem;font-weight:500;color:var(--blue);padding:6px 12px;border:1px solid var(--blue-lt);background:var(--blue-lt);border-radius:var(--rsm)">
+            <span style="display:inline-flex;align-items:center;gap:5px;font-size:.84rem;font-weight:500;color:var(--accent-primary);padding:6px 12px;border:1px solid var(--accent-primary-light);background:var(--accent-primary-light);border-radius:var(--radius-sm)">
               <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><circle cx="12" cy="8" r="1" fill="currentColor" stroke="none"/></svg>
               Hover ou Tab aqui
             </span>
             <span class="tt-body" role="tooltip">Este é um tooltip. Aparece ao fazer hover ou ao focar com o teclado.</span>
           </span>
-          <span style="font-size:.72rem;color:var(--t3)">Default (acima)</span>
+          <span style="font-size:.72rem;color:var(--text-tertiary)">Default (acima)</span>
         </div>
 
         <!-- With icon only trigger -->
         <div style="display:flex;flex-direction:column;align-items:center;gap:10px">
           <span class="tt" tabindex="0" role="button" aria-label="Informação adicional">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--t3)" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><circle cx="12" cy="8" r="1" fill="currentColor" stroke="none"/></svg>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--text-tertiary)" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><circle cx="12" cy="8" r="1" fill="currentColor" stroke="none"/></svg>
             <span class="tt-body" role="tooltip">Tooltip num ícone de informação. Útil para explicar campos ou métricas.</span>
           </span>
-          <span style="font-size:.72rem;color:var(--t3)">Ícone ℹ</span>
+          <span style="font-size:.72rem;color:var(--text-tertiary)">Ícone ℹ</span>
         </div>
 
         <!-- Right placement -->
         <div style="display:flex;flex-direction:column;align-items:center;gap:10px">
           <span class="tt tt-right" tabindex="0" role="button" aria-label="Tooltip à direita">
-            <span style="display:inline-flex;align-items:center;gap:5px;font-size:.84rem;font-weight:500;padding:6px 12px;border:1px solid var(--border2);background:var(--surface);border-radius:var(--rsm);color:var(--t2)">
+            <span style="display:inline-flex;align-items:center;gap:5px;font-size:.84rem;font-weight:500;padding:6px 12px;border:1px solid var(--border-strong);background:var(--surface-card);border-radius:var(--radius-sm);color:var(--text-secondary)">
               <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><circle cx="12" cy="8" r="1" fill="currentColor" stroke="none"/></svg>
               À direita
             </span>
             <span class="tt-body" role="tooltip">Tooltip posicionado à direita do elemento. Usa a classe <code style="font-family:monospace">.tt-right</code>.</span>
           </span>
-          <span style="font-size:.72rem;color:var(--t3)">Variante direita</span>
+          <span style="font-size:.72rem;color:var(--text-tertiary)">Variante direita</span>
         </div>
 
         <!-- On a badge -->
@@ -797,15 +812,15 @@
             <span class="badge bg-g" style="font-size:.72rem;cursor:help">Isento SS</span>
             <span class="tt-body" role="tooltip">Estás isento de Segurança Social porque o teu rendimento relevante mensal (faturação × 70% ÷ 3) é inferior a 4 × IAS = €2.090/mês.</span>
           </span>
-          <span style="font-size:.72rem;color:var(--t3)">Em badge</span>
+          <span style="font-size:.72rem;color:var(--text-tertiary)">Em badge</span>
         </div>
 
       </div>
 
       <!-- Code snippet -->
-      <div style="margin-top:24px;background:var(--bg);border:1px solid var(--border);border-radius:var(--rsm);padding:14px 16px">
-        <p style="font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--t3);margin-bottom:8px">HTML</p>
-        <pre style="font-family:var(--mono);font-size:.78rem;color:var(--t2);line-height:1.7;white-space:pre-wrap">&lt;span class="tt" tabindex="0" role="button" aria-label="Descrição"&gt;
+      <div style="margin-top:24px;background:var(--bg-page);border:1px solid var(--border-subtle);border-radius:var(--radius-sm);padding:14px 16px">
+        <p style="font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--text-tertiary);margin-bottom:8px">HTML</p>
+        <pre style="font-family:var(--font-data);font-size:.78rem;color:var(--text-secondary);line-height:1.7;white-space:pre-wrap">&lt;span class="tt" tabindex="0" role="button" aria-label="Descrição"&gt;
   &lt;!-- gatilho: ícone, badge, texto... --&gt;
   &lt;span class="tt-body" role="tooltip"&gt;Texto do tooltip&lt;/span&gt;
 &lt;/span&gt;</pre>
@@ -841,9 +856,9 @@
     <p class="sec-lbl">Barras de progresso</p>
     <div class="card" style="padding:24px;margin-bottom:24px">
       <div style="display:flex;flex-direction:column;gap:14px;max-width:400px">
-        <div><div class="pg-wrap"><div class="pg-fill g" style="width:35%"></div></div><div style="display:flex;justify-content:space-between;font-size:.72rem;color:var(--t3)"><span>Verde · 35%</span><span style="color:var(--green)">OK</span></div></div>
-        <div><div class="pg-wrap"><div class="pg-fill a" style="width:72%"></div></div><div style="display:flex;justify-content:space-between;font-size:.72rem;color:var(--t3)"><span>Âmbar · 72%</span><span style="color:var(--amber)">Atenção</span></div></div>
-        <div><div class="pg-wrap"><div class="pg-fill r" style="width:93%"></div></div><div style="display:flex;justify-content:space-between;font-size:.72rem;color:var(--t3)"><span>Vermelho · 93%</span><span style="color:var(--red)">Urgente</span></div></div>
+        <div><div class="pg-wrap"><div class="pg-fill g" style="width:35%"></div></div><div style="display:flex;justify-content:space-between;font-size:.72rem;color:var(--text-tertiary)"><span>Verde · 35%</span><span style="color:var(--accent-success)">OK</span></div></div>
+        <div><div class="pg-wrap"><div class="pg-fill a" style="width:72%"></div></div><div style="display:flex;justify-content:space-between;font-size:.72rem;color:var(--text-tertiary)"><span>Âmbar · 72%</span><span style="color:var(--accent-caution)">Atenção</span></div></div>
+        <div><div class="pg-wrap"><div class="pg-fill r" style="width:93%"></div></div><div style="display:flex;justify-content:space-between;font-size:.72rem;color:var(--text-tertiary)"><span>Vermelho · 93%</span><span style="color:var(--accent-error)">Urgente</span></div></div>
       </div>
     </div>
 
@@ -868,7 +883,7 @@
     <div class="modal-body">
       <!-- Upload para extração automática -->
       <div class="modal-upload-zone" id="modalUploadZone" onclick="triggerDocUpload()">
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--t3)" stroke-width="1.5" style="margin:0 auto">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--text-tertiary)" stroke-width="1.5" style="margin:0 auto">
           <path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><polyline points="13 2 13 9 20 9"/>
           <line x1="12" y1="18" x2="12" y2="13"/><line x1="9.5" y1="15.5" x2="14.5" y2="15.5"/>
         </svg>
@@ -878,7 +893,7 @@
       <input type="file" id="docUploadInput" accept=".pdf,.doc,.docx,.txt,.csv,.xlsx,.xls,.vcf" style="display:none" onchange="processDocUpload(event)"/>
 
       <!-- Extracting spinner -->
-      <div id="extractingIndicator" style="display:none;text-align:center;padding:12px;font-size:.82rem;color:var(--blue)">
+      <div id="extractingIndicator" style="display:none;text-align:center;padding:12px;font-size:.82rem;color:var(--accent-primary)">
         <div class="spinner" style="margin:0 auto 8px"></div>
         A extrair dados do documento...
       </div>
@@ -998,19 +1013,19 @@
         ondragleave="this.classList.remove('drag-over')"
         ondrop="onReciboFileDrop(event)"
         style="
-          border:2px dashed var(--border2);border-radius:var(--r);
+          border:2px dashed var(--border-strong);border-radius:var(--radius-md);
           padding:20px 16px;text-align:center;cursor:pointer;
           transition:border-color .15s,background .15s;margin-bottom:16px;
-          background:var(--bg);
+          background:var(--bg-page);
         "
       >
-        <div style="width:40px;height:40px;background:var(--blue-lt);border-radius:var(--r);display:flex;align-items:center;justify-content:center;margin:0 auto 10px">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="12" y1="18" x2="12" y2="12"/><line x1="9" y1="15" x2="15" y2="15"/></svg>
+        <div style="width:40px;height:40px;background:var(--accent-primary-light);border-radius:var(--radius-md);display:flex;align-items:center;justify-content:center;margin:0 auto 10px">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--accent-primary)" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="12" y1="18" x2="12" y2="12"/><line x1="9" y1="15" x2="15" y2="15"/></svg>
         </div>
-        <div style="font-size:.88rem;font-weight:600;color:var(--blue);margin-bottom:3px">Carregar fatura</div>
-        <div style="font-size:.75rem;color:var(--t3)">Arrasta ou clica para selecionar · PDF, imagem ou Word</div>
+        <div style="font-size:.88rem;font-weight:600;color:var(--accent-primary);margin-bottom:3px">Carregar fatura</div>
+        <div style="font-size:.75rem;color:var(--text-tertiary)">Arrasta ou clica para selecionar · PDF, imagem ou Word</div>
         <div style="margin-top:10px">
-          <span style="font-size:.72rem;background:var(--blue-lt);color:var(--blue);border-radius:99px;padding:3px 10px;font-weight:600">
+          <span style="font-size:.72rem;background:var(--accent-primary-light);color:var(--accent-primary);border-radius:99px;padding:3px 10px;font-weight:600">
             Preenche os campos automaticamente
           </span>
         </div>
@@ -1019,18 +1034,18 @@
 
       <!-- ESTADO: A processar -->
       <div id="mrProcessing" style="display:none;text-align:center;padding:14px;margin-bottom:16px">
-        <div style="width:28px;height:28px;border:2px solid var(--border);border-top-color:var(--blue);border-radius:50%;animation:spin .7s linear infinite;margin:0 auto 8px"></div>
-        <div style="font-size:.82rem;color:var(--blue);font-weight:500">A extrair dados da fatura...</div>
+        <div style="width:28px;height:28px;border:2px solid var(--border-subtle);border-top-color:var(--accent-primary);border-radius:50%;animation:spin .7s linear infinite;margin:0 auto 8px"></div>
+        <div style="font-size:.82rem;color:var(--accent-primary);font-weight:500">A extrair dados da fatura...</div>
       </div>
 
       <!-- BANNER: Campos extraídos -->
-      <div id="mrExtractedBanner" style="display:none;background:var(--green-lt);border:1px solid #a7f3d0;border-radius:var(--rsm);padding:9px 13px;margin-bottom:14px;display:none;align-items:center;gap:8px">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
-        <span style="font-size:.8rem;font-weight:600;color:var(--green)" id="mrExtractedMsg">Campos preenchidos automaticamente — revê antes de guardar</span>
+      <div id="mrExtractedBanner" style="display:none;background:var(--accent-success-light);border:1px solid #a7f3d0;border-radius:var(--radius-sm);padding:9px 13px;margin-bottom:14px;display:none;align-items:center;gap:8px">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--accent-success)" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+        <span style="font-size:.8rem;font-weight:600;color:var(--accent-success)" id="mrExtractedMsg">Campos preenchidos automaticamente — revê antes de guardar</span>
       </div>
 
       <!-- DIVISOR -->
-      <div style="font-size:.74rem;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--t2);margin-bottom:12px">Dados da fatura</div>
+      <div style="font-size:.74rem;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--text-secondary);margin-bottom:12px">Dados da fatura</div>
 
       <!-- CAMPOS (preenchidos automaticamente ou manualmente) -->
       <div class="fg2" style="margin-bottom:12px">
@@ -1094,40 +1109,40 @@
         ondragleave="this.classList.remove('drag-over')"
         ondrop="onDocModalDrop(event)"
         style="
-          border:2px dashed var(--border2);border-radius:var(--r);
+          border:2px dashed var(--border-strong);border-radius:var(--radius-md);
           padding:20px 16px;text-align:center;cursor:pointer;
           transition:border-color .15s,background .15s;margin-bottom:16px;
-          background:var(--bg);
+          background:var(--bg-page);
         "
       >
-        <div style="width:40px;height:40px;background:var(--green-lt);border-radius:var(--r);display:flex;align-items:center;justify-content:center;margin:0 auto 10px">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2"><path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><polyline points="13 2 13 9 20 9"/><line x1="12" y1="18" x2="12" y2="13"/><line x1="9" y1="15.5" x2="15" y2="15.5"/></svg>
+        <div style="width:40px;height:40px;background:var(--accent-success-light);border-radius:var(--radius-md);display:flex;align-items:center;justify-content:center;margin:0 auto 10px">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--accent-success)" stroke-width="2"><path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><polyline points="13 2 13 9 20 9"/><line x1="12" y1="18" x2="12" y2="13"/><line x1="9" y1="15.5" x2="15" y2="15.5"/></svg>
         </div>
-        <div style="font-size:.88rem;font-weight:600;color:var(--green);margin-bottom:3px">Carregar documento</div>
-        <div style="font-size:.75rem;color:var(--t3)">Arrasta ou clica para selecionar · PDF, Word, Excel, imagem</div>
+        <div style="font-size:.88rem;font-weight:600;color:var(--accent-success);margin-bottom:3px">Carregar documento</div>
+        <div style="font-size:.75rem;color:var(--text-tertiary)">Arrasta ou clica para selecionar · PDF, Word, Excel, imagem</div>
         <!-- Ficheiro selecionado -->
-        <div id="mdFilePreview" style="display:none;margin-top:10px;background:var(--surface);border:1px solid var(--border);border-radius:var(--rsm);padding:8px 12px;text-align:left;display:none;align-items:center;gap:8px">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2"><path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><polyline points="13 2 13 9 20 9"/></svg>
-          <span id="mdFileName" style="font-size:.8rem;font-weight:500;color:var(--t1);flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap"></span>
-          <span id="mdFileSize" style="font-size:.72rem;color:var(--t3)"></span>
+        <div id="mdFilePreview" style="display:none;margin-top:10px;background:var(--surface-card);border:1px solid var(--border-subtle);border-radius:var(--radius-sm);padding:8px 12px;text-align:left;display:none;align-items:center;gap:8px">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--accent-success)" stroke-width="2"><path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><polyline points="13 2 13 9 20 9"/></svg>
+          <span id="mdFileName" style="font-size:.8rem;font-weight:500;color:var(--text-primary);flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap"></span>
+          <span id="mdFileSize" style="font-size:.72rem;color:var(--text-tertiary)"></span>
         </div>
       </div>
       <input type="file" id="mdFileInput" style="display:none" accept=".pdf,.png,.jpg,.jpeg,.docx,.doc,.xls,.xlsx,.txt,.csv" onchange="processDocModalFile(event)"/>
 
       <!-- ESTADO: A processar -->
       <div id="mdProcessing" style="display:none;text-align:center;padding:14px;margin-bottom:14px">
-        <div style="width:28px;height:28px;border:2px solid var(--border);border-top-color:var(--green);border-radius:50%;animation:spin .7s linear infinite;margin:0 auto 8px"></div>
-        <div style="font-size:.82rem;color:var(--green);font-weight:500">A detetar tipo e metadados do documento...</div>
+        <div style="width:28px;height:28px;border:2px solid var(--border-subtle);border-top-color:var(--accent-success);border-radius:50%;animation:spin .7s linear infinite;margin:0 auto 8px"></div>
+        <div style="font-size:.82rem;color:var(--accent-success);font-weight:500">A detetar tipo e metadados do documento...</div>
       </div>
 
       <!-- BANNER: Dados detetados -->
-      <div id="mdExtractedBanner" style="display:none;background:var(--green-lt);border:1px solid #a7f3d0;border-radius:var(--rsm);padding:9px 13px;margin-bottom:14px;align-items:center;gap:8px">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
-        <span style="font-size:.8rem;font-weight:600;color:var(--green)">Dados detetados automaticamente — confirma ou edita</span>
+      <div id="mdExtractedBanner" style="display:none;background:var(--accent-success-light);border:1px solid #a7f3d0;border-radius:var(--radius-sm);padding:9px 13px;margin-bottom:14px;align-items:center;gap:8px">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--accent-success)" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+        <span style="font-size:.8rem;font-weight:600;color:var(--accent-success)">Dados detetados automaticamente — confirma ou edita</span>
       </div>
 
       <!-- CAMPOS DO DOCUMENTO -->
-      <div style="font-size:.74rem;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--t2);margin-bottom:12px">Dados do documento</div>
+      <div style="font-size:.74rem;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--text-secondary);margin-bottom:12px">Dados do documento</div>
 
       <div class="fg2" style="margin-bottom:12px">
         <div class="fc">
@@ -1181,19 +1196,19 @@
 <div class="modal-ov" id="modalApagarCl" role="dialog" aria-modal="true" aria-labelledby="modalApagarClTitle">
   <div class="modal" style="max-width:440px">
     <div class="modal-hdr">
-      <div class="modal-title" id="modalApagarClTitle" style="color:var(--red)">
+      <div class="modal-title" id="modalApagarClTitle" style="color:var(--accent-error)">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg>
         Apagar cliente
       </div>
       <button class="modal-x" onclick="fecharModal('modalApagarCl')" aria-label="Fechar">✕</button>
     </div>
     <div class="modal-body">
-      <div style="background:var(--red-lt);border:1px solid #fca5a5;border-radius:var(--rsm);padding:14px 16px;margin-bottom:20px;font-size:var(--text-sm);color:var(--red);line-height:1.7">
+      <div style="background:var(--accent-error-light);border:1px solid #fca5a5;border-radius:var(--radius-sm);padding:14px 16px;margin-bottom:20px;font-size:var(--text-sm);color:var(--accent-error);line-height:1.7">
         <strong>Esta ação é permanente e irreversível.</strong><br>
         Todos os recibos e documentos associados a <strong id="apagarClNome">este cliente</strong> serão apagados definitivamente.
       </div>
-      <label style="display:flex;align-items:flex-start;gap:10px;cursor:pointer;font-size:var(--text-sm);color:var(--t2);line-height:1.6;padding:14px 16px;background:var(--bg);border-radius:var(--rsm)">
-        <input type="checkbox" id="apagarClCheck" onchange="document.getElementById('btnConfirmarApagar').disabled=!this.checked" style="margin-top:2px;accent-color:var(--red);flex-shrink:0;width:15px;height:15px"/>
+      <label style="display:flex;align-items:flex-start;gap:10px;cursor:pointer;font-size:var(--text-sm);color:var(--text-secondary);line-height:1.6;padding:14px 16px;background:var(--bg-page);border-radius:var(--radius-sm)">
+        <input type="checkbox" id="apagarClCheck" onchange="document.getElementById('btnConfirmarApagar').disabled=!this.checked" style="margin-top:2px;accent-color:var(--accent-error);flex-shrink:0;width:15px;height:15px"/>
         Compreendo que esta ação é irreversível e que todos os dados serão apagados permanentemente.
       </label>
     </div>
@@ -1213,19 +1228,19 @@
 <div class="modal-ov" id="modalApagarRecibo" role="dialog" aria-modal="true" aria-labelledby="modalApagarReciboTitle">
   <div class="modal" style="max-width:440px">
     <div class="modal-hdr">
-      <div class="modal-title" id="modalApagarReciboTitle" style="color:var(--red)">
+      <div class="modal-title" id="modalApagarReciboTitle" style="color:var(--accent-error)">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg>
         Apagar fatura
       </div>
       <button class="modal-x" onclick="fecharModal('modalApagarRecibo')" aria-label="Fechar">✕</button>
     </div>
     <div class="modal-body">
-      <div style="background:var(--red-lt);border:1px solid #fca5a5;border-radius:var(--rsm);padding:14px 16px;margin-bottom:20px;font-size:var(--text-sm);color:var(--red);line-height:1.7">
+      <div style="background:var(--accent-error-light);border:1px solid #fca5a5;border-radius:var(--radius-sm);padding:14px 16px;margin-bottom:20px;font-size:var(--text-sm);color:var(--accent-error);line-height:1.7">
         <strong>Esta ação é permanente e irreversível.</strong><br>
         O recibo <strong id="apagarReciboNum"></strong> no valor de <strong id="apagarReciboVal"></strong> será apagado definitivamente.
       </div>
-      <label style="display:flex;align-items:flex-start;gap:10px;cursor:pointer;font-size:var(--text-sm);color:var(--t2);line-height:1.6;padding:14px 16px;background:var(--bg);border-radius:var(--rsm)">
-        <input type="checkbox" id="apagarReciboCheck" onchange="document.getElementById('btnConfirmarApagarRecibo').disabled=!this.checked" style="margin-top:2px;accent-color:var(--red);flex-shrink:0;width:15px;height:15px"/>
+      <label style="display:flex;align-items:flex-start;gap:10px;cursor:pointer;font-size:var(--text-sm);color:var(--text-secondary);line-height:1.6;padding:14px 16px;background:var(--bg-page);border-radius:var(--radius-sm)">
+        <input type="checkbox" id="apagarReciboCheck" onchange="document.getElementById('btnConfirmarApagarRecibo').disabled=!this.checked" style="margin-top:2px;accent-color:var(--accent-error);flex-shrink:0;width:15px;height:15px"/>
         Compreendo que esta ação é irreversível.
       </label>
     </div>
@@ -1245,19 +1260,19 @@
 <div class="modal-ov" id="modalApagarDoc" role="dialog" aria-modal="true" aria-labelledby="modalApagarDocTitle">
   <div class="modal" style="max-width:440px">
     <div class="modal-hdr">
-      <div class="modal-title" id="modalApagarDocTitle" style="color:var(--red)">
+      <div class="modal-title" id="modalApagarDocTitle" style="color:var(--accent-error)">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg>
         Apagar documento
       </div>
       <button class="modal-x" onclick="fecharModal('modalApagarDoc')" aria-label="Fechar">✕</button>
     </div>
     <div class="modal-body">
-      <div style="background:var(--red-lt);border:1px solid #fca5a5;border-radius:var(--rsm);padding:14px 16px;margin-bottom:20px;font-size:var(--text-sm);color:var(--red);line-height:1.7">
+      <div style="background:var(--accent-error-light);border:1px solid #fca5a5;border-radius:var(--radius-sm);padding:14px 16px;margin-bottom:20px;font-size:var(--text-sm);color:var(--accent-error);line-height:1.7">
         <strong>Esta ação é permanente e irreversível.</strong><br>
         O documento <strong id="apagarDocNome"></strong> será apagado definitivamente.
       </div>
-      <label style="display:flex;align-items:flex-start;gap:10px;cursor:pointer;font-size:var(--text-sm);color:var(--t2);line-height:1.6;padding:14px 16px;background:var(--bg);border-radius:var(--rsm)">
-        <input type="checkbox" id="apagarDocCheck" onchange="document.getElementById('btnConfirmarApagarDoc').disabled=!this.checked" style="margin-top:2px;accent-color:var(--red);flex-shrink:0;width:15px;height:15px"/>
+      <label style="display:flex;align-items:flex-start;gap:10px;cursor:pointer;font-size:var(--text-sm);color:var(--text-secondary);line-height:1.6;padding:14px 16px;background:var(--bg-page);border-radius:var(--radius-sm)">
+        <input type="checkbox" id="apagarDocCheck" onchange="document.getElementById('btnConfirmarApagarDoc').disabled=!this.checked" style="margin-top:2px;accent-color:var(--accent-error);flex-shrink:0;width:15px;height:15px"/>
         Compreendo que esta ação é irreversível.
       </label>
     </div>
