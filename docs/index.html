@@ -10,631 +10,586 @@
 <link rel="stylesheet" href="../style.css"/>
 <style>
   /* ── Layout ── */
-  .ds-layout{display:flex;min-height:100vh;background:var(--bg)}
-  .ds-sidebar{width:220px;flex-shrink:0;background:var(--surface);border-right:1px solid var(--border);position:fixed;top:0;left:0;height:100vh;overflow-y:auto;display:flex;flex-direction:column}
-  .ds-sidebar-brand{padding:20px 20px 18px;border-bottom:1px solid var(--border)}
-  .ds-sidebar-brand-name{font-size:.95rem;font-weight:700;color:var(--blue)}
-  .ds-sidebar-brand-sub{font-size:.72rem;color:var(--t3);margin-top:2px}
-  .ds-nav{padding:16px 0;flex:1}
-  .ds-nav-group{margin-bottom:20px}
-  .ds-nav-label{font-size:.62rem;font-weight:700;text-transform:uppercase;letter-spacing:.12em;color:var(--t3);padding:0 20px;margin-bottom:4px}
-  .ds-nav a{display:block;padding:7px 20px;font-size:.84rem;color:var(--t2);transition:background .1s,color .1s}
-  .ds-nav a:hover{background:var(--bg);color:var(--t1)}
-  .ds-nav a.active{color:var(--blue);font-weight:600;background:var(--blue-lt)}
-  .ds-main{margin-left:220px;flex:1;padding:52px 64px 80px;max-width:960px}
+  .ds-shell{display:flex;min-height:100vh;background:var(--bg-page)}
+  .ds-side{width:220px;flex-shrink:0;background:var(--surface-card);border-right:1px solid var(--border-subtle);position:fixed;top:0;left:0;height:100vh;overflow-y:auto;display:flex;flex-direction:column}
+  .ds-brand{padding:20px 20px 16px;border-bottom:1px solid var(--border-subtle)}
+  .ds-brand-name{font-family:var(--font-ui);font-size:.9rem;font-weight:700;color:var(--accent-primary)}
+  .ds-brand-sub{font-size:.7rem;color:var(--text-tertiary);margin-top:2px}
+  .ds-nav{padding:14px 0;flex:1}
+  .ds-nav-group{margin-bottom:18px}
+  .ds-nav-lbl{font-size:.6rem;font-weight:700;text-transform:uppercase;letter-spacing:.12em;color:var(--text-tertiary);padding:0 18px;margin-bottom:4px}
+  .ds-nav a{display:block;padding:6px 18px;font-size:.82rem;color:var(--text-secondary);text-decoration:none;border-radius:0;transition:background .1s,color .1s}
+  .ds-nav a:hover{background:var(--bg-page);color:var(--text-primary)}
+  .ds-nav a.active{color:var(--accent-primary);font-weight:600;background:var(--accent-primary-light)}
+  .ds-theme-btn{margin:0 12px 16px;padding:9px 14px;background:var(--bg-page);border:1px solid var(--border-subtle);border-radius:var(--radius-md);font-size:.78rem;font-weight:600;color:var(--text-secondary);cursor:pointer;display:flex;align-items:center;gap:7px;font-family:var(--font-ui);transition:border-color .15s}
+  .ds-theme-btn:hover{border-color:var(--border-strong);color:var(--text-primary)}
+  .ds-main{margin-left:220px;flex:1;padding:48px 60px 96px;max-width:920px}
 
   /* ── Page header ── */
-  .ds-page-header{margin-bottom:40px;padding-bottom:28px;border-bottom:1px solid var(--border)}
-  .ds-page-header h1{font-size:1.8rem;font-weight:400;font-family:var(--font-heading);letter-spacing:-.5px;margin-bottom:6px}
-  .ds-page-header p{font-size:.9rem;color:var(--t2);line-height:1.7;max-width:560px}
+  .ds-hdr{margin-bottom:48px;padding-bottom:28px;border-bottom:1px solid var(--border-subtle)}
+  .ds-hdr h1{font-family:var(--font-ui);font-size:1.75rem;font-weight:700;letter-spacing:-.5px;margin-bottom:6px;color:var(--text-primary)}
+  .ds-hdr p{font-size:.88rem;color:var(--text-secondary);line-height:1.7;max-width:540px}
 
   /* ── Section ── */
-  .ds-section{margin-bottom:56px}
-  .ds-section-title{font-size:1rem;font-weight:400;font-family:var(--font-heading);letter-spacing:-.2px;margin-bottom:4px;display:flex;align-items:center;gap:8px}
-  .ds-section-desc{font-size:.84rem;color:var(--t3);margin-bottom:20px;line-height:1.6}
-  .ds-section-title::before{content:'';display:block;width:3px;height:16px;background:var(--blue);border-radius:99px}
+  .ds-sec{margin-bottom:56px;scroll-margin-top:24px}
+  .ds-sec-hdr{display:flex;align-items:center;gap:9px;margin-bottom:4px}
+  .ds-sec-hdr::before{content:'';display:block;width:3px;height:17px;background:var(--accent-primary);border-radius:99px;flex-shrink:0}
+  .ds-sec-title{font-family:var(--font-ui);font-size:1rem;font-weight:600;color:var(--text-primary)}
+  .ds-sec-desc{font-size:.82rem;color:var(--text-tertiary);margin-bottom:20px;line-height:1.6;padding-left:12px}
 
-  /* ── Token chip ── */
-  .ds-token{display:inline-block;font-family:var(--mono);font-size:.7rem;background:var(--bg);border:1px solid var(--border);border-radius:4px;padding:2px 7px;color:var(--blue);white-space:nowrap}
-  .ds-value{font-family:var(--mono);font-size:.72rem;color:var(--t3)}
+  /* ── Code chip ── */
+  .tok{display:inline-block;font-family:var(--font-data);font-size:.7rem;background:var(--surface-secondary);border:1px solid var(--border-subtle);border-radius:4px;padding:2px 7px;color:var(--accent-primary);white-space:nowrap}
+  .val{font-family:var(--font-data);font-size:.72rem;color:var(--text-tertiary)}
 
-  /* ── Specimen card ── */
-  .ds-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--rlg);margin-bottom:12px}
-  .ds-card-preview{padding:28px 28px 20px}
-  .ds-card-meta{display:flex;align-items:center;gap:10px;padding:10px 28px;background:var(--bg);border-top:1px solid var(--border)}
-  .ds-card-meta-label{font-size:.75rem;font-weight:600;color:var(--t2)}
+  /* ── Preview card ── */
+  .ds-card{background:var(--surface-card);border:1px solid var(--border-subtle);border-radius:var(--radius-lg);margin-bottom:12px;overflow:hidden}
+  .ds-preview{padding:28px}
+  .ds-meta{display:flex;align-items:center;gap:10px;padding:9px 16px;background:var(--surface-secondary);border-top:1px solid var(--border-subtle)}
+  .ds-meta-lbl{font-size:.72rem;font-weight:600;color:var(--text-secondary)}
 
-  /* ── Typefaces ── */
-  .ds-font-specimen{margin-bottom:20px}
-  .ds-font-name{font-size:.75rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--t3);margin-bottom:10px;display:flex;align-items:center;gap:8px}
-  .ds-font-display{font-size:2.4rem;font-weight:600;letter-spacing:-.5px;line-height:1.15;color:var(--t1)}
-  .ds-font-chars{font-size:.88rem;color:var(--t2);margin-top:6px;line-height:1.8}
-  .ds-font-weights{display:flex;flex-wrap:wrap;gap:16px;margin-top:12px}
-  .ds-fw-item{font-size:.95rem}
+  /* ── Color grid ── */
+  .color-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:10px;margin-bottom:20px}
+  .color-swatch{border:1px solid var(--border-subtle);border-radius:var(--radius-md);overflow:hidden;background:var(--surface-card)}
+  .color-swatch-bg{height:56px}
+  .color-swatch-info{padding:8px 10px}
+  .color-swatch-name{font-size:.75rem;font-weight:600;color:var(--text-primary);display:block}
+  .color-swatch-tok{font-family:var(--font-data);font-size:.68rem;color:var(--text-tertiary);display:block;margin-top:2px}
+  .color-swatch-val{font-family:var(--font-data);font-size:.68rem;color:var(--text-secondary);display:block;margin-top:1px}
 
-  /* ── Type scale ── */
-  .ds-scale-row{display:grid;grid-template-columns:120px 1fr 90px 80px;align-items:baseline;gap:16px;padding:14px 0;border-bottom:1px solid var(--border)}
-  .ds-scale-row:last-child{border-bottom:none}
-  .ds-scale-row:first-child{font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.09em;color:var(--t3);padding-bottom:10px;align-items:center}
-  .ds-scale-preview{color:var(--t1);line-height:1.3}
+  /* ── Type specimens ── */
+  .type-specimen{margin-bottom:24px}
+  .type-label{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--text-tertiary);margin-bottom:8px}
+  .type-sample-body{font-family:var(--font-body);font-size:1.6rem;font-weight:400;color:var(--text-primary);line-height:1.3}
+  .type-sample-ui{font-family:var(--font-ui);font-size:1.6rem;font-weight:600;color:var(--text-primary);line-height:1.3}
+  .type-sample-data{font-family:var(--font-data);font-size:1.6rem;color:var(--accent-primary);line-height:1.3}
+  .type-scale-row{display:flex;align-items:baseline;gap:14px;padding:7px 0;border-bottom:1px solid var(--border-subtle)}
+  .type-scale-tok{font-family:var(--font-data);font-size:.68rem;color:var(--text-tertiary);width:100px;flex-shrink:0}
+  .type-scale-sample{color:var(--text-primary)}
 
-  /* ── Weights ── */
-  .ds-weights-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
-  .ds-weight-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:20px}
-  .ds-weight-preview{font-size:1.35rem;line-height:1.3;margin-bottom:10px;color:var(--t1)}
-  .ds-weight-meta{display:flex;flex-direction:column;gap:3px}
+  /* ── Radius ── */
+  .radius-row{display:flex;gap:16px;flex-wrap:wrap;align-items:flex-end}
+  .radius-item{text-align:center}
+  .radius-box{background:var(--accent-primary-light);border:2px solid var(--accent-primary);width:64px;height:64px;margin:0 auto 8px}
+  .radius-label{font-size:.72rem;font-weight:600;color:var(--text-secondary)}
+  .radius-tok{font-family:var(--font-data);font-size:.68rem;color:var(--text-tertiary);display:block}
 
-  /* ── Line heights ── */
-  .ds-lh-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
-  .ds-lh-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:20px}
-  .ds-lh-preview{font-size:.88rem;color:var(--t1);margin-bottom:10px}
-  .ds-lh-meta{display:flex;flex-direction:column;gap:3px}
+  /* ── Component rows ── */
+  .row{display:flex;gap:12px;flex-wrap:wrap;align-items:flex-start}
+  .col-stack{display:flex;flex-direction:column;gap:12px}
 
-  /* ── Letter spacing ── */
-  .ds-ls-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
-  .ds-ls-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:20px}
-  .ds-ls-preview{font-size:1rem;font-weight:600;color:var(--t1);margin-bottom:10px}
-  .ds-ls-meta{display:flex;flex-direction:column;gap:3px}
+  /* ── Shadow strip ── */
+  .shadow-row{display:flex;gap:20px;flex-wrap:wrap;align-items:flex-end}
+  .shadow-item{text-align:center}
+  .shadow-box{width:80px;height:64px;border-radius:var(--radius-md);background:var(--surface-card);border:1px solid var(--border-subtle);margin:0 auto 8px}
+  .shadow-label{font-size:.72rem;font-weight:600;color:var(--text-secondary)}
+  .shadow-tok{font-family:var(--font-data);font-size:.68rem;color:var(--text-tertiary);display:block}
+
+  /* Dark-mode table */
+  .tok-table{width:100%;border-collapse:collapse;font-size:.8rem}
+  .tok-table th{text-align:left;font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--text-tertiary);padding:6px 10px;border-bottom:2px solid var(--border-subtle)}
+  .tok-table td{padding:7px 10px;border-bottom:1px solid var(--border-subtle);color:var(--text-secondary);vertical-align:middle}
+  .tok-table td:first-child{color:var(--text-primary)}
+  .swatch-dot{width:14px;height:14px;border-radius:50%;display:inline-block;border:1px solid var(--border-subtle);vertical-align:middle;margin-right:6px}
 </style>
 </head>
 <body>
-<div class="ds-layout">
+<script>if(localStorage.getItem('theme')==='dark')document.documentElement.classList.add('dark')</script>
 
-  <!-- SIDEBAR -->
-  <nav class="ds-sidebar">
-    <div class="ds-sidebar-brand">
-      <div class="ds-sidebar-brand-name">Fiscal Copilot</div>
-      <div class="ds-sidebar-brand-sub">Design System</div>
+<div class="ds-shell">
+
+<!-- ── Sidebar ── -->
+<aside class="ds-side">
+  <div class="ds-brand">
+    <div class="ds-brand-name">Fiscal Copilot</div>
+    <div class="ds-brand-sub">Design System</div>
+  </div>
+  <nav class="ds-nav">
+    <div class="ds-nav-group">
+      <div class="ds-nav-lbl">Fundação</div>
+      <a href="#cores" class="active">Cores</a>
+      <a href="#tipografia">Tipografia</a>
+      <a href="#espacamento">Espaçamento & Raio</a>
+      <a href="#sombras">Sombras</a>
+      <a href="#dark-mode">Dark Mode</a>
     </div>
-    <div class="ds-nav">
-      <div class="ds-nav-group">
-        <div class="ds-nav-label">Foundations</div>
-        <a href="#typefaces" class="active">Typefaces</a>
-        <a href="#type-scale">Type Scale</a>
-        <a href="#font-weight">Font Weight</a>
-        <a href="#line-height">Line Height</a>
-        <a href="#letter-spacing">Letter Spacing</a>
-      </div>
-      <div class="ds-nav-group">
-        <div class="ds-nav-label">Components</div>
-        <a href="#tooltip">Tooltip</a>
-        <a href="#badges">Badges</a>
-        <a href="#buttons">Buttons</a>
-        <a href="#progress">Progress Bars</a>
-        <a href="#stat-cards">Stat Cards</a>
-      </div>
+    <div class="ds-nav-group">
+      <div class="ds-nav-lbl">Componentes</div>
+      <a href="#cards">Cards</a>
+      <a href="#stat-cards">Stat Cards</a>
+      <a href="#buttons">Botões</a>
+      <a href="#badges">Badges & Pills</a>
+      <a href="#forms">Formulários</a>
+      <a href="#tooltips">Tooltips</a>
+      <a href="#modais">Modais</a>
+    </div>
+    <div class="ds-nav-group">
+      <div class="ds-nav-lbl">Padrões</div>
+      <a href="#sidebar-nav">Sidebar Nav</a>
+      <a href="#feedback">Feedback & Erros</a>
     </div>
   </nav>
+  <button class="ds-theme-btn" onclick="toggleDsTheme()" id="ds-theme-btn">
+    <svg id="ds-theme-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+    <span id="ds-theme-label">Modo claro</span>
+  </button>
+</aside>
 
-  <!-- MAIN -->
-  <main class="ds-main">
+<!-- ── Main ── -->
+<main class="ds-main">
 
-    <div class="ds-page-header">
-      <h1>Typography</h1>
-      <p>The type system used across Fiscal Copilot — including typefaces, scale, weights, and spacing tokens. All values are available as CSS custom properties.</p>
+  <div class="ds-hdr">
+    <h1>Design System</h1>
+    <p>Tokens, componentes e padrões visuais do Fiscal Copilot. Usa esta página como referência antes de criar novos ecrãs ou componentes.</p>
+  </div>
+
+  <!-- ══ CORES ══ -->
+  <section class="ds-sec" id="cores">
+    <div class="ds-sec-hdr"><span class="ds-sec-title">Cores</span></div>
+    <p class="ds-sec-desc">Todos os valores de cor vêm de tokens CSS. Nunca usa hex diretamente no código — usa sempre a variável correspondente. O sistema usa neutrals com subtom azul-navy, não cinzentos puros.</p>
+
+    <p style="font-size:.8rem;font-weight:600;color:var(--text-secondary);margin-bottom:10px">Superfícies</p>
+    <div class="color-grid">
+      <div class="color-swatch"><div class="color-swatch-bg" style="background:var(--bg-page)"></div><div class="color-swatch-info"><span class="color-swatch-name">Page</span><span class="color-swatch-tok">--bg-page</span><span class="color-swatch-val">#ebf4fb</span></div></div>
+      <div class="color-swatch"><div class="color-swatch-bg" style="background:var(--surface-card);border-bottom:1px solid var(--border-subtle)"></div><div class="color-swatch-info"><span class="color-swatch-name">Card</span><span class="color-swatch-tok">--surface-card</span><span class="color-swatch-val">#ffffff</span></div></div>
+      <div class="color-swatch"><div class="color-swatch-bg" style="background:var(--surface-secondary)"></div><div class="color-swatch-info"><span class="color-swatch-name">Secondary</span><span class="color-swatch-tok">--surface-secondary</span><span class="color-swatch-val">#f2f8fd</span></div></div>
+      <div class="color-swatch"><div class="color-swatch-bg" style="background:var(--surface-sidebar)"></div><div class="color-swatch-info"><span class="color-swatch-name">Sidebar</span><span class="color-swatch-tok">--surface-sidebar</span><span class="color-swatch-val">branco / #111e2e</span></div></div>
     </div>
 
-    <!-- TYPEFACES -->
-    <div class="ds-section" id="typefaces">
-      <div class="ds-section-title">Typefaces</div>
-      <div class="ds-section-desc">Two typefaces are used. Fjalla One for headings, numbers and highlighted data. Merriweather Sans for body text, captions and helper text.</div>
+    <p style="font-size:.8rem;font-weight:600;color:var(--text-secondary);margin:16px 0 10px">Texto</p>
+    <div class="color-grid">
+      <div class="color-swatch"><div class="color-swatch-bg" style="background:var(--text-primary)"></div><div class="color-swatch-info"><span class="color-swatch-name">Primary</span><span class="color-swatch-tok">--text-primary</span><span class="color-swatch-val">#111e2e</span></div></div>
+      <div class="color-swatch"><div class="color-swatch-bg" style="background:var(--text-secondary)"></div><div class="color-swatch-info"><span class="color-swatch-name">Secondary</span><span class="color-swatch-tok">--text-secondary</span><span class="color-swatch-val">#5b6b80</span></div></div>
+      <div class="color-swatch"><div class="color-swatch-bg" style="background:var(--text-tertiary)"></div><div class="color-swatch-info"><span class="color-swatch-name">Tertiary</span><span class="color-swatch-tok">--text-tertiary</span><span class="color-swatch-val">#8b97ab</span></div></div>
+    </div>
 
-      <div class="ds-card">
-        <div class="ds-card-preview">
-          <div class="ds-font-specimen">
-            <div class="ds-font-name">
-              Space Grotesk
-              <span class="ds-token">--font-heading</span>
-            </div>
-            <div class="ds-font-display" style="font-family:var(--font-heading)">The quick brown fox jumps over the lazy dog</div>
-            <div class="ds-font-chars" style="font-family:var(--font-heading)">A B C D E F G H I J K L M N O P Q R S T U V W X Y Z<br>a b c d e f g h i j k l m n o p q r s t u v w x y z<br>0 1 2 3 4 5 6 7 8 9 € , . / - + ! @ # %</div>
-            <div class="ds-font-weights" style="font-family:var(--font-heading)">
-              <span style="font-weight:300" class="ds-fw-item">Light 300</span>
-              <span style="font-weight:400" class="ds-fw-item">Regular 400</span>
-              <span style="font-weight:500" class="ds-fw-item">Medium 500</span>
-              <span style="font-weight:600" class="ds-fw-item">Semibold 600</span>
-              <span style="font-weight:700" class="ds-fw-item">Bold 700</span>
-            </div>
-          </div>
-        </div>
-        <div class="ds-card-meta">
-          <span class="ds-card-meta-label">Usage</span>
-          <span class="ds-value">Headings, subheadings, card titles, modal titles, section titles</span>
-        </div>
-      </div>
+    <p style="font-size:.8rem;font-weight:600;color:var(--text-secondary);margin:16px 0 10px">Acentos</p>
+    <div class="color-grid">
+      <div class="color-swatch"><div class="color-swatch-bg" style="background:var(--accent-primary)"></div><div class="color-swatch-info"><span class="color-swatch-name">Primary</span><span class="color-swatch-tok">--accent-primary</span><span class="color-swatch-val">#1888d0</span></div></div>
+      <div class="color-swatch"><div class="color-swatch-bg" style="background:var(--accent-primary-light)"></div><div class="color-swatch-info"><span class="color-swatch-name">Primary light</span><span class="color-swatch-tok">--accent-primary-light</span><span class="color-swatch-val">#e4f3fc</span></div></div>
+      <div class="color-swatch"><div class="color-swatch-bg" style="background:var(--accent-success)"></div><div class="color-swatch-info"><span class="color-swatch-name">Success</span><span class="color-swatch-tok">--accent-success</span><span class="color-swatch-val">#1ab374</span></div></div>
+      <div class="color-swatch"><div class="color-swatch-bg" style="background:var(--accent-success-light)"></div><div class="color-swatch-info"><span class="color-swatch-name">Success light</span><span class="color-swatch-tok">--accent-success-light</span><span class="color-swatch-val">#e6f9f2</span></div></div>
+      <div class="color-swatch"><div class="color-swatch-bg" style="background:var(--accent-caution)"></div><div class="color-swatch-info"><span class="color-swatch-name">Caution</span><span class="color-swatch-tok">--accent-caution</span><span class="color-swatch-val">#946c00 · texto</span></div></div>
+      <div class="color-swatch"><div class="color-swatch-bg" style="background:var(--accent-warning)"></div><div class="color-swatch-info"><span class="color-swatch-name">Warning</span><span class="color-swatch-tok">--accent-warning</span><span class="color-swatch-val">#fed867 · ícones</span></div></div>
+      <div class="color-swatch"><div class="color-swatch-bg" style="background:var(--accent-error)"></div><div class="color-swatch-info"><span class="color-swatch-name">Error</span><span class="color-swatch-tok">--accent-error</span><span class="color-swatch-val">#b91c1c</span></div></div>
+      <div class="color-swatch"><div class="color-swatch-bg" style="background:var(--accent-error-light)"></div><div class="color-swatch-info"><span class="color-swatch-name">Error light</span><span class="color-swatch-tok">--accent-error-light</span><span class="color-swatch-val">#fef2f2</span></div></div>
+      <div class="color-swatch"><div class="color-swatch-bg" style="background:var(--accent-purple)"></div><div class="color-swatch-info"><span class="color-swatch-name">Purple (SS)</span><span class="color-swatch-tok">--accent-purple</span><span class="color-swatch-val">#6d28d9</span></div></div>
+    </div>
 
-      <div class="ds-card">
-        <div class="ds-card-preview">
-          <div class="ds-font-specimen">
-            <div class="ds-font-name">
-              Merriweather Sans
-              <span class="ds-token">--font</span>
-            </div>
-            <div class="ds-font-display" style="font-family:var(--font);font-size:1.6rem;font-weight:400">The quick brown fox jumps over the lazy dog</div>
-            <div class="ds-font-chars" style="font-family:var(--font)">A B C D E F G H I J K L M N O P Q R S T U V W X Y Z<br>a b c d e f g h i j k l m n o p q r s t u v w x y z<br>0 1 2 3 4 5 6 7 8 9 ! @ # $ % & * ( ) + = / ?</div>
-            <div class="ds-font-weights" style="font-family:var(--font)">
-              <span style="font-weight:300" class="ds-fw-item">Light 300</span>
-              <span style="font-weight:400" class="ds-fw-item">Regular 400</span>
-              <span style="font-weight:500" class="ds-fw-item">Medium 500</span>
-              <span style="font-weight:600" class="ds-fw-item">Semibold 600</span>
-              <span style="font-weight:700" class="ds-fw-item">Bold 700</span>
-              <span style="font-weight:800" class="ds-fw-item">Extrabold 800</span>
-              <span style="font-weight:400;font-style:italic" class="ds-fw-item">Italic</span>
-            </div>
-          </div>
-        </div>
-        <div class="ds-card-meta">
-          <span class="ds-card-meta-label">Usage</span>
-          <span class="ds-value">Body text, paragraphs, captions, helper text, labels, buttons</span>
-        </div>
-      </div>
+    <p style="font-size:.8rem;font-weight:600;color:var(--text-secondary);margin:16px 0 10px">Bordas</p>
+    <div class="color-grid">
+      <div class="color-swatch"><div class="color-swatch-bg" style="background:var(--border-subtle)"></div><div class="color-swatch-info"><span class="color-swatch-name">Subtle</span><span class="color-swatch-tok">--border-subtle</span><span class="color-swatch-val">#e3edf7</span></div></div>
+      <div class="color-swatch"><div class="color-swatch-bg" style="background:var(--border-strong)"></div><div class="color-swatch-info"><span class="color-swatch-name">Strong</span><span class="color-swatch-tok">--border-strong</span><span class="color-swatch-val">#c5d3e0 · inputs</span></div></div>
+      <div class="color-swatch"><div class="color-swatch-bg" style="background:var(--track-bg)"></div><div class="color-swatch-info"><span class="color-swatch-name">Track</span><span class="color-swatch-tok">--track-bg</span><span class="color-swatch-val">#bbd7ed · progress</span></div></div>
+    </div>
+  </section>
 
-      <div class="ds-card">
-        <div class="ds-card-preview">
-          <div class="ds-font-specimen">
-            <div class="ds-font-name">
-              JetBrains Mono
-              <span class="ds-token">--mono</span>
-            </div>
-            <div class="ds-font-display" style="font-family:var(--mono);font-size:1.8rem;font-weight:400">€ 11.240,00</div>
-            <div class="ds-font-chars" style="font-family:var(--mono)">0 1 2 3 4 5 6 7 8 9 € , . / - +<br>NIF 512 874 331 · FT 2025/019 · 08 Mai 2025</div>
-            <div class="ds-font-weights" style="font-family:var(--mono)">
-              <span style="font-weight:400" class="ds-fw-item">Regular 400</span>
-              <span style="font-weight:500" class="ds-fw-item">Medium 500</span>
-            </div>
-          </div>
+  <!-- ══ TIPOGRAFIA ══ -->
+  <section class="ds-sec" id="tipografia">
+    <div class="ds-sec-hdr"><span class="ds-sec-title">Tipografia</span></div>
+    <p class="ds-sec-desc">Três fontes com papéis distintos: corpo de texto, UI/headings e dados numéricos. Manter esta separação é o que dá ao Fiscal Copilot o aspeto de ferramenta financeira precisa.</p>
+
+    <div class="ds-card">
+      <div class="ds-preview col-stack">
+        <div class="type-specimen">
+          <div class="type-label">Body — <span class="tok">--font-body</span> · Merriweather Sans</div>
+          <div class="type-sample-body">Texto de corpo, parágrafos e conteúdo longo.</div>
         </div>
-        <div class="ds-card-meta">
-          <span class="ds-card-meta-label">Usage</span>
-          <span class="ds-value">Currency values, invoice numbers, NIF codes, dates, technical identifiers</span>
+        <div class="type-specimen">
+          <div class="type-label">UI / Headings — <span class="tok">--font-ui</span> · Space Grotesk</div>
+          <div class="type-sample-ui">Títulos, botões, labels, navegação.</div>
+        </div>
+        <div class="type-specimen">
+          <div class="type-label">Data — <span class="tok">--font-data</span> · JetBrains Mono</div>
+          <div class="type-sample-data">€ 6.550,00 · 2025/007</div>
         </div>
       </div>
     </div>
 
-    <!-- TYPE SCALE -->
-    <div class="ds-section" id="type-scale">
-      <div class="ds-section-title">Type Scale</div>
-      <div class="ds-section-desc">All font sizes are defined as CSS variables relative to the <strong>16px base</strong> set on <span class="ds-token">html</span> (14px on mobile). Use these tokens instead of raw values.</div>
+    <p style="font-size:.8rem;font-weight:600;color:var(--text-secondary);margin:20px 0 10px">Escala tipográfica</p>
+    <div class="ds-card">
+      <div class="ds-preview" style="padding:20px 24px">
+        <div class="type-scale-row"><span class="type-scale-tok">--text-2xs · .65rem</span><span class="type-scale-sample" style="font-size:.65rem">Micro labels, metadados internos</span></div>
+        <div class="type-scale-row"><span class="type-scale-tok">--text-xs · .72rem</span><span class="type-scale-sample" style="font-size:.72rem">Timestamps, metadados</span></div>
+        <div class="type-scale-row"><span class="type-scale-tok">--text-sm · .8rem</span><span class="type-scale-sample" style="font-size:.8rem">Texto secundário, descrições</span></div>
+        <div class="type-scale-row"><span class="type-scale-tok">--text-base · .88rem</span><span class="type-scale-sample" style="font-size:.88rem">Corpo padrão, labels de formulário</span></div>
+        <div class="type-scale-row"><span class="type-scale-tok">--text-md · 1rem</span><span class="type-scale-sample" style="font-size:1rem">Médio</span></div>
+        <div class="type-scale-row"><span class="type-scale-tok">--text-lg · 1.1rem</span><span class="type-scale-sample" style="font-size:1.1rem;font-family:var(--font-ui)">Títulos de card</span></div>
+        <div class="type-scale-row"><span class="type-scale-tok">--text-xl · 1.35rem</span><span class="type-scale-sample" style="font-size:1.35rem;font-family:var(--font-ui);font-weight:600">Sub-títulos de página</span></div>
+        <div class="type-scale-row" style="border:none"><span class="type-scale-tok">--text-2xl · 1.55rem</span><span class="type-scale-sample" style="font-size:1.55rem;font-family:var(--font-data);color:var(--accent-primary)">€ 14.500</span></div>
+      </div>
+    </div>
+  </section>
 
-      <div class="ds-card">
-        <div class="ds-card-preview" style="padding-bottom:4px">
-          <div class="ds-scale-row">
-            <span>Token</span><span>Preview</span><span>rem</span><span>~px</span>
+  <!-- ══ ESPAÇAMENTO & RAIO ══ -->
+  <section class="ds-sec" id="espacamento">
+    <div class="ds-sec-hdr"><span class="ds-sec-title">Espaçamento & Raio de canto</span></div>
+    <p class="ds-sec-desc">Usa sempre os tokens de raio — nunca valores hardcoded. Cada tamanho tem um contexto específico.</p>
+    <div class="radius-row">
+      <div class="radius-item">
+        <div class="radius-box" style="border-radius:var(--radius-sm)"></div>
+        <div class="radius-label">Small</div>
+        <span class="radius-tok">--radius-sm · 8px</span>
+        <span class="radius-tok" style="color:var(--text-tertiary)">Badges, inputs</span>
+      </div>
+      <div class="radius-item">
+        <div class="radius-box" style="border-radius:var(--radius-md)"></div>
+        <div class="radius-label">Medium</div>
+        <span class="radius-tok">--radius-md · 10px</span>
+        <span class="radius-tok" style="color:var(--text-tertiary)">Botões, dropdowns</span>
+      </div>
+      <div class="radius-item">
+        <div class="radius-box" style="border-radius:var(--radius-lg)"></div>
+        <div class="radius-label">Large</div>
+        <span class="radius-tok">--radius-lg · 16px</span>
+        <span class="radius-tok" style="color:var(--text-tertiary)">Cards</span>
+      </div>
+      <div class="radius-item">
+        <div class="radius-box" style="border-radius:var(--radius-xl)"></div>
+        <div class="radius-label">XL</div>
+        <span class="radius-tok">--radius-xl · 18px</span>
+        <span class="radius-tok" style="color:var(--text-tertiary)">Modais, drawers</span>
+      </div>
+      <div class="radius-item">
+        <div class="radius-box" style="border-radius:99px"></div>
+        <div class="radius-label">Full</div>
+        <span class="radius-tok">99px</span>
+        <span class="radius-tok" style="color:var(--text-tertiary)">Pills, avatares</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ SOMBRAS ══ -->
+  <section class="ds-sec" id="sombras">
+    <div class="ds-sec-hdr"><span class="ds-sec-title">Sombras</span></div>
+    <p class="ds-sec-desc">A elevação é comunicada por diferença de cor de fundo — <strong>não por sombras em cards</strong>. Sombras são reservadas para overlays, modais e dropdowns onde é necessário separar um layer flutuante.</p>
+    <div class="shadow-row">
+      <div class="shadow-item">
+        <div class="shadow-box" style="box-shadow:var(--shadow-sm)"></div>
+        <div class="shadow-label">Small</div>
+        <span class="shadow-tok">--shadow-sm</span>
+        <span class="shadow-tok" style="color:var(--text-tertiary)">Dropdowns</span>
+      </div>
+      <div class="shadow-item">
+        <div class="shadow-box" style="box-shadow:var(--shadow-md)"></div>
+        <div class="shadow-label">Medium</div>
+        <span class="shadow-tok">--shadow-md</span>
+        <span class="shadow-tok" style="color:var(--text-tertiary)">Tooltips</span>
+      </div>
+      <div class="shadow-item">
+        <div class="shadow-box" style="box-shadow:var(--shadow-lg)"></div>
+        <div class="shadow-label">Large</div>
+        <span class="shadow-tok">--shadow-lg</span>
+        <span class="shadow-tok" style="color:var(--text-tertiary)">Modais, sidebar mobile</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ DARK MODE ══ -->
+  <section class="ds-sec" id="dark-mode">
+    <div class="ds-sec-hdr"><span class="ds-sec-title">Dark Mode</span></div>
+    <p class="ds-sec-desc">Ativado pela classe <span class="tok">.dark</span> no elemento <span class="tok">&lt;html&gt;</span>. Todos os tokens mudam automaticamente. A preferência é guardada em <span class="tok">localStorage</span> e aplicada antes do primeiro render para evitar flash.</p>
+    <table class="tok-table">
+      <thead><tr><th>Token</th><th>Light</th><th>Dark</th></tr></thead>
+      <tbody>
+        <tr><td><span class="tok">--bg-page</span></td><td><span class="swatch-dot" style="background:#ebf4fb"></span><span class="val">#ebf4fb</span></td><td><span class="swatch-dot" style="background:#0c1622"></span><span class="val">#0c1622</span></td></tr>
+        <tr><td><span class="tok">--surface-card</span></td><td><span class="swatch-dot" style="background:#ffffff;border-color:#e3edf7"></span><span class="val">#ffffff</span></td><td><span class="swatch-dot" style="background:#142539"></span><span class="val">#142539</span></td></tr>
+        <tr><td><span class="tok">--surface-sidebar</span></td><td><span class="swatch-dot" style="background:#ffffff;border-color:#e3edf7"></span><span class="val">#ffffff</span></td><td><span class="swatch-dot" style="background:#111e2e"></span><span class="val">#111e2e (constante)</span></td></tr>
+        <tr><td><span class="tok">--text-primary</span></td><td><span class="swatch-dot" style="background:#111e2e"></span><span class="val">#111e2e</span></td><td><span class="swatch-dot" style="background:#d5e5f4"></span><span class="val">#d5e5f4</span></td></tr>
+        <tr><td><span class="tok">--accent-primary</span></td><td><span class="swatch-dot" style="background:#1888d0"></span><span class="val">#1888d0</span></td><td><span class="swatch-dot" style="background:#28a8f1"></span><span class="val">#28a8f1 (mais claro para contraste)</span></td></tr>
+        <tr><td><span class="tok">--accent-success</span></td><td><span class="swatch-dot" style="background:#1ab374"></span><span class="val">#1ab374</span></td><td><span class="swatch-dot" style="background:#22b67e"></span><span class="val">#22b67e</span></td></tr>
+        <tr><td><span class="tok">--accent-error</span></td><td><span class="swatch-dot" style="background:#b91c1c"></span><span class="val">#b91c1c</span></td><td><span class="swatch-dot" style="background:#e05252"></span><span class="val">#e05252</span></td></tr>
+        <tr><td><span class="tok">--border-subtle</span></td><td><span class="swatch-dot" style="background:#e3edf7"></span><span class="val">#e3edf7</span></td><td><span class="swatch-dot" style="background:#263344"></span><span class="val">#263344</span></td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- ══ CARDS ══ -->
+  <section class="ds-sec" id="cards">
+    <div class="ds-sec-hdr"><span class="ds-sec-title">Cards</span></div>
+    <p class="ds-sec-desc">A classe base <span class="tok">.card</span> define fundo, borda e raio. Sem sombra — a elevação vem da diferença entre <span class="tok">--bg-page</span> e <span class="tok">--surface-card</span>.</p>
+    <div class="ds-card">
+      <div class="ds-preview">
+        <div class="card" style="padding:20px 24px;max-width:340px">
+          <div style="font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--text-tertiary);margin-bottom:6px">Card base</div>
+          <div style="font-size:1.5rem;font-weight:700;font-family:var(--font-data);color:var(--text-primary)">€ 6.550,00</div>
+          <div style="font-size:.78rem;color:var(--text-tertiary);margin-top:4px">Conteúdo secundário</div>
+        </div>
+      </div>
+      <div class="ds-meta"><span class="ds-meta-lbl">Classe</span><span class="tok">.card</span></div>
+    </div>
+  </section>
+
+  <!-- ══ STAT CARDS ══ -->
+  <section class="ds-sec" id="stat-cards">
+    <div class="ds-sec-hdr"><span class="ds-sec-title">Stat Cards</span></div>
+    <p class="ds-sec-desc">Componente para KPIs e métricas. Faixa colorida de 3px à esquerda (<span class="tok">::before</span>). Labels sempre neutros — cor apenas no valor. Variante compacta disponível.</p>
+
+    <div class="ds-card">
+      <div class="ds-preview">
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:13px">
+          <div class="card est-card ec-liq">
+            <div class="ec-lbl"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg> Recebe líquido</div>
+            <div class="ec-val g mono">€ 2.437,50</div>
+            <div class="ec-sub">após impostos estimados</div>
+            <div class="ec-prog"><div class="ec-bar eb-g" style="width:72%"></div></div>
           </div>
-          <div class="ds-scale-row">
-            <span class="ds-token">--text-2xs</span>
-            <span class="ds-scale-preview" style="font-size:var(--text-2xs)">Micro label · timestamp</span>
-            <span class="ds-value">.65rem</span>
-            <span class="ds-value">~10.4px</span>
+          <div class="card est-card ec-irs">
+            <div class="ec-lbl"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><line x1="19" y1="5" x2="5" y2="19"/><circle cx="6.5" cy="6.5" r="2.5"/><circle cx="17.5" cy="17.5" r="2.5"/></svg> IRS estimado</div>
+            <div class="ec-val b mono">€ 812,50</div>
+            <div class="ec-sub">Retenção: 25% (Cat. B)</div>
+            <div class="ec-prog"><div class="ec-bar eb-b" style="width:25%"></div></div>
           </div>
-          <div class="ds-scale-row">
-            <span class="ds-token">--text-xs</span>
-            <span class="ds-scale-preview" style="font-size:var(--text-xs)">Metadata · helper text</span>
-            <span class="ds-value">.72rem</span>
-            <span class="ds-value">~11.5px</span>
-          </div>
-          <div class="ds-scale-row">
-            <span class="ds-token">--text-sm</span>
-            <span class="ds-scale-preview" style="font-size:var(--text-sm)">Secondary text · captions</span>
-            <span class="ds-value">.8rem</span>
-            <span class="ds-value">~12.8px</span>
-          </div>
-          <div class="ds-scale-row">
-            <span class="ds-token">--text-base</span>
-            <span class="ds-scale-preview" style="font-size:var(--text-base)">Body text · default UI size</span>
-            <span class="ds-value">.88rem</span>
-            <span class="ds-value">~14px</span>
-          </div>
-          <div class="ds-scale-row">
-            <span class="ds-token">--text-md</span>
-            <span class="ds-scale-preview" style="font-size:var(--text-md)">Medium text · nav items</span>
-            <span class="ds-value">1rem</span>
-            <span class="ds-value">16px</span>
-          </div>
-          <div class="ds-scale-row">
-            <span class="ds-token">--text-lg</span>
-            <span class="ds-scale-preview" style="font-size:var(--text-lg)">Card headings · stat values</span>
-            <span class="ds-value">1.1rem</span>
-            <span class="ds-value">~17.6px</span>
-          </div>
-          <div class="ds-scale-row">
-            <span class="ds-token">--text-xl</span>
-            <span class="ds-scale-preview" style="font-size:var(--text-xl)">Page sub-headings</span>
-            <span class="ds-value">1.35rem</span>
-            <span class="ds-value">~21.6px</span>
-          </div>
-          <div class="ds-scale-row">
-            <span class="ds-token">--text-2xl</span>
-            <span class="ds-scale-preview" style="font-size:var(--text-2xl)">KPI values</span>
-            <span class="ds-value">1.55rem</span>
-            <span class="ds-value">~24.8px</span>
-          </div>
-          <div class="ds-scale-row">
-            <span class="ds-token">--text-3xl</span>
-            <span class="ds-scale-preview" style="font-size:var(--text-3xl)">Hero values</span>
-            <span class="ds-value">1.9rem</span>
-            <span class="ds-value">~30.4px</span>
-          </div>
-          <div class="ds-scale-row">
-            <span class="ds-token">--text-hero</span>
-            <span class="ds-scale-preview" style="font-size:var(--text-hero)">Page hero</span>
-            <span class="ds-value">2rem</span>
-            <span class="ds-value">32px</span>
+          <div class="card est-card ec-ss">
+            <div class="ec-lbl"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg> Segurança Social</div>
+            <div class="ec-val p mono">€ 250,00</div>
+            <div class="ec-sub">21,4% rendimento relevante</div>
+            <div class="ec-prog"><div class="ec-bar eb-p" style="width:21%"></div></div>
           </div>
         </div>
       </div>
+      <div class="ds-meta"><span class="ds-meta-lbl">Variante</span><span class="tok">.card.est-card.ec-liq</span> <span class="tok">.ec-irs</span> <span class="tok">.ec-ss</span></div>
     </div>
 
-    <!-- FONT WEIGHT -->
-    <div class="ds-section" id="font-weight">
-      <div class="ds-section-title">Font Weight</div>
-      <div class="ds-section-desc">Six weights are available. Semibold and Bold are the most commonly used in the UI.</div>
-
-      <div class="ds-weights-grid">
-        <div class="ds-weight-card">
-          <div class="ds-weight-preview" style="font-weight:300">Light text sample</div>
-          <div class="ds-weight-meta">
-            <span class="ds-token">--fw-light</span>
-            <span class="ds-value" style="margin-top:3px">300 · Thin descriptions</span>
+    <div class="ds-card">
+      <div class="ds-preview">
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px">
+          <div class="card est-card est-card-sm ec-liq">
+            <div class="ec-lbl">Líquido</div>
+            <div class="ec-val g mono">€ 2.437</div>
+            <div class="ec-prog"><div class="ec-bar eb-g" style="width:72%"></div></div>
           </div>
-        </div>
-        <div class="ds-weight-card">
-          <div class="ds-weight-preview" style="font-weight:400">Regular text sample</div>
-          <div class="ds-weight-meta">
-            <span class="ds-token">--fw-normal</span>
-            <span class="ds-value" style="margin-top:3px">400 · Body text</span>
+          <div class="card est-card est-card-sm ec-irs">
+            <div class="ec-lbl">IRS</div>
+            <div class="ec-val b mono">€ 812</div>
+            <div class="ec-prog"><div class="ec-bar eb-b" style="width:25%"></div></div>
           </div>
-        </div>
-        <div class="ds-weight-card">
-          <div class="ds-weight-preview" style="font-weight:500">Medium text sample</div>
-          <div class="ds-weight-meta">
-            <span class="ds-token">--fw-medium</span>
-            <span class="ds-value" style="margin-top:3px">500 · Nav items, subtle labels</span>
-          </div>
-        </div>
-        <div class="ds-weight-card">
-          <div class="ds-weight-preview" style="font-weight:600">Semibold text sample</div>
-          <div class="ds-weight-meta">
-            <span class="ds-token">--fw-semibold</span>
-            <span class="ds-value" style="margin-top:3px">600 · Most UI labels, buttons</span>
-          </div>
-        </div>
-        <div class="ds-weight-card">
-          <div class="ds-weight-preview" style="font-weight:700">Bold text sample</div>
-          <div class="ds-weight-meta">
-            <span class="ds-token">--fw-bold</span>
-            <span class="ds-value" style="margin-top:3px">700 · Headings, KPI values</span>
-          </div>
-        </div>
-        <div class="ds-weight-card">
-          <div class="ds-weight-preview" style="font-weight:800">Extrabold text sample</div>
-          <div class="ds-weight-meta">
-            <span class="ds-token">--fw-extrabold</span>
-            <span class="ds-value" style="margin-top:3px">800 · Logo mark only</span>
+          <div class="card est-card est-card-sm ec-ss">
+            <div class="ec-lbl">SS</div>
+            <div class="ec-val p mono">€ 250</div>
+            <div class="ec-prog"><div class="ec-bar eb-p" style="width:21%"></div></div>
           </div>
         </div>
       </div>
+      <div class="ds-meta"><span class="ds-meta-lbl">Compacto</span><span class="tok">.est-card-sm</span> junto com <span class="tok">.est-card</span></div>
     </div>
+  </section>
 
-    <!-- LINE HEIGHT -->
-    <div class="ds-section" id="line-height">
-      <div class="ds-section-title">Line Height</div>
-      <div class="ds-section-desc">Line height controls the vertical space between lines of text. Use <span class="ds-token">--lh-base</span> for body text and <span class="ds-token">--lh-tight</span> for large display values.</div>
-
-      <div class="ds-lh-grid">
-        <div class="ds-lh-card">
-          <div class="ds-lh-preview" style="line-height:1.2">Estimador Fiscal.<br>Calcula a tua situação<br>com base nos recibos.</div>
-          <div class="ds-lh-meta">
-            <span class="ds-token">--lh-tight</span>
-            <span class="ds-value" style="margin-top:3px">1.2 · Large display text, KPIs</span>
-          </div>
-        </div>
-        <div class="ds-lh-card">
-          <div class="ds-lh-preview" style="line-height:1.4">Estimador Fiscal.<br>Calcula a tua situação<br>com base nos recibos.</div>
-          <div class="ds-lh-meta">
-            <span class="ds-token">--lh-snug</span>
-            <span class="ds-value" style="margin-top:3px">1.4 · Card titles, compact text</span>
-          </div>
-        </div>
-        <div class="ds-lh-card">
-          <div class="ds-lh-preview" style="line-height:1.6">Estimador Fiscal.<br>Calcula a tua situação<br>com base nos recibos.</div>
-          <div class="ds-lh-meta">
-            <span class="ds-token">--lh-base</span>
-            <span class="ds-value" style="margin-top:3px">1.6 · Default body text</span>
-          </div>
-        </div>
-        <div class="ds-lh-card">
-          <div class="ds-lh-preview" style="line-height:1.7">Estimador Fiscal.<br>Calcula a tua situação<br>com base nos recibos.</div>
-          <div class="ds-lh-meta">
-            <span class="ds-token">--lh-relaxed</span>
-            <span class="ds-value" style="margin-top:3px">1.7 · Descriptions, longer copy</span>
-          </div>
-        </div>
+  <!-- ══ BOTÕES ══ -->
+  <section class="ds-sec" id="buttons">
+    <div class="ds-sec-hdr"><span class="ds-sec-title">Botões</span></div>
+    <p class="ds-sec-desc">Hierarquia clara: primário para a ação principal de um ecrã, secundário para ações alternativas, ghost para ações neutras, danger apenas para ações destrutivas.</p>
+    <div class="ds-card">
+      <div class="ds-preview row" style="align-items:center;flex-wrap:wrap;gap:10px">
+        <button class="btn btn-p">Primário</button>
+        <button class="btn btn-s">Secundário</button>
+        <button class="btn btn-g">Ghost</button>
+        <button class="btn btn-danger">Apagar</button>
+        <button class="btn btn-p" disabled style="opacity:.5">Desativado</button>
+      </div>
+      <div class="ds-meta" style="flex-wrap:wrap;gap:6px">
+        <span class="tok">.btn.btn-p</span>
+        <span class="tok">.btn.btn-s</span>
+        <span class="tok">.btn.btn-g</span>
+        <span class="tok">.btn.btn-danger</span>
       </div>
     </div>
+    <div class="ds-card">
+      <div class="ds-preview row" style="align-items:center">
+        <button class="btn btn-p btn-sm">Pequeno</button>
+        <button class="btn btn-s btn-sm">Pequeno</button>
+      </div>
+      <div class="ds-meta"><span class="tok">.btn-sm</span> — modificador de tamanho</div>
+    </div>
+  </section>
 
-    <!-- LETTER SPACING -->
-    <div class="ds-section" id="letter-spacing">
-      <div class="ds-section-title">Letter Spacing</div>
-      <div class="ds-section-desc">Used to improve legibility at small sizes and to style uppercase labels. Avoid applying wide tracking to long body text.</div>
-
-      <div class="ds-ls-grid">
-        <div class="ds-ls-card">
-          <div class="ds-ls-preview" style="letter-spacing:-.5px">Total faturado em 2025</div>
-          <div class="ds-ls-meta">
-            <span class="ds-token">--ls-tight</span>
-            <span class="ds-value" style="margin-top:3px">-.5px · Large headings, KPIs</span>
-          </div>
-        </div>
-        <div class="ds-ls-card">
-          <div class="ds-ls-preview" style="letter-spacing:0">Total faturado em 2025</div>
-          <div class="ds-ls-meta">
-            <span class="ds-token">--ls-normal</span>
-            <span class="ds-value" style="margin-top:3px">0 · Default body text</span>
-          </div>
-        </div>
-        <div class="ds-ls-card">
-          <div class="ds-ls-preview" style="letter-spacing:.08em;font-size:.82rem;font-weight:600;text-transform:uppercase">Section label</div>
-          <div class="ds-ls-meta">
-            <span class="ds-token">--ls-wide</span>
-            <span class="ds-value" style="margin-top:3px">.08em · Uppercase section labels</span>
-          </div>
-        </div>
-        <div class="ds-ls-card">
-          <div class="ds-ls-preview" style="letter-spacing:.1em;font-size:.75rem;font-weight:700;text-transform:uppercase">Nav group label</div>
-          <div class="ds-ls-meta">
-            <span class="ds-token">--ls-wider</span>
-            <span class="ds-value" style="margin-top:3px">.1em · Nav group labels, badges</span>
-          </div>
-        </div>
+  <!-- ══ BADGES ══ -->
+  <section class="ds-sec" id="badges">
+    <div class="ds-sec-hdr"><span class="ds-sec-title">Badges & Pills</span></div>
+    <p class="ds-sec-desc">Estados de fatura, status de cliente, tags de categoria.</p>
+    <div class="ds-card">
+      <div class="ds-preview row" style="align-items:center;gap:8px">
+        <span class="badge bg-g">Pago</span>
+        <span class="badge bg-a">Pendente</span>
+        <span class="badge bg-r">Cancelado</span>
+        <span class="badge bg-b">Info</span>
+        <span class="badge">Neutro</span>
+      </div>
+      <div class="ds-meta" style="flex-wrap:wrap;gap:6px">
+        <span class="tok">.badge.bg-g</span>
+        <span class="tok">.badge.bg-a</span>
+        <span class="tok">.badge.bg-r</span>
+        <span class="tok">.badge.bg-b</span>
+        <span class="tok">.badge</span>
       </div>
     </div>
+  </section>
 
-    <!-- TOOLTIP -->
-    <div class="ds-section" id="tooltip">
-      <div class="ds-section-title">Tooltip</div>
-      <div class="ds-section-desc">Aparece ao fazer hover ou ao focar com o teclado (Tab + Enter/Space). Acessível — usa <span class="ds-token">role="tooltip"</span>, <span class="ds-token">tabindex="0"</span> e <span class="ds-token">aria-label</span>.</div>
+  <!-- ══ FORMULÁRIOS ══ -->
+  <section class="ds-sec" id="forms">
+    <div class="ds-sec-hdr"><span class="ds-sec-title">Formulários</span></div>
+    <p class="ds-sec-desc">Inputs dentro de <span class="tok">.fc</span> herdam os estilos de foco, erro e helper text. O erro substitui o helper text — nunca coexistem. Validação só dispara no submit ou ao sair do campo (blur).</p>
+    <div class="ds-card">
+      <div class="ds-preview col-stack" style="gap:16px;max-width:420px">
+        <div class="fc">
+          <label>Estado normal</label>
+          <input type="text" placeholder="Empresa Lda."/>
+        </div>
+        <div class="fc">
+          <label>Com helper text</label>
+          <input type="text" placeholder="123456789" value=""/>
+          <span class="field-hint">Ex: 123456789</span>
+        </div>
+        <div class="fc">
+          <label>Com erro</label>
+          <input type="text" class="invalid" value="12345"/>
+          <span class="field-err" style="display:block">NIF inválido. Deve ter 9 dígitos, sem espaços. Ex: 123456789</span>
+        </div>
+        <div class="fc">
+          <label>Select</label>
+          <select><option>Regime Simplificado</option><option>Ato Isolado</option></select>
+        </div>
+      </div>
+      <div class="ds-meta" style="flex-wrap:wrap;gap:6px">
+        <span class="tok">.fc</span> wrapper ·
+        <span class="tok">.field-hint</span> helper ·
+        <span class="tok">.field-err</span> erro ·
+        <span class="tok">.invalid</span> em input com erro
+      </div>
+    </div>
+  </section>
 
-      <!-- Default (above) -->
-      <div class="ds-card" style="margin-bottom:12px">
-        <div class="ds-card-preview" style="display:flex;align-items:center;gap:32px;flex-wrap:wrap;padding-top:56px">
-          <span class="tt" tabindex="0" role="button" aria-label="Exemplo de tooltip">
-            <span style="display:inline-flex;align-items:center;gap:6px;font-size:.84rem;font-weight:500;color:var(--blue);padding:7px 13px;border:1px solid var(--blue-lt);background:var(--blue-lt);border-radius:var(--rsm)">
-              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><circle cx="12" cy="8" r="1" fill="currentColor" stroke="none"/></svg>
-              Hover ou Tab aqui
+  <!-- ══ TOOLTIPS ══ -->
+  <section class="ds-sec" id="tooltips">
+    <div class="ds-sec-hdr"><span class="ds-sec-title">Tooltips</span></div>
+    <p class="ds-sec-desc">Ativam no hover e no focus (acessíveis por teclado via <span class="tok">tabindex="0"</span>). Variante <span class="tok">.tt-right</span> para quando o tooltip não cabe acima.</p>
+    <div class="ds-card">
+      <div class="ds-preview row" style="gap:32px;align-items:center;padding:36px 28px">
+        <span>Limite IVA <span class="tt" tabindex="0" role="button" aria-label="Mais informação sobre o limite IVA">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><circle cx="12" cy="8" r="1" fill="currentColor" stroke="none"/></svg>
+          <span class="tt-body" role="tooltip">Calculado com base em todas as faturas emitidas, conforme o art. 53.º do CIVA.</span>
+        </span></span>
+        <span>Regime fiscal <span class="tt tt-right" tabindex="0" role="button" aria-label="O que é o regime fiscal">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><circle cx="12" cy="8" r="1" fill="currentColor" stroke="none"/></svg>
+          <span class="tt-body" role="tooltip">Regime Simplificado para prestações regulares. Ato Isolado para prestações ocasionais.</span>
+        </span></span>
+      </div>
+      <div class="ds-meta" style="flex-wrap:wrap;gap:6px">
+        <span class="tok">.tt</span> · <span class="tok">.tt.tt-right</span> · sempre com <span class="tok">tabindex="0"</span>, <span class="tok">role="button"</span>, <span class="tok">aria-label</span>, <span class="tok">role="tooltip"</span> no <span class="tok">.tt-body</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ MODAIS ══ -->
+  <section class="ds-sec" id="modais">
+    <div class="ds-sec-hdr"><span class="ds-sec-title">Modais</span></div>
+    <p class="ds-sec-desc">Overlay com <span class="tok">role="dialog"</span>, <span class="tok">aria-modal="true"</span> e <span class="tok">aria-labelledby</span> apontando para o título. O foco move-se para o primeiro elemento quando o modal abre e retorna ao trigger quando fecha. Escape fecha. Tab fica preso dentro do modal.</p>
+    <div class="ds-card">
+      <div class="ds-preview" style="background:var(--bg-page)">
+        <div class="modal" style="position:relative;transform:none;max-width:480px;margin:0 auto;box-shadow:var(--shadow-lg)">
+          <div class="modal-hdr">
+            <span class="modal-title" id="ex-modal-title">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+              Novo Cliente
             </span>
-            <span class="tt-body" role="tooltip">Este é o tooltip padrão. Aparece acima do elemento de forma centralizada.</span>
-          </span>
-
-          <span class="tt" tabindex="0" role="button" aria-label="Ícone de informação">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--t3)" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><circle cx="12" cy="8" r="1" fill="currentColor" stroke="none"/></svg>
-            <span class="tt-body" role="tooltip">Tooltip num ícone de informação. Útil para explicar campos ou métricas sem ocupar espaço.</span>
-          </span>
-
-          <span class="tt tt-right" tabindex="0" role="button" aria-label="Tooltip à direita">
-            <span style="display:inline-flex;align-items:center;gap:6px;font-size:.84rem;font-weight:500;padding:7px 13px;border:1px solid var(--border2);background:var(--surface);border-radius:var(--rsm);color:var(--t2)">
-              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><circle cx="12" cy="8" r="1" fill="currentColor" stroke="none"/></svg>
-              Variante direita
-            </span>
-            <span class="tt-body" role="tooltip">Tooltip posicionado à direita com a classe <code style="font-family:monospace;font-size:.8em">.tt-right</code>.</span>
-          </span>
-
-          <span class="tt" tabindex="0" role="button" aria-label="O que significa isento de SS">
-            <span class="badge bg-g" style="cursor:help">Isento SS</span>
-            <span class="tt-body" role="tooltip">Isento porque o rendimento relevante mensal é inferior a 4 × IAS (€2.090/mês).</span>
-          </span>
-        </div>
-        <div class="ds-card-meta">
-          <span class="ds-card-meta-label">Variantes</span>
-          <span class="ds-value">Default (acima) · <span class="ds-token">.tt-right</span> (direita) · em ícone · em badge</span>
-        </div>
-      </div>
-
-      <div class="ds-card">
-        <div class="ds-card-preview" style="padding-bottom:16px">
-          <p style="font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.09em;color:var(--t3);margin-bottom:10px">HTML</p>
-          <pre style="font-family:var(--mono);font-size:.78rem;color:var(--t2);line-height:1.8;white-space:pre-wrap">&lt;span class="tt" tabindex="0" role="button" aria-label="Descrição"&gt;
-  &lt;!-- Gatilho: ícone, badge, texto... --&gt;
-  &lt;span class="tt-body" role="tooltip"&gt;Texto do tooltip&lt;/span&gt;
-&lt;/span&gt;
-
-&lt;!-- Posicionado à direita --&gt;
-&lt;span class="tt tt-right" tabindex="0" ...&gt; ... &lt;/span&gt;</pre>
-        </div>
-        <div class="ds-card-meta" style="flex-wrap:wrap;gap:8px">
-          <span class="ds-card-meta-label">Acessibilidade</span>
-          <span class="ds-value"><span class="ds-token">tabindex="0"</span> torna o gatilho focável · <span class="ds-token">role="button"</span> anuncia ao leitor de ecrã · <span class="ds-token">aria-label</span> descreve a ação · <span class="ds-token">role="tooltip"</span> no conteúdo</span>
-        </div>
-      </div>
-    </div>
-
-    <!-- BADGES -->
-    <div class="ds-section" id="badges">
-      <div class="ds-section-title">Badges</div>
-      <div class="ds-section-desc">Pequenas etiquetas de estado. Usa sempre as variantes de cor semântica — verde para positivo, âmbar para atenção, vermelho para urgente.</div>
-      <div class="ds-card">
-        <div class="ds-card-preview" style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
-          <span class="badge bg-g">Pago</span>
-          <span class="badge bg-a">Pendente</span>
-          <span class="badge bg-r">Urgente</span>
-          <span class="badge bg-b">Info</span>
-          <span class="badge bg-p">Sugestão</span>
-          <span class="badge bg-n">Neutro</span>
-        </div>
-        <div class="ds-card-meta" style="flex-wrap:wrap;gap:6px">
-          <span class="ds-card-meta-label">Classes</span>
-          <span class="ds-value"><span class="ds-token">.badge</span> + <span class="ds-token">.bg-g</span> <span class="ds-token">.bg-a</span> <span class="ds-token">.bg-r</span> <span class="ds-token">.bg-b</span> <span class="ds-token">.bg-p</span> <span class="ds-token">.bg-n</span></span>
-        </div>
-      </div>
-    </div>
-
-    <!-- BUTTONS -->
-    <div class="ds-section" id="buttons">
-      <div class="ds-section-title">Botões</div>
-      <div class="ds-section-desc">Três variantes base mais o botão de ação destrutiva. Usa sempre <span class="ds-token">.btn-sm</span> em toolbars e modais.</div>
-      <div class="ds-card">
-        <div class="ds-card-preview" style="display:flex;align-items:center;gap:12px;flex-wrap:wrap">
-          <button class="btn btn-p">Primário</button>
-          <button class="btn btn-s">Secundário</button>
-          <button class="btn btn-danger">Apagar</button>
-          <button class="btn btn-p btn-sm">Primário sm</button>
-          <button class="btn btn-s btn-sm">Secundário sm</button>
-          <button class="btn btn-danger btn-sm">Apagar sm</button>
-        </div>
-        <div class="ds-card-meta">
-          <span class="ds-card-meta-label">Classes</span>
-          <span class="ds-value"><span class="ds-token">.btn</span> + <span class="ds-token">.btn-p</span> / <span class="ds-token">.btn-s</span> / <span class="ds-token">.btn-danger</span> · opcional: <span class="ds-token">.btn-sm</span></span>
-        </div>
-      </div>
-    </div>
-
-    <!-- PROGRESS BARS -->
-    <div class="ds-section" id="progress">
-      <div class="ds-section-title">Progress Bars</div>
-      <div class="ds-section-desc">Usadas para mostrar a proximidade de limites (IVA, regime simplificado). A cor muda automaticamente com as classes semânticas.</div>
-      <div class="ds-card">
-        <div class="ds-card-preview">
-          <div style="display:flex;flex-direction:column;gap:18px;max-width:440px">
-            <div>
-              <div style="display:flex;justify-content:space-between;font-size:.78rem;color:var(--t2);margin-bottom:4px"><span>Verde — zona segura</span><span style="color:var(--green);font-weight:600">35%</span></div>
-              <div class="pg-wrap"><div class="pg-fill g" style="width:35%"></div></div>
-            </div>
-            <div>
-              <div style="display:flex;justify-content:space-between;font-size:.78rem;color:var(--t2);margin-bottom:4px"><span>Âmbar — atenção</span><span style="color:var(--amber);font-weight:600">72%</span></div>
-              <div class="pg-wrap"><div class="pg-fill a" style="width:72%"></div></div>
-            </div>
-            <div>
-              <div style="display:flex;justify-content:space-between;font-size:.78rem;color:var(--t2);margin-bottom:4px"><span>Vermelho — urgente (&gt;90%)</span><span style="color:var(--red);font-weight:600">93%</span></div>
-              <div class="pg-wrap"><div class="pg-fill r" style="width:93%"></div></div>
-            </div>
+            <button class="modal-x" aria-label="Fechar">✕</button>
+          </div>
+          <div class="modal-body">
+            <div class="fc"><label>Nome / Empresa *</label><input type="text" placeholder="Empresa Lda."/></div>
+          </div>
+          <div class="modal-ft">
+            <button class="btn btn-s">Cancelar</button>
+            <button class="btn btn-p">Guardar cliente</button>
           </div>
         </div>
-        <div class="ds-card-meta">
-          <span class="ds-card-meta-label">Classes</span>
-          <span class="ds-value"><span class="ds-token">.pg-wrap</span> + <span class="ds-token">.pg-fill</span> + <span class="ds-token">.g</span> / <span class="ds-token">.a</span> / <span class="ds-token">.r</span></span>
-        </div>
+      </div>
+      <div class="ds-meta" style="flex-wrap:wrap;gap:6px">
+        <span class="tok">.modal-ov</span> overlay ·
+        <span class="tok">.modal</span> container ·
+        <span class="tok">.modal-hdr</span> <span class="tok">.modal-body</span> <span class="tok">.modal-ft</span>
       </div>
     </div>
+  </section>
 
-    <!-- ── STAT CARDS ── -->
-    <div class="ds-section" id="stat-cards">
-      <div class="ds-section-title">Stat Cards</div>
-      <div class="ds-section-desc">Usados para apresentar um valor numérico com contexto. A cor semântica aparece apenas na faixa lateral esquerda e no valor — o título é sempre neutro. Existem duas variantes de tamanho.</div>
-
-      <!-- Normal -->
-      <div class="ds-card">
-        <div class="ds-card-preview" style="padding-top:28px">
-          <p style="font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--t3);margin-bottom:14px">Normal</p>
-          <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:13px">
-
-            <div class="card est-card ec-liq">
-              <div class="ec-lbl"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg> Recebe líquido</div>
-              <div class="ec-val g mono">€1.225</div>
-              <div class="ec-sub">61% do bruto · −€350 despesas</div>
-              <div class="ec-prog"><div class="ec-bar eb-g" style="width:61%"></div></div>
-            </div>
-
-            <div class="card est-card ec-irs">
-              <div class="ec-lbl"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="19" y1="5" x2="5" y2="19"/><circle cx="6.5" cy="6.5" r="2.5"/><circle cx="17.5" cy="17.5" r="2.5"/></svg> IRS estimado</div>
-              <div class="ec-val b mono">€500</div>
-              <div class="ec-sub">Retenção: 25% (Cat. B)</div>
-              <div class="ec-prog"><div class="ec-bar eb-b" style="width:25%"></div></div>
-            </div>
-
-            <div class="card est-card ec-ss">
-              <div class="ec-lbl"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg> Segurança Social</div>
-              <div class="ec-val p mono">€0 — Isento</div>
-              <div class="ec-sub">Rend. relevante abaixo de €2.090/mês</div>
-              <div class="ec-prog"><div class="ec-bar eb-p" style="width:0%"></div></div>
-            </div>
-
-          </div>
-        </div>
-        <div class="ds-card-meta">
-          <span class="ds-card-meta-label">Classes</span>
-          <span class="ds-value"><span class="ds-token">.card.est-card</span> + variante de cor <span class="ds-token">.ec-liq</span> / <span class="ds-token">.ec-irs</span> / <span class="ds-token">.ec-ss</span></span>
-        </div>
+  <!-- ══ SIDEBAR NAV ══ -->
+  <section class="ds-sec" id="sidebar-nav">
+    <div class="ds-sec-hdr"><span class="ds-sec-title">Sidebar Nav</span></div>
+    <p class="ds-sec-desc">Botões <span class="tok">&lt;button class="nav-item"&gt;</span> com ícone SVG decorativo (<span class="tok">aria-hidden="true"</span>) e texto como label acessível. Estado ativo com destaque azul e fundo tinted.</p>
+    <div class="ds-card">
+      <div class="ds-preview" style="background:var(--surface-sidebar);border-radius:var(--radius-lg);padding:12px;max-width:220px">
+        <button class="nav-item active" style="color:var(--accent-primary)">
+          <svg class="ni" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+          Dashboard
+        </button>
+        <button class="nav-item" style="color:var(--text-secondary)">
+          <svg class="ni" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
+          Clientes
+        </button>
+        <button class="nav-item" style="color:var(--text-secondary)">
+          <svg class="ni" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+          Resumo Fiscal
+        </button>
       </div>
-
-      <!-- Compact -->
-      <div class="ds-card">
-        <div class="ds-card-preview" style="padding-top:28px">
-          <p style="font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--t3);margin-bottom:14px">Compact</p>
-          <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px">
-
-            <div class="card est-card est-card-sm ec-liq">
-              <div class="ec-lbl"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg> Recebe líquido</div>
-              <div class="ec-val g mono">€1.225</div>
-              <div class="ec-sub">61% do bruto</div>
-              <div class="ec-prog"><div class="ec-bar eb-g" style="width:61%"></div></div>
-            </div>
-
-            <div class="card est-card est-card-sm ec-irs">
-              <div class="ec-lbl"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="19" y1="5" x2="5" y2="19"/><circle cx="6.5" cy="6.5" r="2.5"/><circle cx="17.5" cy="17.5" r="2.5"/></svg> IRS estimado</div>
-              <div class="ec-val b mono">€500</div>
-              <div class="ec-sub">25% (Cat. B)</div>
-              <div class="ec-prog"><div class="ec-bar eb-b" style="width:25%"></div></div>
-            </div>
-
-            <div class="card est-card est-card-sm ec-ss">
-              <div class="ec-lbl"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg> SS</div>
-              <div class="ec-val p mono">€0</div>
-              <div class="ec-sub">Isento</div>
-              <div class="ec-prog"><div class="ec-bar eb-p" style="width:0%"></div></div>
-            </div>
-
-          </div>
-        </div>
-        <div class="ds-card-meta">
-          <span class="ds-card-meta-label">Classes</span>
-          <span class="ds-value">Adicionar <span class="ds-token">.est-card-sm</span> ao elemento <span class="ds-token">.est-card</span></span>
-        </div>
-      </div>
-
-      <!-- Mobile -->
-      <div class="ds-card">
-        <div class="ds-card-preview" style="padding-top:28px">
-          <p style="font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--t3);margin-bottom:14px">Mobile (≤520px) — 1 coluna</p>
-          <div style="display:flex;flex-direction:column;gap:10px;max-width:320px">
-
-            <div class="card est-card ec-liq">
-              <div class="ec-lbl"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg> Recebe líquido</div>
-              <div class="ec-val g mono">€1.225</div>
-              <div class="ec-sub">61% do bruto · −€350 despesas</div>
-              <div class="ec-prog"><div class="ec-bar eb-g" style="width:61%"></div></div>
-            </div>
-
-            <div class="card est-card ec-irs">
-              <div class="ec-lbl"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="19" y1="5" x2="5" y2="19"/><circle cx="6.5" cy="6.5" r="2.5"/><circle cx="17.5" cy="17.5" r="2.5"/></svg> IRS estimado</div>
-              <div class="ec-val b mono">€500</div>
-              <div class="ec-sub">Retenção: 25% (Cat. B)</div>
-              <div class="ec-prog"><div class="ec-bar eb-b" style="width:25%"></div></div>
-            </div>
-
-          </div>
-          <p style="font-size:.74rem;color:var(--t3);margin-top:12px">Em ecrãs ≤880px as cards ficam em 2 colunas; em ≤520px ficam em 1 coluna (stack total).</p>
-        </div>
-        <div class="ds-card-meta">
-          <span class="ds-card-meta-label">Responsive</span>
-          <span class="ds-value"><span class="ds-token">@media(max-width:880px)</span> → 2 col · <span class="ds-token">@media(max-width:520px)</span> → 1 col</span>
-        </div>
-      </div>
-
+      <div class="ds-meta"><span class="tok">button.nav-item</span> · <span class="tok">.active</span> estado ativo</div>
     </div>
+  </section>
 
-  </main>
+  <!-- ══ FEEDBACK ══ -->
+  <section class="ds-sec" id="feedback">
+    <div class="ds-sec-hdr"><span class="ds-sec-title">Feedback & Erros</span></div>
+    <p class="ds-sec-desc">Erros de campo aparecem abaixo do input e substituem o helper text. Erros gerais (backend) aparecem acima dos botões do modal. Nenhum usa <code>alert()</code>.</p>
+    <div class="ds-card">
+      <div class="ds-preview col-stack" style="gap:12px;max-width:420px">
+        <div style="background:var(--accent-error-light);color:var(--accent-error);border-radius:var(--radius-sm);padding:10px 13px;font-size:.8rem" role="alert">
+          Não foi possível guardar. Verifica a tua ligação e tenta novamente.
+        </div>
+        <div class="modal-geral-err" style="display:block">
+          Erro geral de modal — classe <span class="tok">.modal-geral-err</span>
+        </div>
+      </div>
+      <div class="ds-meta"><span class="tok">.modal-geral-err</span> injetado acima do <span class="tok">.modal-ft</span> por JS · sempre com <span class="tok">role="alert"</span></div>
+    </div>
+  </section>
+
+</main>
 </div>
 
 <script>
-  const sections = document.querySelectorAll('.ds-section')
-  const navLinks = document.querySelectorAll('.ds-nav a')
-  window.addEventListener('scroll', () => {
-    let current = ''
-    sections.forEach(s => { if (window.scrollY >= s.offsetTop - 80) current = s.id })
-    navLinks.forEach(a => {
-      a.classList.toggle('active', a.getAttribute('href') === '#' + current)
-    })
+function toggleDsTheme(){
+  const isDark=document.documentElement.classList.toggle('dark')
+  localStorage.setItem('theme',isDark?'dark':'light')
+  updateDsBtn()
+}
+function updateDsBtn(){
+  const isDark=document.documentElement.classList.contains('dark')
+  const label=document.getElementById('ds-theme-label')
+  const icon=document.getElementById('ds-theme-icon')
+  if(label) label.textContent=isDark?'Modo escuro':'Modo claro'
+  if(icon) icon.innerHTML=isDark
+    ?'<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>'
+    :'<circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>'
+}
+updateDsBtn()
+
+// Sidebar nav active state
+document.querySelectorAll('.ds-nav a').forEach(a=>{
+  a.addEventListener('click',()=>{
+    document.querySelectorAll('.ds-nav a').forEach(x=>x.classList.remove('active'))
+    a.classList.add('active')
   })
+})
+// Highlight nav item on scroll
+const sections=document.querySelectorAll('.ds-sec')
+const navLinks=document.querySelectorAll('.ds-nav a')
+const io=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){
+      navLinks.forEach(a=>a.classList.remove('active'))
+      const link=document.querySelector(`.ds-nav a[href="#${e.target.id}"]`)
+      if(link) link.classList.add('active')
+    }
+  })
+},{threshold:.2,rootMargin:'-40px 0px -60% 0px'})
+sections.forEach(s=>io.observe(s))
 </script>
 </body>
 </html>
