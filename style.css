@@ -6,7 +6,7 @@
   --bg-page:#ebf4fb;
   --surface-card:#ffffff;
   --surface-secondary:#f2f8fd;
-  --surface-sidebar:#ffffff;
+  --surface-sidebar:#ddeef8;
 
   /* Borders */
   --border-subtle:#e3edf7;
@@ -32,8 +32,8 @@
   --accent-warning-light:#fff8dc;
 
   /* Accent — caution (dark amber, safe for text on light bg) */
-  --accent-caution:#946c00;
-  --accent-caution-light:#fff8dc;
+  --accent-caution:#d97706;
+  --accent-caution-light:#fef3c7;
 
   /* Accent — error */
   --accent-error:#b91c1c;
@@ -611,7 +611,7 @@ hr.dv{border:none;border-top:1px solid var(--border-subtle);margin:16px 0}
 .sb-close{display:none;width:28px;height:28px;border-radius:var(--radius-sm);align-items:center;justify-content:center;color:var(--text-tertiary);margin-left:auto;flex-shrink:0;transition:background .12s}
 .sb-close:hover{background:var(--bg-page)}
 /* Status pill — always shown above KPI row */
-.kpi-ok-tag{display:inline-flex;align-items:center;gap:6px;font-size:.78rem;font-weight:600;color:var(--accent-success);background:var(--accent-success-light);border:1px solid #a7f3d0;border-radius:99px;padding:5px 13px;width:fit-content;margin-bottom:16px}
+.kpi-ok-tag{display:inline-flex;align-items:center;gap:6px;font-size:.78rem;font-weight:600;color:#065f46;background:#d1fae5;border:1px solid #6ee7b7;border-radius:99px;padding:5px 13px;width:fit-content;margin-bottom:16px}
 /* Client detail back button — hidden on desktop */
 .cd-back-btn{display:none;align-items:center;gap:6px;font-size:.82rem;font-weight:600;color:var(--accent-primary);padding:10px 22px 9px;border-bottom:1px solid var(--border-subtle);cursor:pointer;background:none;border-top:none;border-left:none;border-right:none;width:100%;text-align:left;transition:background .1s}
 .cd-back-btn:hover{background:var(--accent-primary-light)}
@@ -711,3 +711,10 @@ hr.dv{border:none;border-top:1px solid var(--border-subtle);margin:16px 0}
 @media (prefers-reduced-motion:reduce){
   *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
 }
+
+/* Calendar countdown pills stay the same in dark mode */
+html.dark .ct-u{background:#fef3c7;color:#b45309}
+html.dark .ct-s{background:#dbeafe;color:#1d4ed8}
+html.dark .ct-pend{background:#fef2f2;color:#b91c1c}
+html.dark .ct-f{background:#f1f5f9;color:#64748b}
+html.dark .ct-proj{background:#f5f3ff;color:#6d28d9}
