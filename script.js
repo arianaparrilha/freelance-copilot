@@ -696,10 +696,46 @@ function onReciboFileDrop(e){
 
 function processReciboFile(e){
   const file=e.target.files[0]; if(!file) return
-  document.getElementById('mrUploadZone').style.opacity='.5'
-  document.getElementById('mrUploadZone').style.pointerEvents='none'
-  document.getElementById('mrProcessing').style.display='block'
+  const uz=document.getElementById('mrUploadZone')
+  const proc=document.getElementById('mrProcessing')
+  uz.style.opacity='.5'
+  uz.style.pointerEvents='none'
+  proc.style.display='block'
   document.getElementById('mrExtractedBanner').style.display='none'
+
+  const spinnerHTML=proc.innerHTML
+  const controller=new AbortController()
+
+  function mostrarTimeoutAviso(){
+    proc.innerHTML=''
+    const wrap=document.createElement('div')
+    wrap.style.cssText='text-align:center;padding:4px 0'
+    const msg=document.createElement('div')
+    msg.style.cssText='font-size:.82rem;color:var(--t2);margin-bottom:12px'
+    msg.textContent='A extração está a demorar mais do que o esperado.'
+    const btns=document.createElement('div')
+    btns.style.cssText='display:flex;gap:8px;justify-content:center'
+    const btnAguardar=document.createElement('button')
+    btnAguardar.className='btn btn-s btn-sm'
+    btnAguardar.textContent='Aguardar'
+    btnAguardar.onclick=()=>{ proc.innerHTML=spinnerHTML }
+    const btnCancelar=document.createElement('button')
+    btnCancelar.className='btn btn-p btn-sm'
+    btnCancelar.textContent='Preencher manualmente'
+    btnCancelar.onclick=()=>{
+      controller.abort()
+      uz.style.opacity='1'
+      uz.style.pointerEvents='auto'
+      proc.innerHTML='<div style="font-size:.82rem;color:var(--t3);text-align:center;padding:4px 0">A extração de dados não foi concluída. Preenche os campos manualmente.</div>'
+    }
+    btns.appendChild(btnAguardar)
+    btns.appendChild(btnCancelar)
+    wrap.appendChild(msg)
+    wrap.appendChild(btns)
+    proc.appendChild(wrap)
+  }
+
+  const timeoutId=setTimeout(mostrarTimeoutAviso, 12000)
 
   const reader=new FileReader()
   reader.onload=async ev=>{
@@ -709,8 +745,10 @@ function processReciboFile(e){
       const res=await fetch('/.netlify/functions/extract-recibo',{
         method:'POST',
         headers:{'Content-Type':'application/json'},
-        body:JSON.stringify({fileBase64:base64,mimeType})
+        body:JSON.stringify({fileBase64:base64,mimeType}),
+        signal:controller.signal
       })
+      clearTimeout(timeoutId)
       if(!res.ok) throw new Error('Function error')
       const data=await res.json()
       if(data.error) throw new Error(data.error)
@@ -723,6 +761,8 @@ function processReciboFile(e){
       }
       aplicarCamposRecibo(fields, file.name)
     } catch(err){
+      clearTimeout(timeoutId)
+      if(err.name==='AbortError') return
       console.warn('Gemini extraction failed, using fallback:', err)
       aplicarCamposRecibo(extrairCamposPorNomeRecibo(file.name), file.name)
     }
@@ -832,6 +872,9 @@ function resetReciboUpload(){
     </div>`
   document.getElementById('mrUploadZone').onclick=()=>document.getElementById('mrFileInput').click()
   document.getElementById('mrExtractedBanner').style.display='none'
+  const proc=document.getElementById('mrProcessing')
+  proc.style.display='none'
+  proc.innerHTML='<div style="width:28px;height:28px;border:2px solid var(--border);border-top-color:var(--blue);border-radius:50%;animation:spin .7s linear infinite;margin:0 auto 8px"></div><div style="font-size:.82rem;color:var(--blue);font-weight:500">A extrair dados do recibo...</div>'
   ;['mrValor','mrData','mrNum','mrDesc'].forEach(id=>{const e=document.getElementById(id);if(e)e.value=''})
   document.getElementById('mrEstado').value='pendente'
 }
