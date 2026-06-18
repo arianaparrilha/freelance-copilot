@@ -37,10 +37,12 @@
       <svg class="ni" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
       Resumo Fiscal
     </button>
+    <!-- HIDDEN: Documentos nav item — feature not ready
     <button class="nav-item">
       <svg class="ni" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
       Documentos
     </button>
+    -->
     <button class="nav-item">
       <svg class="ni" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93l-1.41 1.41M4.93 4.93l1.41 1.41M12 2v2M12 20v2M20 12h2M2 12h2M19.07 19.07l-1.41-1.41M4.93 19.07l1.41-1.41"/></svg>
       Configurações
@@ -185,12 +187,13 @@
         <div class="tb-sub">Gere os seus clientes, projetos e toda a documentação num só lugar.</div>
       </div>
       <div class="page-actions">
-        <!-- Hidden file input for contact import -->
+        <!-- HIDDEN: Importar contactos — feature not ready
         <input type="file" id="importContactsInput" accept=".xlsx,.xls,.csv,.docx,.doc,.txt,.vcf" style="display:none" onchange="processImportContacts(event)"/>
         <button class="btn btn-s btn-sm" onclick="triggerImportContacts()">
           <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
           Importar contactos
         </button>
+        -->
         <button class="btn btn-p btn-sm" onclick="abrirModalCl()">
           <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
           Novo cliente
@@ -294,7 +297,9 @@
             <button class="tab-btn active" id="tab-rec-btn" onclick="switchTab(this,'tr')">Faturas</button>
             <button class="tab-btn" id="tab-proj-btn" onclick="switchTab(this,'tp')">Projetos</button>
             <button class="tab-btn" id="tab-cont-btn" onclick="switchTab(this,'tc')">Contactos</button>
+            <!-- HIDDEN: Notas tab — feature not ready
             <button class="tab-btn" id="tab-nota-btn" onclick="switchTab(this,'tn')">Notas</button>
+            -->
             <button class="tab-btn" id="tab-doc-btn" onclick="switchTab(this,'td')">Documentos</button>
           </div>
         </div>
