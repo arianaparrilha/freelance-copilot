@@ -43,7 +43,7 @@ function updateThemeBtn(){
   const initial = name[0].toUpperCase()
 
   const greetingEl = document.getElementById('dashboard-greeting')
-  if (greetingEl) greetingEl.textContent = `Olá, ${name.split(' ')[0]}! 👋`
+  if (greetingEl) greetingEl.textContent = `Olá, ${name.split(' ')[0]}!`
 
   const dropdownHTML = `
     <div class="user-menu">
@@ -53,14 +53,14 @@ function updateThemeBtn(){
           <span class="user-menu-name">${name}</span>
           <span class="user-menu-role">Freelancer</span>
         </div>
-        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+        <i class="fa-solid fa-chevron-down" aria-hidden="true"></i>
       </button>
       <div class="user-menu-dropdown">
-        <a href="#" class="umd-item" onclick="navegarPara('perfil');document.querySelectorAll('.user-menu-dropdown').forEach(d=>d.classList.remove('open'));return false"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>O meu perfil</a>
-        <a href="#" class="umd-item"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93l-1.41 1.41M4.93 4.93l1.41 1.41M12 2v2M12 20v2M20 12h2M2 12h2M19.07 19.07l-1.41-1.41M4.93 19.07l1.41-1.41"/></svg>Definições</a>
-        <a href="#" class="umd-item" onclick="navegarPara('plano');document.querySelectorAll('.user-menu-dropdown').forEach(d=>d.classList.remove('open'));return false"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>Plano e faturação</a>
+        <a href="#" class="umd-item" onclick="navegarPara('perfil');document.querySelectorAll('.user-menu-dropdown').forEach(d=>d.classList.remove('open'));return false"><i class="fa-solid fa-user" aria-hidden="true"></i>O meu perfil</a>
+        <!-- HIDDEN: Definições — feature not ready -->
+        <a href="#" class="umd-item" onclick="navegarPara('plano');document.querySelectorAll('.user-menu-dropdown').forEach(d=>d.classList.remove('open'));return false"><i class="fa-solid fa-credit-card" aria-hidden="true"></i>Plano e faturação</a>
         <div class="umd-sep"></div>
-        <button class="umd-item umd-signout" onclick="signOut()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>Terminar sessão</button>
+        <button class="umd-item umd-signout" onclick="signOut()"><i class="fa-solid fa-right-from-bracket" aria-hidden="true"></i>Terminar sessão</button>
       </div>
     </div>`
 
@@ -300,7 +300,7 @@ function navegarPara(p, addToHistory=true){
   if(p==='clientes') renderCl()
   if(p==='dashboard') renderActivity()
   if(p==='perfil') renderPerfil()
-  if(p==='estimador') renderEstStrip()
+  if(p==='estimador'){renderEstStrip();calcEst()}
   document.getElementById('sidebar').classList.remove('open')
   const ovEl=document.getElementById('sbOverlay')
   if(ovEl) ovEl.classList.remove('open')
@@ -392,7 +392,7 @@ async function selCl(id){
           <td>${escH(f.desc)}</td>
           <td class="mono">${f2(f.valor)}</td>
           <td><span class="badge ${f.estado==='pago'?'bg-g':f.estado==='pendente'?'bg-a':'bg-n'}">${escH(f.estado)}</span></td>
-          <td><div class="user-menu"><button class="ico-btn user-menu-trigger"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></svg></button><div class="user-menu-dropdown"><button class="umd-item" onclick="toggleEstadoRecibo('${f.id}')">${f.estado==='pago'?'<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>Marcar como pendente':'<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--accent-success)" stroke-width="2.5"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>Marcar como pago'}</button><div class="umd-sep"></div><button class="umd-item umd-signout" onclick="confirmarApagarRecibo('${f.id}')"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg>Apagar fatura</button></div></div></td>
+          <td><div class="user-menu"><button class="ico-btn user-menu-trigger"><i class="fa-solid fa-ellipsis" aria-hidden="true"></i></button><div class="user-menu-dropdown">${(()=>{const linkedDoc=f.document_id?(documentos[id]||[]).find(d=>d.id===f.document_id):null;return linkedDoc&&linkedDoc.url?`<button class="umd-item" onclick="abrirPreview('${linkedDoc.url}','${escH(linkedDoc.nome).replace(/'/g,"\\'")}','${linkedDoc.ext}')"><i class="fa-solid fa-eye" aria-hidden="true"></i>Pré-visualizar fatura</button><div class="umd-sep"></div>`:''})()}<button class="umd-item" onclick="toggleEstadoRecibo('${f.id}')">${f.estado==='pago'?'<i class="fa-solid fa-clock" aria-hidden="true"></i>Marcar como pendente':'<i class="fa-solid fa-circle-check" style="color:var(--accent-success)" aria-hidden="true"></i>Marcar como pago'}</button><div class="umd-sep"></div><button class="umd-item umd-signout" onclick="confirmarApagarRecibo('${f.id}')"><i class="fa-solid fa-trash" aria-hidden="true"></i>Apagar fatura</button></div></div></td>
         </tr>`).join('')}
       </tbody></table>`
   }
@@ -400,9 +400,9 @@ async function selCl(id){
   // TAB: Contactos
   const ci=document.getElementById('contactosInfo')
   ci.innerHTML=`
-    ${c.email?`<span style="display:flex;align-items:center;gap:7px"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--text-tertiary)" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>${escH(c.email)}</span>`:''}
-    ${c.tel?`<span style="display:flex;align-items:center;gap:7px"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--text-tertiary)" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 1.27h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9a16 16 0 0 0 6.29 6.29l.82-.74a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 21.73 17z"/></svg>${escH(c.tel)}</span>`:''}
-    ${c.morada?`<span style="display:flex;align-items:center;gap:7px"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--text-tertiary)" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>${escH(c.morada)}</span>`:''}
+    ${c.email?`<span style="display:flex;align-items:center;gap:7px"><i class="fa-solid fa-envelope ni" style="color:var(--text-tertiary)" aria-hidden="true"></i>${escH(c.email)}</span>`:''}
+    ${c.tel?`<span style="display:flex;align-items:center;gap:7px"><i class="fa-solid fa-phone ni" style="color:var(--text-tertiary)" aria-hidden="true"></i>${escH(c.tel)}</span>`:''}
+    ${c.morada?`<span style="display:flex;align-items:center;gap:7px"><i class="fa-solid fa-location-dot ni" style="color:var(--text-tertiary)" aria-hidden="true"></i>${escH(c.morada)}</span>`:''}
   `
 
   // TAB: Documentos
@@ -420,7 +420,7 @@ async function selCl(id){
           <td style="color:var(--text-tertiary)">${escH(d.tipo)}</td>
           <td>${escH(d.data)}</td>
           <td style="color:var(--text-tertiary)">${escH(d.tam)}</td>
-          <td><div class="user-menu"><button class="ico-btn user-menu-trigger"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></svg></button><div class="user-menu-dropdown"><button class="umd-item umd-signout" onclick="confirmarApagarDoc('${d.id}')"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg>Apagar documento</button></div></div></td>
+          <td><div class="user-menu"><button class="ico-btn user-menu-trigger"><i class="fa-solid fa-ellipsis" aria-hidden="true"></i></button><div class="user-menu-dropdown">${d.url?`<button class="umd-item" onclick="abrirPreview('${d.url}','${escH(d.nome).replace(/'/g,"\\'")}','${d.ext}')"><i class="fa-solid fa-eye" aria-hidden="true"></i>Pré-visualizar</button><div class="umd-sep"></div>`:''}<button class="umd-item umd-signout" onclick="confirmarApagarDoc('${d.id}')"><i class="fa-solid fa-trash" aria-hidden="true"></i>Apagar documento</button></div></div></td>
         </tr>`).join('')}
       </tbody></table>`
   }
@@ -853,7 +853,7 @@ function aplicarCamposRecibo(fields, filename){
   document.getElementById('mrUploadZone').innerHTML=`
     <div style="display:flex;align-items:center;gap:10px;padding:4px 0">
       <div style="width:36px;height:36px;background:var(--accent-primary-light);border-radius:var(--radius-sm);display:flex;align-items:center;justify-content:center;flex-shrink:0">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--accent-primary)" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+        <i class="fa-solid fa-file" style="color:var(--accent-primary)" aria-hidden="true"></i>
       </div>
       <div style="flex:1;text-align:left;min-width:0">
         <div style="font-size:.84rem;font-weight:600;color:var(--text-primary);overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${escH(filename)}</div>
@@ -885,7 +885,7 @@ function aplicarCamposRecibo(fields, filename){
 function resetReciboUpload(){
   document.getElementById('mrUploadZone').innerHTML=`
     <div style="width:40px;height:40px;background:var(--accent-primary-light);border-radius:var(--radius-md);display:flex;align-items:center;justify-content:center;margin:0 auto 10px">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--accent-primary)" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="12" y1="18" x2="12" y2="12"/><line x1="9" y1="15" x2="15" y2="15"/></svg>
+      <i class="fa-solid fa-file-arrow-up" style="color:var(--accent-primary);font-size:18px" aria-hidden="true"></i>
     </div>
     <div style="font-size:.88rem;font-weight:600;color:var(--accent-primary);margin-bottom:3px">Carregar fatura</div>
     <div style="font-size:.75rem;color:var(--text-tertiary)">Arrasta ou clica para selecionar · PDF, imagem ou Word</div>
@@ -1155,20 +1155,11 @@ function calcEst(){
   const reg=document.getElementById('eReg').value
   const tco=document.getElementById('eEmp').checked
   if(r<=0){
-    let err=document.getElementById('calcEstErr')
-    if(!err){
-      err=document.createElement('span')
-      err.id='calcEstErr'
-      err.style.cssText='font-size:.75rem;color:var(--accent-error);margin-left:10px'
-      err.setAttribute('role','alert')
-      document.getElementById('lastCalcTime').parentElement.appendChild(err)
-    }
-    err.textContent='Preenche o teu rendimento no perfil antes de calcular.'
-    err.style.display='inline'
-    setTimeout(()=>{err.style.display='none'},4000)
+    const err=document.getElementById('calcEstErr')
+    if(err){err.textContent='Preenche o teu rendimento no perfil antes de calcular.';err.style.display='block';setTimeout(()=>{err.style.display='none'},4000)}
     return
   }
-  const calcErr=document.getElementById('calcEstErr'); if(calcErr) calcErr.style.display='none'
+  const calcErr=document.getElementById('calcEstErr'); if(calcErr){calcErr.style.display='none'}
 
   // Update data strip
   const displayEl=document.getElementById('totalFaturadoDisplay')
@@ -1226,10 +1217,6 @@ function calcEst(){
   set('bIRS',`(${f2(ia)})`); set('bSS',ss===0?'€0 (Isento)':`(${f2(sa)})`); set('bLiq',f2(la))
   set('dCV',f0(la))
 
-  // Timestamp
-  const ts=document.getElementById('lastCalcTime')
-  if(ts) ts.textContent=`Calculado às ${new Date().toLocaleTimeString('pt-PT',{hour:'2-digit',minute:'2-digit'})}`
-
   // Recommendations
   const recs=[]
   if(pIVA>=90) recs.push({icon:'alert-triangle',cls:'bg-r',tag:'Urgente',label:'rt-warn',title:'Limite de IVA quase atingido',desc:`Faturaste ${fp(pIVA)} do limite de isenção (€14.500).`})
@@ -1239,11 +1226,11 @@ function calcEst(){
   recs.push({icon:'briefcase',cls:'bg-b',tag:'Sugestão',label:'rt-sug',title:'Rever despesas dedutíveis',desc:'Podes deduzir despesas de software, formação e equipamento.'})
 
   const svgIcons={
-    'alert-triangle':'<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>',
-    'alert-circle':'<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><circle cx="12" cy="8" r="1" fill="currentColor" stroke="none"/></svg>',
-    'shield':'<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>',
-    'trending-up':'<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>',
-    'briefcase':'<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/></svg>',
+    'alert-triangle':'<i class="fa-solid fa-triangle-exclamation" aria-hidden="true"></i>',
+    'alert-circle':'<i class="fa-solid fa-circle-exclamation" aria-hidden="true"></i>',
+    'shield':'<i class="fa-solid fa-shield" aria-hidden="true"></i>',
+    'trending-up':'<i class="fa-solid fa-arrow-trend-up" aria-hidden="true"></i>',
+    'briefcase':'<i class="fa-solid fa-briefcase" aria-hidden="true"></i>',
   }
   const rlEl=document.getElementById('recList')
   if(rlEl) rlEl.innerHTML=recs.map(rc=>`
@@ -1251,7 +1238,7 @@ function calcEst(){
       <div class="rec-ico ${rc.cls}">${svgIcons[rc.icon]||''}</div>
       <div class="rec-body"><div class="rec-title">${rc.title}</div><div class="rec-desc">${rc.desc}</div></div>
       <span class="rec-tag ${rc.label}">${rc.tag}</span>
-      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="var(--text-tertiary)" stroke-width="2" style="flex-shrink:0;margin-left:4px"><polyline points="9 18 15 12 9 6"/></svg>
+      <i class="fa-solid fa-chevron-right" style="color:var(--text-tertiary);flex-shrink:0;margin-left:4px" aria-hidden="true"></i>
     </div>`).join('')
 }
 
@@ -1477,10 +1464,10 @@ async function renderActivity(){
   })
   events.sort((a,b)=>b.date-a.date)
   const top=events.slice(0,6)
-  const icoCl=`<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>`
-  const icoInv=`<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>`
-  const icoDoc=`<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><polyline points="13 2 13 9 20 9"/></svg>`
-  const icoPaid=`<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>`
+  const icoCl=`<i class="fa-solid fa-user" aria-hidden="true"></i>`
+  const icoInv=`<i class="fa-solid fa-file-invoice" aria-hidden="true"></i>`
+  const icoDoc=`<i class="fa-solid fa-file" aria-hidden="true"></i>`
+  const icoPaid=`<i class="fa-solid fa-circle-check" aria-hidden="true"></i>`
   const icoMap={client:icoCl,invoice:icoInv,doc:icoDoc,paid:icoPaid}
   const clsMap={client:'ai-cl',invoice:'ai-inv',doc:'ai-doc',paid:'ai-inv'}
   el.innerHTML=top.length===0
@@ -1536,6 +1523,42 @@ function renderCalendar(){
     }
     return `<div class="cal-item"><div class="cal-dt"><div class="cal-mo">${mes}</div><div class="cal-d">${dia}</div></div><div class="cal-info"><div class="cal-ev">${o.ev}</div><div class="cal-dc">${o.dc}</div></div><div style="text-align:right;flex-shrink:0"><div class="cal-tag ${tagCls}">${tagText}</div><div style="font-size:.71rem;color:var(--text-tertiary);margin-top:4px;white-space:nowrap">${rangeText}</div></div></div>`
   }).join('')
+}
+
+/* ───────────────────────────────────────
+   PREVIEW MODAL
+─────────────────────────────────────── */
+async function abrirPreview(storagePath, nome, ext){
+  document.getElementById('previewFileName').textContent = nome || '—'
+  const body = document.getElementById('previewBody')
+  body.innerHTML = '<div style="color:var(--text-tertiary);font-size:.85rem">A carregar...</div>'
+  document.getElementById('modalPreview').classList.add('open')
+
+  const { data } = db.storage.from('documents').getPublicUrl(storagePath)
+  const url = data.publicUrl
+
+  document.getElementById('previewDownloadBtn').href = url
+
+  const icon = document.getElementById('previewFileIcon')
+  if(ext==='pdf'){
+    icon.className='fa-solid fa-file-pdf'
+    body.style.padding='0'
+    body.innerHTML=`<iframe src="${url}" style="width:100%;height:100%;border:none" title="${escH(nome)}"></iframe>`
+  } else if(ext==='img'){
+    icon.className='fa-solid fa-image'
+    body.style.padding='24px'
+    body.innerHTML=`<img src="${url}" alt="${escH(nome)}" style="max-width:100%;max-height:100%;object-fit:contain;border-radius:var(--radius-sm)">`
+  } else {
+    icon.className='fa-solid fa-file'
+    body.style.padding='24px'
+    body.innerHTML=`
+      <div style="text-align:center">
+        <i class="fa-solid fa-file" style="font-size:48px;color:var(--text-tertiary);display:block;margin-bottom:16px" aria-hidden="true"></i>
+        <div style="font-size:.85rem;color:var(--text-secondary);margin-bottom:6px">${escH(nome)}</div>
+        <div style="font-size:.78rem;color:var(--text-tertiary);margin-bottom:20px">Este tipo de ficheiro não tem pré-visualização disponível.</div>
+        <a href="${url}" target="_blank" rel="noopener" class="btn btn-p"><i class="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></i> Abrir ficheiro</a>
+      </div>`
+  }
 }
 
 /* ───────────────────────────────────────
