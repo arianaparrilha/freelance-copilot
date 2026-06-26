@@ -285,8 +285,9 @@ function toggleSidebar(){
   document.getElementById('sbOverlay').classList.toggle('open')
 }
 function closeMobileDetail(){
-  document.querySelector('.cl-left').classList.remove('hidden-mobile')
   document.querySelector('.cd-panel').classList.remove('visible-mobile')
+  const ov=document.getElementById('cdDrawerOverlay')
+  if(ov){ov.classList.remove('visible');ov.style.pointerEvents='none'}
 }
 function nav(p){navegarPara(p)}
 function navegarPara(p, addToHistory=true){
@@ -342,10 +343,14 @@ async function selCl(id){
   renderCl()
   const c=clientes.find(x=>x.id===id)
   if(!c) return
-  // On tablet/phone: hide list, show detail panel
+  // On tablet/phone: slide in right drawer (idempotent — safe to call while already open)
   if(window.innerWidth<=880){
-    document.querySelector('.cl-left').classList.add('hidden-mobile')
-    document.querySelector('.cd-panel').classList.add('visible-mobile')
+    const panel=document.querySelector('.cd-panel')
+    const ov=document.getElementById('cdDrawerOverlay')
+    if(!panel.classList.contains('visible-mobile')){
+      panel.classList.add('visible-mobile')
+      if(ov){ov.classList.add('visible');ov.style.pointerEvents='auto'}
+    }
   }
   faturas[id] = await loadFaturas(id)
   documentos[id] = await loadDocumentos(id)
@@ -1542,8 +1547,13 @@ async function abrirPreview(storagePath, nome, ext){
   document.getElementById('previewDownloadBtn').style.display=''
   body.innerHTML = '<div style="color:var(--text-tertiary);font-size:.85rem">A carregar...</div>'
 
-  const { data } = db.storage.from('documents').getPublicUrl(storagePath)
-  const url = data.publicUrl
+  const { data: signedData, error: signErr } = await db.storage.from('documents').createSignedUrl(storagePath, 3600)
+  if(signErr || !signedData){
+    body.style.padding='24px'
+    body.innerHTML=`<div style="text-align:center"><i class="fa-solid fa-triangle-exclamation" style="font-size:40px;color:var(--accent-caution);display:block;margin-bottom:12px" aria-hidden="true"></i><div style="font-size:.85rem;color:var(--text-secondary)">Não foi possível carregar o ficheiro.</div></div>`
+    return
+  }
+  const url = signedData.signedUrl
 
   document.getElementById('previewDownloadBtn').href = url
 

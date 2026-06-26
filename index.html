@@ -258,12 +258,18 @@
         </button>
       </div>
 
-      <!-- RIGHT DETAIL -->
+      <!-- RIGHT DETAIL (drawer on tablet/mobile) -->
+      <div class="cd-drawer-overlay" id="cdDrawerOverlay" onclick="closeMobileDetail()" style="position:fixed;inset:0;z-index:149;pointer-events:none;background:transparent;transition:background .26s"></div>
       <div class="cd-panel">
-        <button class="cd-back-btn" onclick="closeMobileDetail()">
-          <i class="fa-solid fa-chevron-left" aria-hidden="true"></i>
-          Clientes
-        </button>
+        <div class="cd-back-btn">
+          <button onclick="closeMobileDetail()" style="display:flex;align-items:center;gap:6px;font-size:.82rem;font-weight:600;color:var(--accent-primary);background:none;border:none;cursor:pointer;padding:0">
+            <i class="fa-solid fa-chevron-left" aria-hidden="true"></i>
+            Clientes
+          </button>
+          <button class="modal-x" onclick="closeMobileDetail()" aria-label="Fechar">
+            <i class="fa-solid fa-xmark" aria-hidden="true"></i>
+          </button>
+        </div>
         <div class="cd-hdr" id="cdHdr">
           <div class="cd-top">
             <div class="cd-av" id="cdAv">ND</div>

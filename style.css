@@ -613,8 +613,7 @@ hr.dv{border:none;border-top:1px solid var(--border-subtle);margin:16px 0}
 /* Status pill — always shown above KPI row */
 .kpi-ok-tag{display:inline-flex;align-items:center;gap:6px;font-size:.78rem;font-weight:600;color:#065f46;background:#d1fae5;border:1px solid #6ee7b7;border-radius:99px;padding:5px 13px;width:fit-content;flex-shrink:0}
 /* Client detail back button — hidden on desktop */
-.cd-back-btn{display:none;align-items:center;gap:6px;font-size:.82rem;font-weight:600;color:var(--accent-primary);padding:10px 22px 9px;border-bottom:1px solid var(--border-subtle);cursor:pointer;background:none;border-top:none;border-left:none;border-right:none;width:100%;text-align:left;transition:background .1s}
-.cd-back-btn:hover{background:var(--accent-primary-light)}
+.cd-back-btn{display:none;align-items:center;justify-content:space-between;padding:10px 14px 10px 22px;border-bottom:1px solid var(--border-subtle);background:var(--surface-card)}
 
 /* ═══════════════════════════════════════════
    RESPONSIVE — tablet (≤880px)
@@ -652,14 +651,38 @@ hr.dv{border:none;border-top:1px solid var(--border-subtle);margin:16px 0}
   #sumTotal,#sumPendente{font-size:1.15rem!important}
   #sumClSec,#clIVApct{font-size:1.05rem!important}
 
-  /* Clients panel: list full-width, detail hidden until selected */
-  .clients-layout{grid-template-columns:1fr!important;height:auto!important;overflow:hidden;min-width:0;width:100%}
-  .cl-left{width:100%;min-width:0;border-right:none;height:55vh!important;min-height:300px;max-height:480px}
-  .cd-panel{display:none;flex-direction:column}
-  .cd-panel.visible-mobile{display:flex;min-height:calc(100vh - var(--hh) - 60px)}
-  .cl-left.hidden-mobile{display:none!important}
+  /* Clients panel: list full-width, detail as right drawer */
+  .clients-layout{grid-template-columns:1fr!important;height:auto!important;overflow:visible;min-width:0;width:100%}
+  .cl-left{width:100%;min-width:0;border-right:none;height:auto!important;max-height:none!important}
+  /* Drawer */
+  .cd-panel{
+    position:fixed;top:0;right:0;height:100vh;width:75%;
+    background:var(--surface-card);
+    border-left:1px solid var(--border-subtle);
+    box-shadow:-6px 0 32px rgba(0,0,0,.14);
+    transform:translateX(100%);
+    transition:transform .26s cubic-bezier(.4,0,.2,1);
+    overflow-y:auto;
+    display:flex!important;
+    flex-direction:column;
+    z-index:150;
+  }
+  .cd-panel.visible-mobile{transform:translateX(0)}
   .cd-back-btn{display:flex}
   .cd-stats{grid-template-columns:1fr 1fr}
+  /* Dim overlay behind drawer */
+  .cd-drawer-overlay{display:block}
+  .cd-drawer-overlay.visible{pointer-events:auto;background:rgba(0,0,0,.25)}
+  /* Drawer table fixes — prevent horizontal scroll, hide non-critical columns */
+  .cd-panel .cd-body{overflow-x:hidden}
+  .cd-panel .inv-tbl,.cd-panel .doc-tbl{table-layout:fixed;width:100%}
+  .cd-panel .inv-tbl th:first-child,.cd-panel .inv-tbl td:first-child{display:none} /* hide Nº */
+  .cd-panel .doc-tbl th:nth-child(2),.cd-panel .doc-tbl td:nth-child(2){display:none} /* hide Tipo */
+  .cd-panel .doc-tbl th:nth-child(4),.cd-panel .doc-tbl td:nth-child(4){display:none} /* hide Tamanho */
+  .cd-panel table td,.cd-panel table th{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .cd-panel .cd-top{flex-wrap:wrap;gap:10px}
+  .cd-panel .cd-acts{margin-left:0;width:100%}
+  .cd-panel .doc-nc{max-width:180px}
 
   /* Resumo Fiscal */
   .est-cards{grid-template-columns:1fr 1fr}
@@ -692,7 +715,7 @@ hr.dv{border:none;border-top:1px solid var(--border-subtle);margin:16px 0}
   .kpi-lbl{font-size:.76rem}
 
   .cl-kpi-grid{grid-template-columns:1fr 1fr!important}
-  .cl-left{height:50vh!important;min-height:260px;max-height:380px}
+  .cd-panel{width:100%}
   /* Hide quick actions on phone — users navigate to the relevant page directly */
   .dash-qa-section{display:none}
   /* Stack calendar + activity on phone */
