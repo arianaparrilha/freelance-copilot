@@ -11,63 +11,63 @@
 <script src="https://kit.fontawesome.com/6982fa4566.js" crossorigin="anonymous"></script>
 <style>
   html,body{height:100%;margin:0}
-  body{display:flex;align-items:center;justify-content:center;background:var(--bg);font-family:var(--font)}
+  body{display:flex;align-items:center;justify-content:center;background:var(--bg-page);font-family:var(--font-body)}
 
   .auth-card{
-    background:var(--surface);
-    border:1px solid var(--border);
-    border-radius:var(--rlg);
-    box-shadow:var(--sh-lg);
+    background:var(--surface-card);
+    border:1px solid var(--border-subtle);
+    border-radius:var(--radius-lg);
+    box-shadow:var(--shadow-lg);
     padding:40px;
     width:100%;
     max-width:400px;
   }
 
   .auth-logo{display:flex;align-items:center;gap:10px;margin-bottom:32px}
-  .auth-logo .logo-mark{width:36px;height:36px;border-radius:9px;background:var(--blue);color:#fff;font-family:var(--font-heading);font-weight:var(--fw-bold);font-size:var(--text-lg);display:flex;align-items:center;justify-content:center}
-  .auth-logo .logo-name{font-family:var(--font-heading);font-weight:var(--fw-semibold);font-size:var(--text-md);color:var(--t1)}
+  .auth-logo .logo-mark{width:36px;height:36px;border-radius:9px;background:var(--accent-primary);color:#fff;font-family:var(--font-ui);font-weight:var(--fw-bold);font-size:var(--text-lg);display:flex;align-items:center;justify-content:center}
+  .auth-logo .logo-name{font-family:var(--font-ui);font-weight:var(--fw-semibold);font-size:var(--text-md);color:var(--text-primary)}
 
-  .auth-title{font-family:var(--font-heading);font-size:var(--text-xl);font-weight:var(--fw-semibold);color:var(--t1);margin:0 0 6px}
-  .auth-sub{font-size:var(--text-sm);color:var(--t3);margin:0 0 28px}
+  .auth-title{font-family:var(--font-ui);font-size:var(--text-xl);font-weight:var(--fw-semibold);color:var(--text-primary);margin:0 0 6px}
+  .auth-sub{font-size:var(--text-sm);color:var(--text-tertiary);margin:0 0 28px}
 
   .field{margin-bottom:16px}
-  .field label{display:block;font-size:var(--text-sm);font-weight:var(--fw-medium);color:var(--t2);margin-bottom:6px}
+  .field label{display:block;font-size:var(--text-sm);font-weight:var(--fw-medium);color:var(--text-secondary);margin-bottom:6px}
   .field input{
     width:100%;
     box-sizing:border-box;
     padding:10px 12px;
-    border:1px solid var(--border);
-    border-radius:var(--rsm);
-    font-family:var(--font);
+    border:1px solid var(--border-subtle);
+    border-radius:var(--radius-sm);
+    font-family:var(--font-body);
     font-size:var(--text-base);
-    color:var(--t1);
-    background:var(--surface);
+    color:var(--text-primary);
+    background:var(--surface-card);
     outline:none;
     transition:border-color .15s;
   }
-  .field input:focus{border-color:var(--blue)}
+  .field input:focus{border-color:var(--accent-primary)}
 
   .auth-btn{
     width:100%;
     padding:11px;
-    background:var(--blue);
+    background:var(--accent-primary);
     color:#fff;
     border:none;
-    border-radius:var(--rsm);
-    font-family:var(--font-heading);
+    border-radius:var(--radius-sm);
+    font-family:var(--font-ui);
     font-size:var(--text-base);
     font-weight:var(--fw-semibold);
     cursor:pointer;
     margin-top:8px;
     transition:background .15s;
   }
-  .auth-btn:hover{background:var(--blue-dk)}
+  .auth-btn:hover{background:var(--accent-primary-hover)}
   .auth-btn:disabled{opacity:.6;cursor:not-allowed}
 
   .auth-error{
-    background:var(--red-lt);
-    color:var(--red);
-    border-radius:var(--rsm);
+    background:var(--accent-error-light);
+    color:var(--accent-error);
+    border-radius:var(--radius-sm);
     padding:10px 12px;
     font-size:var(--text-sm);
     margin-top:16px;
@@ -76,9 +76,9 @@
   .auth-error.visible{display:block}
 
   .auth-success{
-    background:var(--green-lt);
-    color:var(--green);
-    border-radius:var(--rsm);
+    background:var(--accent-success-light);
+    color:var(--accent-success);
+    border-radius:var(--radius-sm);
     padding:10px 12px;
     font-size:var(--text-sm);
     margin-top:16px;
@@ -86,21 +86,21 @@
   }
   .auth-success.visible{display:block}
 
-  .auth-toggle{text-align:center;margin-top:24px;font-size:var(--text-sm);color:var(--t3)}
-  .auth-toggle a{color:var(--blue);text-decoration:none;font-weight:var(--fw-medium);cursor:pointer}
+  .auth-toggle{text-align:center;margin-top:24px;font-size:var(--text-sm);color:var(--text-tertiary)}
+  .auth-toggle a{color:var(--accent-primary);text-decoration:none;font-weight:var(--fw-medium);cursor:pointer}
   .auth-toggle a:hover{text-decoration:underline}
 
-  .auth-divider{display:flex;align-items:center;gap:12px;margin:20px 0;font-size:var(--text-sm);color:var(--t3)}
-  .auth-divider::before,.auth-divider::after{content:'';flex:1;height:1px;background:var(--border)}
+  .auth-divider{display:flex;align-items:center;gap:12px;margin:20px 0;font-size:var(--text-sm);color:var(--text-tertiary)}
+  .auth-divider::before,.auth-divider::after{content:'';flex:1;height:1px;background:var(--border-subtle)}
 
   .auth-btn-ghost{
     width:100%;
     padding:11px;
     background:transparent;
-    color:var(--t2);
-    border:1px solid var(--border);
-    border-radius:var(--rsm);
-    font-family:var(--font-heading);
+    color:var(--text-secondary);
+    border:1px solid var(--border-subtle);
+    border-radius:var(--radius-sm);
+    font-family:var(--font-ui);
     font-size:var(--text-base);
     font-weight:var(--fw-semibold);
     cursor:pointer;
@@ -110,7 +110,7 @@
     gap:8px;
     transition:background .15s, border-color .15s, color .15s;
   }
-  .auth-btn-ghost:hover{background:var(--bg);border-color:var(--border2);color:var(--t1)}
+  .auth-btn-ghost:hover{background:var(--bg-page);border-color:var(--border-strong);color:var(--text-primary)}
   .auth-btn-ghost:disabled{opacity:.6;cursor:not-allowed}
 </style>
 </head>
@@ -142,7 +142,7 @@
 
   <div class="auth-divider">ou</div>
   <button type="button" class="auth-btn-ghost" id="demo-btn" onclick="loginAsGuest()">
-    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+    <i class="fa-solid fa-eye" aria-hidden="true"></i>
     Explorar como visitante
   </button>
 
@@ -214,7 +214,7 @@
       errorEl.textContent = 'Modo visitante indisponível. Tenta mais tarde.'
       errorEl.classList.add('visible')
       demoBtn.disabled = false
-      demoBtn.innerHTML = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg> Explorar como visitante'
+      demoBtn.innerHTML = '<i class="fa-solid fa-eye" aria-hidden="true"></i> Explorar como visitante'
       return
     }
 

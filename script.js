@@ -392,7 +392,7 @@ async function selCl(id){
           <td>${escH(f.desc)}</td>
           <td class="mono">${f2(f.valor)}</td>
           <td><span class="badge ${f.estado==='pago'?'bg-g':f.estado==='pendente'?'bg-a':'bg-n'}">${escH(f.estado)}</span></td>
-          <td><div class="user-menu"><button class="ico-btn user-menu-trigger"><i class="fa-solid fa-ellipsis" aria-hidden="true"></i></button><div class="user-menu-dropdown">${(()=>{const linkedDoc=f.document_id?(documentos[id]||[]).find(d=>d.id===f.document_id):null;return linkedDoc&&linkedDoc.url?`<button class="umd-item" onclick="abrirPreview('${linkedDoc.url}','${escH(linkedDoc.nome).replace(/'/g,"\\'")}','${linkedDoc.ext}')"><i class="fa-solid fa-eye" aria-hidden="true"></i>Pré-visualizar fatura</button><div class="umd-sep"></div>`:''})()}<button class="umd-item" onclick="toggleEstadoRecibo('${f.id}')">${f.estado==='pago'?'<i class="fa-solid fa-clock" aria-hidden="true"></i>Marcar como pendente':'<i class="fa-solid fa-circle-check" style="color:var(--accent-success)" aria-hidden="true"></i>Marcar como pago'}</button><div class="umd-sep"></div><button class="umd-item umd-signout" onclick="confirmarApagarRecibo('${f.id}')"><i class="fa-solid fa-trash" aria-hidden="true"></i>Apagar fatura</button></div></div></td>
+          <td style="white-space:nowrap">${(()=>{const linkedDoc=f.document_id?(documentos[id]||[]).find(d=>d.id===f.document_id):null;return linkedDoc?`<button class="ico-btn" title="Pré-visualizar fatura" onclick="abrirPreview('${linkedDoc.url}','${escH(linkedDoc.nome).replace(/'/g,"\\'")}','${linkedDoc.ext}')"><i class="fa-solid fa-eye" aria-hidden="true"></i></button>`:'<button class="ico-btn" style="opacity:.25;cursor:default" disabled title="Sem ficheiro anexado"><i class="fa-solid fa-eye" aria-hidden="true"></i></button>'})()}<div class="user-menu" style="display:inline-block"><button class="ico-btn user-menu-trigger"><i class="fa-solid fa-ellipsis" aria-hidden="true"></i></button><div class="user-menu-dropdown"><button class="umd-item" onclick="toggleEstadoRecibo('${f.id}')">${f.estado==='pago'?'<i class="fa-solid fa-clock" aria-hidden="true"></i>Marcar como pendente':'<i class="fa-solid fa-circle-check" style="color:var(--accent-success)" aria-hidden="true"></i>Marcar como pago'}</button><div class="umd-sep"></div><button class="umd-item umd-signout" onclick="confirmarApagarRecibo('${f.id}')"><i class="fa-solid fa-trash" aria-hidden="true"></i>Apagar fatura</button></div></div></td>
         </tr>`).join('')}
       </tbody></table>`
   }
@@ -420,7 +420,7 @@ async function selCl(id){
           <td style="color:var(--text-tertiary)">${escH(d.tipo)}</td>
           <td>${escH(d.data)}</td>
           <td style="color:var(--text-tertiary)">${escH(d.tam)}</td>
-          <td><div class="user-menu"><button class="ico-btn user-menu-trigger"><i class="fa-solid fa-ellipsis" aria-hidden="true"></i></button><div class="user-menu-dropdown">${d.url?`<button class="umd-item" onclick="abrirPreview('${d.url}','${escH(d.nome).replace(/'/g,"\\'")}','${d.ext}')"><i class="fa-solid fa-eye" aria-hidden="true"></i>Pré-visualizar</button><div class="umd-sep"></div>`:''}<button class="umd-item umd-signout" onclick="confirmarApagarDoc('${d.id}')"><i class="fa-solid fa-trash" aria-hidden="true"></i>Apagar documento</button></div></div></td>
+          <td style="white-space:nowrap"><button class="ico-btn" title="Pré-visualizar" onclick="abrirPreview('${d.url}','${escH(d.nome).replace(/'/g,"\\'")}','${d.ext}')"><i class="fa-solid fa-eye" aria-hidden="true"></i></button><div class="user-menu" style="display:inline-block"><button class="ico-btn user-menu-trigger"><i class="fa-solid fa-ellipsis" aria-hidden="true"></i></button><div class="user-menu-dropdown"><button class="umd-item umd-signout" onclick="confirmarApagarDoc('${d.id}')"><i class="fa-solid fa-trash" aria-hidden="true"></i>Apagar documento</button></div></div></td>
         </tr>`).join('')}
       </tbody></table>`
   }
@@ -1531,8 +1531,16 @@ function renderCalendar(){
 async function abrirPreview(storagePath, nome, ext){
   document.getElementById('previewFileName').textContent = nome || '—'
   const body = document.getElementById('previewBody')
-  body.innerHTML = '<div style="color:var(--text-tertiary);font-size:.85rem">A carregar...</div>'
   document.getElementById('modalPreview').classList.add('open')
+
+  if(!storagePath){
+    body.style.padding='24px'
+    body.innerHTML=`<div style="text-align:center"><i class="fa-solid fa-file-circle-xmark" style="font-size:40px;color:var(--text-tertiary);display:block;margin-bottom:12px" aria-hidden="true"></i><div style="font-size:.85rem;color:var(--text-tertiary)">Sem ficheiro associado a este registo.</div></div>`
+    document.getElementById('previewDownloadBtn').style.display='none'
+    return
+  }
+  document.getElementById('previewDownloadBtn').style.display=''
+  body.innerHTML = '<div style="color:var(--text-tertiary);font-size:.85rem">A carregar...</div>'
 
   const { data } = db.storage.from('documents').getPublicUrl(storagePath)
   const url = data.publicUrl
