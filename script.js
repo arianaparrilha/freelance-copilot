@@ -286,6 +286,7 @@ function toggleSidebar(){
 }
 function closeMobileDetail(){
   document.querySelector('.cd-panel').classList.remove('visible-mobile')
+  document.body.classList.remove('drawer-open')
   const ov=document.getElementById('cdDrawerOverlay')
   if(ov){ov.classList.remove('visible');ov.style.pointerEvents='none'}
 }
@@ -349,6 +350,7 @@ async function selCl(id){
     const ov=document.getElementById('cdDrawerOverlay')
     if(!panel.classList.contains('visible-mobile')){
       panel.classList.add('visible-mobile')
+      document.body.classList.add('drawer-open')
       if(ov){ov.classList.add('visible');ov.style.pointerEvents='auto'}
     }
   }

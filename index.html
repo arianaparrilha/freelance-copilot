@@ -310,7 +310,7 @@
         <div class="cd-body">
           <!-- TAB: Faturas (dynamic) -->
           <div class="tab-pane active" id="tr">
-            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+            <div class="cd-sec-hdr">
               <p class="sec-lbl" style="margin:0">Faturas emitidas</p>
               <button class="btn btn-p btn-sm" onclick="abrirModalRecibo(ativo)">
                 <i class="fa-solid fa-plus" aria-hidden="true"></i>
@@ -327,13 +327,11 @@
           <div class="tab-pane" id="tn"><p style="color:var(--text-tertiary);font-size:.82rem;padding:18px 0">Sem notas adicionadas.</p></div>
           <!-- TAB: Documentos -->
           <div class="tab-pane" id="td">
-            <!-- Header row -->
-            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+            <div class="cd-sec-hdr">
               <div style="font-size:.92rem;font-weight:700;color:var(--text-primary)">
                 Documentos
                 <span class="badge bg-n" id="docCount" style="font-size:.72rem;vertical-align:middle;margin-left:4px">6</span>
               </div>
-              <!-- Single CTA that expands to sub-options -->
               <button class="btn btn-p btn-sm" id="btnAddDoc" onclick="abrirModalDoc()">
                 <i class="fa-solid fa-plus" aria-hidden="true"></i>
                 Adicionar documento

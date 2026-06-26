@@ -615,6 +615,12 @@ hr.dv{border:none;border-top:1px solid var(--border-subtle);margin:16px 0}
 /* Client detail back button — hidden on desktop */
 .cd-back-btn{display:none;align-items:center;justify-content:space-between;padding:10px 14px 10px 22px;border-bottom:1px solid var(--border-subtle);background:var(--surface-card)}
 
+/* Lock page scroll when drawer is open */
+body.drawer-open{overflow:hidden}
+
+/* Section header row (title + CTA button) */
+.cd-sec-hdr{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+
 /* ═══════════════════════════════════════════
    RESPONSIVE — tablet (≤880px)
 ═══════════════════════════════════════════ */
@@ -662,7 +668,7 @@ hr.dv{border:none;border-top:1px solid var(--border-subtle);margin:16px 0}
     box-shadow:-6px 0 32px rgba(0,0,0,.14);
     transform:translateX(100%);
     transition:transform .26s cubic-bezier(.4,0,.2,1);
-    overflow-y:auto;
+    overflow-x:hidden;overflow-y:auto;
     display:flex!important;
     flex-direction:column;
     z-index:150;
@@ -673,16 +679,36 @@ hr.dv{border:none;border-top:1px solid var(--border-subtle);margin:16px 0}
   /* Dim overlay behind drawer */
   .cd-drawer-overlay{display:block}
   .cd-drawer-overlay.visible{pointer-events:auto;background:rgba(0,0,0,.25)}
-  /* Drawer table fixes — prevent horizontal scroll, hide non-critical columns */
-  .cd-panel .cd-body{overflow-x:hidden}
-  .cd-panel .inv-tbl,.cd-panel .doc-tbl{table-layout:fixed;width:100%}
-  .cd-panel .inv-tbl th:first-child,.cd-panel .inv-tbl td:first-child{display:none} /* hide Nº */
-  .cd-panel .doc-tbl th:nth-child(2),.cd-panel .doc-tbl td:nth-child(2){display:none} /* hide Tipo */
-  .cd-panel .doc-tbl th:nth-child(4),.cd-panel .doc-tbl td:nth-child(4){display:none} /* hide Tamanho */
-  .cd-panel table td,.cd-panel table th{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  /* Section header: stack button below title inside drawer */
+  .cd-panel .cd-sec-hdr{flex-direction:column;align-items:flex-start;gap:8px}
+  /* Header + acts wrap on narrow drawer */
   .cd-panel .cd-top{flex-wrap:wrap;gap:10px}
-  .cd-panel .cd-acts{margin-left:0;width:100%}
-  .cd-panel .doc-nc{max-width:180px}
+  .cd-panel .cd-acts{margin-left:0;flex-wrap:wrap}
+  /* Tables → cards inside the drawer */
+  .cd-panel .inv-tbl,.cd-panel .doc-tbl{display:block;width:100%}
+  .cd-panel .inv-tbl thead,.cd-panel .doc-tbl thead{display:none}
+  .cd-panel .inv-tbl tbody,.cd-panel .doc-tbl tbody{display:flex;flex-direction:column;gap:8px}
+  .cd-panel .inv-tbl tr,.cd-panel .doc-tbl tr{
+    display:flex;flex-wrap:wrap;align-items:center;
+    gap:4px 8px;padding:10px 12px;
+    background:var(--bg-page);
+    border:1px solid var(--border-subtle)!important;
+    border-radius:var(--radius-sm)
+  }
+  .cd-panel .inv-tbl td,.cd-panel .doc-tbl td{display:block;border:none!important;padding:0}
+  /* Fatura card: description full-width first, then meta row */
+  .cd-panel .inv-tbl td:nth-child(1){display:none} /* Nº */
+  .cd-panel .inv-tbl td:nth-child(2){order:2;font-size:.75rem;color:var(--text-tertiary);white-space:nowrap;flex-shrink:0} /* Data */
+  .cd-panel .inv-tbl td:nth-child(3){order:1;width:100%;font-weight:600;font-size:.87rem;white-space:normal;word-break:break-word} /* Descrição */
+  .cd-panel .inv-tbl td:nth-child(4){order:4;font-weight:600;white-space:nowrap;margin-left:auto} /* Valor */
+  .cd-panel .inv-tbl td:nth-child(5){order:3;white-space:nowrap;flex-shrink:0} /* Estado */
+  .cd-panel .inv-tbl td:nth-child(6){order:5;white-space:nowrap;flex-shrink:0} /* Actions */
+  /* Doc card: name full-width first, then meta row */
+  .cd-panel .doc-tbl td:nth-child(1){order:1;width:100%;white-space:normal;word-break:break-word} /* Nome */
+  .cd-panel .doc-tbl td:nth-child(2){display:none} /* Tipo */
+  .cd-panel .doc-tbl td:nth-child(3){order:2;font-size:.75rem;color:var(--text-tertiary);white-space:nowrap;flex-shrink:0} /* Data */
+  .cd-panel .doc-tbl td:nth-child(4){display:none} /* Tamanho */
+  .cd-panel .doc-tbl td:nth-child(5){order:3;white-space:nowrap;margin-left:auto;flex-shrink:0} /* Actions */
 
   /* Resumo Fiscal */
   .est-cards{grid-template-columns:1fr 1fr}
