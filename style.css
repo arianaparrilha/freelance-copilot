@@ -625,7 +625,7 @@ body.drawer-open{overflow:hidden}
    RESPONSIVE — tablet (≤880px)
 ═══════════════════════════════════════════ */
 @media(max-width:880px){
-  html{font-size:14px}
+  html{font-size:14px;overflow-x:hidden}
   body{overflow-x:hidden}
 
   /* Sidebar */
@@ -658,15 +658,15 @@ body.drawer-open{overflow:hidden}
   #sumClSec,#clIVApct{font-size:1.05rem!important}
 
   /* Clients panel: list full-width, detail as right drawer */
-  .clients-layout{grid-template-columns:1fr!important;height:auto!important;overflow:visible;min-width:0;width:100%}
-  .cl-left{width:100%;min-width:0;border-right:none;height:auto!important;max-height:none!important}
+  .clients-layout{grid-template-columns:1fr!important;height:auto!important;overflow:hidden;min-width:0;width:100%}
+  .cl-left{width:100%;min-width:0;border-right:none;height:auto!important;max-height:none!important;overflow-x:hidden}
   /* Drawer */
   .cd-panel{
-    position:fixed;top:0;right:0;height:100vh;width:75%;
+    position:fixed;top:0;right:0;height:100vh;width:75vw;max-width:75vw;box-sizing:border-box;
     background:var(--surface-card);
     border-left:1px solid var(--border-subtle);
     box-shadow:-6px 0 32px rgba(0,0,0,.14);
-    transform:translateX(100%);
+    transform:translateX(100vw);
     transition:transform .26s cubic-bezier(.4,0,.2,1);
     overflow-x:hidden;overflow-y:auto;
     display:flex!important;
@@ -676,9 +676,8 @@ body.drawer-open{overflow:hidden}
   .cd-panel.visible-mobile{transform:translateX(0)}
   .cd-back-btn{display:flex}
   .cd-stats{grid-template-columns:1fr 1fr}
-  /* Dim overlay behind drawer */
-  .cd-drawer-overlay{display:block}
-  .cd-drawer-overlay.visible{pointer-events:auto;background:rgba(0,0,0,.25)}
+  /* Overlay: only used on mobile (full-screen drawer). Hidden on tablet so list stays clickable. */
+  .cd-drawer-overlay{display:none}
   /* Section header: stack button below title inside drawer */
   .cd-panel .cd-sec-hdr{flex-direction:column;align-items:flex-start;gap:8px}
   /* Header + acts wrap on narrow drawer */
@@ -741,7 +740,10 @@ body.drawer-open{overflow:hidden}
   .kpi-lbl{font-size:.76rem}
 
   .cl-kpi-grid{grid-template-columns:1fr 1fr!important}
-  .cd-panel{width:100%}
+  /* Drawer: full-screen on mobile, overlay visible */
+  .cd-panel{width:100vw;max-width:100vw;transform:translateX(100vw)}
+  .cd-drawer-overlay{display:block}
+  .cd-drawer-overlay.visible{pointer-events:auto;background:rgba(0,0,0,.4)}
   /* Hide quick actions on phone — users navigate to the relevant page directly */
   .dash-qa-section{display:none}
   /* Stack calendar + activity on phone */

@@ -344,14 +344,17 @@ async function selCl(id){
   renderCl()
   const c=clientes.find(x=>x.id===id)
   if(!c) return
-  // On tablet/phone: slide in right drawer (idempotent — safe to call while already open)
+  // On tablet/phone: slide in right drawer
   if(window.innerWidth<=880){
     const panel=document.querySelector('.cd-panel')
-    const ov=document.getElementById('cdDrawerOverlay')
     if(!panel.classList.contains('visible-mobile')){
       panel.classList.add('visible-mobile')
-      document.body.classList.add('drawer-open')
-      if(ov){ov.classList.add('visible');ov.style.pointerEvents='auto'}
+      // Mobile only: dim overlay + scroll lock (drawer is full-screen, list not visible)
+      if(window.innerWidth<=520){
+        document.body.classList.add('drawer-open')
+        const ov=document.getElementById('cdDrawerOverlay')
+        if(ov){ov.classList.add('visible');ov.style.pointerEvents='auto'}
+      }
     }
   }
   faturas[id] = await loadFaturas(id)
