@@ -1,0 +1,25 @@
+# Supabase pauses free projects after ~7 days without activity.
+# This job makes a tiny read request every 3 days so the project stays awake.
+name: Keep Supabase awake
+
+on:
+  schedule:
+    - cron: '0 9 */3 * *'   # 09:00 UTC, every 3 days
+  workflow_dispatch:         # adds a "Run workflow" button to test it manually
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Query the clients table
+        env:
+          SUPABASE_URL: https://tcpgumflmkgdjbowkljh.supabase.co
+          SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
+        run: |
+          status=$(curl -s -o /dev/null -w "%{http_code}" \
+            "$SUPABASE_URL/rest/v1/clients?select=id&limit=1" \
+            -H "apikey: $SUPABASE_ANON_KEY" \
+            -H "Authorization: Bearer $SUPABASE_ANON_KEY")
+          echo "Supabase responded with HTTP $status"
+          # Any non-200 answer fails the run, which makes GitHub email you
+          if [ "$status" != "200" ]; then exit 1; fi
